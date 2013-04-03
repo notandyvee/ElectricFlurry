@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainFragment extends Fragment{
 	
@@ -22,6 +23,7 @@ public class MainFragment extends Fragment{
 	public static final String LE_FRAGMENT = "fragment_holder";
 	
 	TextView text;
+	TextView checkin, vote, social, mingle;
 	LocationManager locationManager;
 	LocationListener locationListener;
 	
@@ -55,11 +57,58 @@ public class MainFragment extends Fragment{
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.main_fragment, container, false);
+		
 		/*
 		 * Where yo shit will go that will populate 
 		 * the Fragments Views dynamically
 		 * */
+		
+		TextView checkin = (TextView)view.findViewById(R.id.check_in);
+		TextView vote = (TextView)view.findViewById(R.id.vote);
+		TextView social = (TextView)view.findViewById(R.id.social_networking);
+		TextView mingle = (TextView)view.findViewById(R.id.mingle);
+		
 		text = (TextView)view.findViewById(R.id.name);
+		
+		
+		checkin.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getActivity(), "clicked on checkin", Toast.LENGTH_SHORT).show();
+			}
+		});
+		vote.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getActivity(), "clicked on vote", Toast.LENGTH_SHORT).show();
+			}
+		});
+		social.setOnClickListener(new View.OnClickListener() {
+	
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
+			}
+		});
+		mingle.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getActivity(), "clicked on mingle", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		
+		
+		
+		
+		
 		
 		doGPS();
 		

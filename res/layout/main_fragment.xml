@@ -2,44 +2,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#383838" >
     
     <TextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This is the Home Screen Bitches"
-        android:textSize="20dp" ></TextView>
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Welcome To Electric Flurry!"
+	        android:gravity="center_horizontal"
+	        android:textColor="#BEBEBE" ></TextView>
     
-    <Button 
-        android:id="@+id/check_in"
+    <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Check In :D"/>
+        android:layout_height="wrap_content">
+	    
+	    <TextView 
+	        android:id="@+id/check_in"
+	        android:layout_width="0dp"
+	        android:layout_height="60dp"
+	        android:text="Check In :D"
+	        android:background="#9556d9"
+	        android:layout_weight="1"
+	        android:layout_margin="10dp"
+	        android:gravity="center" />
+	    
+	    <TextView 
+	        android:id="@+id/vote"
+	        android:layout_width="0dp"
+	        android:layout_height="60dp"
+	        android:text="Vote!"
+	        android:background="#9556d9"
+	        android:layout_weight="1"
+	        android:layout_margin="10dp"
+	        android:gravity="center" />
+	 </LinearLayout>
+	 
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+	    
+	    
+	    <TextView 
+	        android:id="@+id/social_networking"
+	        android:layout_width="0dp"
+	        android:layout_height="60dp"
+	        android:text="Social"
+	        android:background="#9556d9"
+	        android:layout_weight="1"
+	        android:layout_margin="10dp"
+	        android:gravity="center" />
+	    
+	    <TextView 
+	        android:id="@+id/mingle"
+	        android:layout_width="0dp"
+	        android:layout_height="60dp"
+	        android:text="Mingle ;P"
+	        android:background="#9556d9"
+	        android:layout_weight="1"
+	        android:layout_margin="10dp"
+	        android:gravity="center" />
+	 </LinearLayout>
+	 
+
     
-    <Button 
-        android:id="@+id/vote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vote!"/>
-    
-    <Button 
-        android:id="@+id/social_networking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Social"/>
-    
-    <Button 
-        android:id="@+id/mingle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mingle/Meet People ;P"/>
     
     <TextView 
         android:id="@+id/name"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:background="#5CACEE"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center" />
     
 
 </LinearLayout>
