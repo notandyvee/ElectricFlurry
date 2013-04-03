@@ -15,27 +15,36 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.SharedPreferences;
+import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 
 public class Foursquare {
 
 	String fqUrl = 
-		"https://api.foursquare.com/v2/venues/search?ll=40.7,-74&"+
-		"oauth_token=";
+		"https://api.foursquare.com/v2/venues/search?";
 	
-	String firstThing;
+	String listOfVenues = "";
 	
-	public Foursquare(String oAuthToken) {
+	public Foursquare(String oAuthToken, String ll) {
+		/*
+		 * Must append the longitude and latitude
+		 * */
+		if(ll != null)
+			fqUrl = fqUrl+"ll="+ll;
+		
 		/*
 		 * Appending the oAuthToken since it is neccessary
 		 * */
 		if(oAuthToken != null)
-			fqUrl = fqUrl+oAuthToken;
+			fqUrl = fqUrl+"&oauth_token="+oAuthToken;
 		
+		fqUrl = fqUrl+"&v=20130403";
+		
+		Log.d("Foursquare", fqUrl);
 	}//end of constructor
 	
 	
-	public void queryFoursquareData() {
+	public void queryFoursquareData() throws NetworkOnMainThreadException{
 		
 		/*
 		 * right now this doesn't do anything useful as
@@ -49,14 +58,22 @@ public class Foursquare {
 			InputStream conn = url.openStream();
 			DataInputStream stream = new DataInputStream(new BufferedInputStream(conn));
 			
-			firstThing = stream.readLine();
+			String firstThing = stream.readLine();
 			try {
 				JSONObject jsonObj = new JSONObject(firstThing);
 				jsonObj = jsonObj.getJSONObject("response");
 				JSONArray venues = jsonObj.getJSONArray("venues");
-				JSONObject oneVenue = venues.getJSONObject(0);
 				
-				firstThing = oneVenue.getString("name");
+				for(int i =0; i < venues.length(); i++) {
+					Log.d("foursquare", "running in the fourloop to parse stuff");
+					JSONObject oneVenue = venues.getJSONObject(i);
+					listOfVenues = listOfVenues + " "+ oneVenue.getString("name");
+					
+					//just a way to add commas
+					listOfVenues = listOfVenues+ (i == venues.length() -1 ?"" :",");
+				}
+				
+				
 			}
 			catch(JSONException e) {
 				Log.d("Foursquare", "JSON issue", e);
@@ -76,7 +93,7 @@ public class Foursquare {
 	
 	
 	public String returnLeString() {
-		return firstThing;
+		return listOfVenues;
 	}//end of returnLeString
 	
 	
