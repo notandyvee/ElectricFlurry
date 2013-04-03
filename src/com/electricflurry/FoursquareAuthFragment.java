@@ -69,6 +69,7 @@ public class FoursquareAuthFragment extends Fragment{
                      * You can delete the Toast and Log stuff as thats just to show
                      * that the token was obtained successfully
                      * */
+                    getActivity().getSupportFragmentManager().popBackStack();
         			
                     Log.v(TAG, "OAuth complete, token: [" + accessToken + "].");
                 	

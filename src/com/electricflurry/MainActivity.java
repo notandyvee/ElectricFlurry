@@ -2,6 +2,7 @@ package com.electricflurry;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity {
 	String PREF_NAME = "MySocialSettings";
@@ -25,14 +27,25 @@ public class MainActivity extends FragmentActivity {
         
         /*
          * The following is one way to create le Fragment*/
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.fragment_holder, MainFragment.newInstance(), "fuck");   
         
         
         ft.commit();
         
         
-    }//end of onCreate class
+    }//end of onCreate
+    
+    public void addFragment(int resource, Fragment frag) {
+    	
+    	FragmentManager fm = getSupportFragmentManager();
+    	FragmentTransaction ft = fm.beginTransaction();
+    	ft.replace(R.id.fragment_holder, frag);
+    	ft.addToBackStack(null);
+    	
+    	ft.commit();
+    }
     
     
 
