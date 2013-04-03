@@ -75,7 +75,7 @@ public class MainFragment extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, CheckInFragment.newInstance());
 				Toast.makeText(getActivity(), "clicked on checkin", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -83,7 +83,7 @@ public class MainFragment extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, VoteFragment.newInstance());
 				Toast.makeText(getActivity(), "clicked on vote", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -91,7 +91,7 @@ public class MainFragment extends Fragment{
 	
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, SocialNetworkFragment.newInstance());
 				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -99,7 +99,7 @@ public class MainFragment extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, MingleFragment.newInstance());
 				Toast.makeText(getActivity(), "clicked on mingle", Toast.LENGTH_SHORT).show();
 			}
 		});
