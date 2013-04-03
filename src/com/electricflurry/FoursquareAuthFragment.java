@@ -63,6 +63,7 @@ public class FoursquareAuthFragment extends Fragment{
                     //le commit the edit
                     editor.commit();
                     
+                    
                     /*
                      * Here is where Matt can redirect to his page. Since there is not work
                      * on github from anyone I have no idea where to send it.
