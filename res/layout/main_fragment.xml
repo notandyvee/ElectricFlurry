@@ -7,14 +7,14 @@
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Main Menu"
+        android:text="This is the Home Screen Bitches"
         android:textSize="20dp" ></TextView>
     
     <Button 
         android:id="@+id/check_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Check In"/>
+        android:text="Check In :D"/>
     
     <Button 
         android:id="@+id/vote"
@@ -26,13 +26,13 @@
         android:id="@+id/social_networking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Social Networks"/>
+        android:text="Social"/>
     
     <Button 
         android:id="@+id/mingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mingle"/>
+        android:text="Mingle/Meet People ;P"/>
     
     <TextView 
         android:id="@+id/name"
