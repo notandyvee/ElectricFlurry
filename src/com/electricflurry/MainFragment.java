@@ -67,6 +67,8 @@ public class MainFragment extends Fragment{
 		TextView vote = (TextView)view.findViewById(R.id.vote);
 		TextView social = (TextView)view.findViewById(R.id.social_networking);
 		TextView mingle = (TextView)view.findViewById(R.id.mingle);
+		TextView profile = (TextView)view.findViewById(R.id.profile);
+		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		
 		text = (TextView)view.findViewById(R.id.name);
 		
@@ -101,6 +103,24 @@ public class MainFragment extends Fragment{
 			public void onClick(View v) {
 				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, MingleFragment.newInstance());
 				Toast.makeText(getActivity(), "clicked on mingle", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		profile.setOnClickListener(new View.OnClickListener() {
+			//added interactivity to the profile button -sean
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, ProfileFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on Profile", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		myProfile.setOnClickListener(new View.OnClickListener() {
+			//added interactivity to the myprofile button -sean
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, MyProfileFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on My Profile", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
