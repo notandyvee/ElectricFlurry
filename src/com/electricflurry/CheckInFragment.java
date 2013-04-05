@@ -36,7 +36,11 @@ public class CheckInFragment extends Fragment{
 					@Override
 					public void onLocationChanged(Location location) {
 						// TODO Auto-generated method stub
-						text.setText("Lon="+location.getLongitude()+" Lat="+location.getLatitude());
+						if(gps.isWithinRange(location))
+							text.setText("You are checked in! You fall in range of who can check in");
+						else
+							text.setText("You are not in range! \n Lon="+location.getLongitude()+" Lat="+location.getLatitude());
+						
 					}
 
 					@Override
@@ -72,6 +76,13 @@ public class CheckInFragment extends Fragment{
 		/*
 		 * Your Fragment's view is created here so do work to make it look pretty*/
 		text = (TextView)view.findViewById(R.id.checkin_text);
+		
+		try {
+			text.setText("Last known coordinates: Lat="+gps.lastKnownLocation.getLatitude()+" Lon="+gps.lastKnownLocation.getLongitude());
+		}
+		catch(NullPointerException e) {
+			text.setText("Oops! No previous location was found");
+		}
 		
 		gps.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0);
 		
