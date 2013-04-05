@@ -67,10 +67,10 @@ public class Foursquare {
 				for(int i =0; i < venues.length(); i++) {
 					Log.d("foursquare", "running in the fourloop to parse stuff");
 					JSONObject oneVenue = venues.getJSONObject(i);
-					listOfVenues = listOfVenues + " "+ oneVenue.getString("name");
+					listOfVenues = listOfVenues + oneVenue.getString("name");
 					
 					//just a way to add commas
-					listOfVenues = listOfVenues+ (i == venues.length() -1 ?"" :",");
+					listOfVenues = listOfVenues+ (i == venues.length() -1 ?"" :", ");
 				}
 				
 				
