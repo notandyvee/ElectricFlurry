@@ -28,7 +28,7 @@ public class GPSUtilities {
 	}//end of removeUpdates
 	
 	
-	public void requestLocationUpdates(String provider, int minTime, int minDistance) {
+	public void requestLocationUpdates(String provider, long minTime, float minDistance) {
 		
 		locationManager.requestLocationUpdates(provider, minTime, minDistance, locationListener);
 		
