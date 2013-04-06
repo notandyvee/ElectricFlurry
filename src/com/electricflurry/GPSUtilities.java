@@ -13,7 +13,7 @@ public class GPSUtilities {
 	LocationListener locationListener;
 	Location efLocation;// this location is simply a fake location to test checkin with
 	Location lastKnownLocation;
-	final float MAX_DISTANCE = 500f;
+	final float MAX_DISTANCE = 100f;
 	
 	
 	public GPSUtilities(LocationManager manager, LocationListener listener) {
@@ -47,11 +47,14 @@ public class GPSUtilities {
 		
 	}//end of requestLocationUpdates
 	
+	
+	/*This method is just going to be here incase anyone needs to access both network and GPS for inprecise stuff*/
 	public void requestLocationUpdates(String provider1, long minTime1, float minDistance1, String provider2, long minTime2, float minDistance2) {
 		/*this one is like the one before this except you can request both location providers to run for quicker Location */
 		locationManager.requestLocationUpdates(provider1, minTime1, minDistance1, locationListener);
 		locationManager.requestLocationUpdates(provider2, minTime2, minDistance2, locationListener);
 	}
+	
 	
 	public boolean isWithinRange(Location newLocation) {
 		/*If newLocation is null I can just use current location

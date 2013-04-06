@@ -11,19 +11,21 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class CheckInFragment extends Fragment{
 	
 	String TAG = "CheckInFragment";
 	TextView text;
+	EditText enterCode;
 	GPSUtilities gps;
 	SharedPreferences settings;
 	String PREF_NAME = "MySocialSettings";
+	
 	
 	public static CheckInFragment newInstance() {
 		
@@ -39,6 +41,10 @@ public class CheckInFragment extends Fragment{
 		super.onCreate(savedInstanceState);
 		
 		settings = getActivity().getSharedPreferences(PREF_NAME, 0);
+		/*
+		 * Here I should check if check_in in SharedPreferences is a day before or more from the current day
+		 * so I can delete it since they shouldn't be checked in longer to access certain pages after the show
+		 * */
 		
 		if(settings.getString("checked_in", null) == null) {
 			
@@ -48,42 +54,22 @@ public class CheckInFragment extends Fragment{
 						@Override
 						public void onLocationChanged(Location location) {
 							
-							if(location.getProvider().equals(LocationManager.NETWORK_PROVIDER)) {
-								Log.d("CHECKIN", "Its running for NETWORK");
-								if(gps.isWithinRange(location)) {
-									text.setText("You are checked in! You fall in range of who can check in");
-									gps.removeUpdates();//if checked in through network then great! Just leave since GPS would be pointless
-									Calendar now = Calendar.getInstance();
-									SharedPreferences.Editor editor = settings.edit();
-									editor.putString("checked_in", now.get(Calendar.MONTH)+ "/"+
-											now.get(Calendar.DAY_OF_MONTH)+"/"+now.get(Calendar.YEAR));
-									editor.commit();
-								}
-								else
-									text.setText("You are not in range! \n Lon="+location.getLongitude()+" Lat="+location.getLatitude() +
-											"\n Accuracy is "+ location.getAccuracy());
-								
-								
-								
-							} else {
-								//else I know its GPS
-								Log.d("CHECKIN", "Its running for GPS");
-								if(gps.isWithinRange(location)) {
-									text.setText("You are checked in! You fall in range of who can check in");
-									gps.removeUpdates();//if checked in through network then great! Just leave since GPS would be pointless
-									Calendar now = Calendar.getInstance();
-									SharedPreferences.Editor editor = settings.edit();
-									editor.putString("checked_in", now.get(Calendar.MONTH)+ "/"+
-											now.get(Calendar.DAY_OF_MONTH)+"/"+now.get(Calendar.YEAR));
-									editor.commit();
-								}
-								else
-									text.setText("You are not in range! \n Lon="+location.getLongitude()+" Lat="+location.getLatitude()+
-											"\n Accuracy is "+ location.getAccuracy());
-								
-								
-							}
+							/*
+							 * Decided to just go with just GPS because I need it to be precise*/	
 							
+							if(gps.isWithinRange(location)) {
+								text.setText("You are checked in! You fall in range of who can check in");
+								gps.removeUpdates();//if checked in through network then great! Just leave since GPS would be pointless
+								Calendar now = Calendar.getInstance();
+								SharedPreferences.Editor editor = settings.edit();
+								editor.putString("checked_in", now.get(Calendar.MONTH)+ "/"+
+										now.get(Calendar.DAY_OF_MONTH)+"/"+now.get(Calendar.YEAR));
+								editor.commit();
+							}
+							else
+								text.setText("You are not in range! \n Lon="+location.getLongitude()+" Lat="+location.getLatitude()+
+										"\n Accuracy is "+ location.getAccuracy());
+								
 						}//end of onLocationChanged
 	
 						@Override
@@ -124,30 +110,37 @@ public class CheckInFragment extends Fragment{
 		/*
 		 * Your Fragment's view is created here so do work to make it look pretty*/
 		text = (TextView)view.findViewById(R.id.checkin_text);
+		enterCode = (EditText)view.findViewById(R.id.enter_checkin_code);
 		
 		if(settings.getString("checked_in", null) == null) {
-		
-			try {
-				text.setText("Last known coordinates: Lat="+gps.lastKnownLocation.getLatitude()+" Lon="+gps.lastKnownLocation.getLongitude());
-			}
-			catch(NullPointerException e) {
-				text.setText("Oops! No previous location was found");
-			}
 			
-			new Timer().schedule(new TimerTask() {
-				@Override
-				public void run() {
-					text.post(new Runnable() {
-						@Override
-						public void run() {
-							text.setText("A minute passed so quit it at this point if location has not bee found");
-							gps.removeUpdates();
-						}
-					});
-				}
-			}, 60000L);
-			
-			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 20f, LocationManager.GPS_PROVIDER, 0, 20f);
+			if(gps.isWithinRange(null) == false) {
+				
+				new Timer().schedule(new TimerTask() {
+					@Override
+					public void run() {
+						text.post(new Runnable() {
+							@Override
+							public void run() {
+								text.setText("The Network is too slow. Please enter the code provided at the show.");
+								gps.removeUpdates();
+								enterCode.setVisibility(View.VISIBLE);
+							}
+						});
+					}
+				}, 120000L);
+				
+				gps.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 20f);
+				
+			} else {
+				/*Then I know that the last known location was within range*/
+				text.setText("You Have Been Successfully Logged In!");
+				Calendar now = Calendar.getInstance();
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putString("checked_in", now.get(Calendar.MONTH)+ "/"+
+						now.get(Calendar.DAY_OF_MONTH)+"/"+now.get(Calendar.YEAR));
+				editor.commit();
+			}
 			
 		} else {
 			
@@ -165,6 +158,9 @@ public class CheckInFragment extends Fragment{
 		if(gps != null)
 			gps.removeUpdates();
 	}
+	
+	
+
 	
 	
 	

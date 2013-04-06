@@ -16,5 +16,14 @@
         android:layout_margin="5dp"
         android:textColor="#fff" />
     
+    <EditText 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Code"
+        android:visibility="gone"
+        android:id="@+id/enter_checkin_code" ></EditText>
+    
+
+    
 
 </LinearLayout>
