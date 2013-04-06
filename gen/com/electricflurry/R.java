@@ -26,15 +26,26 @@ public final class R {
     public static final class id {
         public static final int check_in=0x7f080003;
         public static final int checkin_text=0x7f080001;
+        public static final int disp_name=0x7f080010;
+        public static final int disp_phone=0x7f080011;
+        public static final int edit_name=0x7f08000c;
+        public static final int edit_phone=0x7f08000e;
+        public static final int facebook_url=0x7f080014;
         public static final int fragment_holder=0x7f080000;
+        public static final int google_url=0x7f080015;
         public static final int le_webview=0x7f080002;
-        public static final int menu_settings=0x7f08000c;
+        public static final int menu_settings=0x7f080017;
         public static final int mingle=0x7f080006;
         public static final int my_profile=0x7f080007;
         public static final int name=0x7f080009;
+        public static final int name_prompt=0x7f08000b;
+        public static final int phone_prompt=0x7f08000d;
         public static final int profile=0x7f080008;
+        public static final int profile_name=0x7f080012;
+        public static final int profile_phone=0x7f080013;
+        public static final int save=0x7f08000f;
         public static final int social_networking=0x7f080005;
-        public static final int textView1=0x7f08000b;
+        public static final int twitter_url=0x7f080016;
         public static final int venues_list=0x7f08000a;
         public static final int vote=0x7f080004;
     }
