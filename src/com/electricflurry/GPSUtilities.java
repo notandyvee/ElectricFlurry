@@ -13,7 +13,7 @@ public class GPSUtilities {
 	LocationListener locationListener;
 	Location efLocation;// this location is simply a fake location to test checkin with
 	Location lastKnownLocation;
-	final float MAX_DISTANCE = 100f;
+	final float MAX_DISTANCE = 500f;
 	
 	
 	public GPSUtilities(LocationManager manager, LocationListener listener) {
@@ -26,7 +26,7 @@ public class GPSUtilities {
 		efLocation.setLatitude(43.452697);
 		efLocation.setLongitude(-76.54243300);
 		
-		//get last known location
+		//get last known location but only for GPS as this one is the one that takes really long to load
 		lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		
 	}//private constructor, also known as a singleton
@@ -46,6 +46,12 @@ public class GPSUtilities {
 		locationManager.requestLocationUpdates(provider, minTime, minDistance, locationListener);
 		
 	}//end of requestLocationUpdates
+	
+	public void requestLocationUpdates(String provider1, long minTime1, float minDistance1, String provider2, long minTime2, float minDistance2) {
+		/*this one is like the one before this except you can request both location providers to run for quicker Location */
+		locationManager.requestLocationUpdates(provider1, minTime1, minDistance1, locationListener);
+		locationManager.requestLocationUpdates(provider2, minTime2, minDistance2, locationListener);
+	}
 	
 	public boolean isWithinRange(Location newLocation) {
 		/*If newLocation is null I can just use current location

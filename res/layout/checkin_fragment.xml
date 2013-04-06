@@ -2,13 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#F2F2F2" >
     
     <TextView 
         android:id="@+id/checkin_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Checkin fragment, YAY!"/>
+        android:text="Checking in... Wait a moment"
+        android:background="#9556d9"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="5dp"
+        android:textColor="#fff" />
     
 
 </LinearLayout>

@@ -5,23 +5,22 @@
     android:orientation="vertical"
     android:background="#F2F2F2" >
     
-    <TextView 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="Welcome To Electric Flurry!"
-	        android:gravity="center_horizontal"
-	        android:textColor="#BEBEBE" ></TextView>
+
     
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 	    
 	    <TextView 
 	        android:id="@+id/check_in"
 	        android:layout_width="0dp"
 	        android:layout_height="60dp"
-	        android:text="Check In :D"
+	        android:text="CHECK IN"
 	        android:background="#9556d9"
+	        android:textColor="#fff"
 	        android:layout_weight="1"
 	        android:layout_margin="10dp"
 	        android:gravity="center" />
@@ -30,8 +29,9 @@
 	        android:id="@+id/vote"
 	        android:layout_width="0dp"
 	        android:layout_height="60dp"
-	        android:text="Vote!"
+	        android:text="VOTE"
 	        android:background="#9556d9"
+	        android:textColor="#fff"
 	        android:layout_weight="1"
 	        android:layout_margin="10dp"
 	        android:gravity="center" />
@@ -39,15 +39,19 @@
 	 
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 	    
 	    
 	    <TextView 
 	        android:id="@+id/social_networking"
 	        android:layout_width="0dp"
 	        android:layout_height="60dp"
-	        android:text="Social"
+	        android:text="SOCIAL"
 	        android:background="#9556d9"
+	        android:textColor="#fff"
 	        android:layout_weight="1"
 	        android:layout_margin="10dp"
 	        android:gravity="center" />
@@ -56,8 +60,9 @@
 	        android:id="@+id/mingle"
 	        android:layout_width="0dp"
 	        android:layout_height="60dp"
-	        android:text="Mingle ;P"
+	        android:text="MINGLE"
 	        android:background="#9556d9"
+	        android:textColor="#fff"
 	        android:layout_weight="1"
 	        android:layout_margin="10dp"
 	        android:gravity="center" />
@@ -65,7 +70,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
 
 
 
@@ -73,8 +81,9 @@
 	        android:id="@+id/my_profile"
 	        android:layout_width="0dp"
 	        android:layout_height="60dp"
-	        android:text="My Profile"
+	        android:text="MY PROFILE"
 	        android:background="#9556d9"
+	        android:textColor="#fff"
 	        android:layout_weight="1"
 	        android:layout_margin="10dp"
 	        android:gravity="center" />
@@ -83,8 +92,9 @@
 	        android:id="@+id/profile"
 	        android:layout_width="0dp"
 	        android:layout_height="60dp"
-	        android:text="Profile"
+	        android:text="PROFILE"
 	        android:background="#9556d9"
+	        android:textColor="#fff"
 	        android:layout_weight="1"
 	        android:layout_margin="10dp"
 	        android:gravity="center" />
@@ -92,6 +102,14 @@
 
 
     </LinearLayout>
+    
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#ccc"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5dp"/>
     
     <TextView 
         android:id="@+id/name"
