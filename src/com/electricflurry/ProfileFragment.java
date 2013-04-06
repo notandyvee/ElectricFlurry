@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class ProfileFragment extends Fragment{
-	
+	// created the profile fragment just copying the mingle fragment -sean
 	
 	public static ProfileFragment newInstance() {
 		
