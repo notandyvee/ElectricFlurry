@@ -24,23 +24,37 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int check_in=0x7f080002;
+        public static final int check_in=0x7f08000a;
+        public static final int facebook_button=0x7f080010;
         public static final int fragment_holder=0x7f080000;
+        public static final int gPlus_button=0x7f080011;
         public static final int le_webview=0x7f080001;
-        public static final int menu_settings=0x7f080007;
-        public static final int mingle=0x7f080005;
-        public static final int name=0x7f080006;
-        public static final int social_networking=0x7f080004;
-        public static final int vote=0x7f080003;
+        public static final int login_menu_button=0x7f080002;
+        public static final int menu_settings=0x7f080012;
+        public static final int mingle=0x7f08000d;
+        public static final int name=0x7f08000e;
+        public static final int plus_one_button=0x7f080005;
+        public static final int revoke_access_button=0x7f080008;
+        public static final int share_button=0x7f080004;
+        public static final int share_menu_button=0x7f080003;
+        public static final int sign_in_button=0x7f080006;
+        public static final int sign_in_status=0x7f080009;
+        public static final int sign_out_button=0x7f080007;
+        public static final int social_networking=0x7f08000c;
+        public static final int twitter_button=0x7f08000f;
+        public static final int vote=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int checkin_fragment=0x7f030001;
         public static final int foursquareauth=0x7f030002;
-        public static final int main_fragment=0x7f030003;
-        public static final int mingle_fragment=0x7f030004;
-        public static final int social_network_fragment=0x7f030005;
-        public static final int vote_fragment=0x7f030006;
+        public static final int google_plus_menu=0x7f030003;
+        public static final int google_plus_share=0x7f030004;
+        public static final int google_plus_sign_in=0x7f030005;
+        public static final int main_fragment=0x7f030006;
+        public static final int mingle_fragment=0x7f030007;
+        public static final int social_network_fragment=0x7f030008;
+        public static final int vote_fragment=0x7f030009;
     }
     public static final class menu {
         public static final int activity_main=0x7f070000;

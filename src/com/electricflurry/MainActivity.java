@@ -12,6 +12,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+
 public class MainActivity extends FragmentActivity {
 	String PREF_NAME = "MySocialSettings";
 	SharedPreferences settings;
@@ -22,7 +23,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         
         /*
-         * Use SharedPreferences to store certaun info that might be needed */
+         * Use SharedPreferences to store certain info that might be needed */
         SharedPreferences settings = getSharedPreferences(PREF_NAME, 0);
         
         /*
