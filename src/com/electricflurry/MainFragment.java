@@ -178,7 +178,6 @@ public class MainFragment extends Fragment{
 		
 		
 		
-		doGPS();
 
 		myProfile.setOnClickListener(new View.OnClickListener() {
 			//added interactivity to the myprofile button -sean
