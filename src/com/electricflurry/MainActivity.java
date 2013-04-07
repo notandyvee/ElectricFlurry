@@ -26,14 +26,17 @@ public class MainActivity extends FragmentActivity {
          * Use SharedPreferences to store certain info that might be needed */
         SharedPreferences settings = getSharedPreferences(PREF_NAME, 0);
         
-        /*
-         * The following is one way to create le Fragment*/
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragment_holder, MainFragment.newInstance(), "fuck");   
         
-        
-        ft.commit();
+        if(savedInstanceState == null) {//this needs to be done because Android handles re attaching a fragment for you so it will be in Bundle apparently
+	        /*
+	         * The following is one way to create le Fragment*/
+	        FragmentManager fm = getSupportFragmentManager();
+	        FragmentTransaction ft = fm.beginTransaction();
+	        ft.add(R.id.fragment_holder, MainFragment.newInstance(), "fuck");   
+	        
+	        
+	        ft.commit();
+        }
         
         
     }//end of onCreate

@@ -25,9 +25,13 @@ public class MainFragment extends Fragment{
 	public static final String LE_FRAGMENT = "fragment_holder";
 	
 	TextView text;
+	TextView venuesList;
 	TextView checkin, vote, social, mingle;
-	LocationManager locationManager;
-	LocationListener locationListener;
+	
+	GPSUtilities gps;
+	//LocationManager locationManager;
+	//LocationListener locationListener;
+	SharedPreferences settings;
 	
 	String oAuth;
 	
@@ -47,9 +51,56 @@ public class MainFragment extends Fragment{
 		/*Seems Fragment has automatic access to some values here like getArguments()*/
 		super.onCreate(savedInstanceState);
 		
-		locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-		SharedPreferences settings = getActivity().getSharedPreferences(PREF_NAME, 0);
+		//locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+		settings = getActivity().getSharedPreferences(PREF_NAME, 0);
 		oAuth = settings.getString("foursquare_oauth_token", null);
+		
+		gps = new GPSUtilities((LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE),
+				new LocationListener() {
+
+			@Override
+			public void onLocationChanged(Location location) {
+				
+				if(oAuth != null) {
+					final Foursquare foursquare = new Foursquare( oAuth,location.getLatitude()+","+location.getLongitude());
+					
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							foursquare.queryFoursquareData();//this should be done on separate thread!
+							
+							venuesList.post(new Runnable(){
+								@Override
+								public void run() {
+									venuesList.setVisibility(View.VISIBLE);
+									venuesList.setText(foursquare.returnLeString());
+									
+									if(text.getVisibility() == View.VISIBLE)
+										text.setVisibility(View.GONE);
+								}
+							});
+							
+						}
+					}).start();
+					
+				}
+				//text.setText("Lon="+location.getLongitude()+" Lat="+location.getLatitude());
+				
+				gps.removeUpdates();
+				
+			}//end of onLocationChanged
+
+			@Override
+			public void onProviderDisabled(String provider) {}
+
+			@Override
+			public void onProviderEnabled(String provider) {}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {}
+			
+		});
 		
 		
 		
@@ -70,6 +121,10 @@ public class MainFragment extends Fragment{
 		TextView vote = (TextView)view.findViewById(R.id.vote);
 		TextView social = (TextView)view.findViewById(R.id.social_networking);
 		TextView mingle = (TextView)view.findViewById(R.id.mingle);
+		TextView profile = (TextView)view.findViewById(R.id.profile);
+		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
+		
+		venuesList = (TextView)view.findViewById(R.id.venues_list);
 		
 		text = (TextView)view.findViewById(R.id.name);
 
@@ -107,7 +162,16 @@ public class MainFragment extends Fragment{
 			}
 		});
 		
+		profile.setOnClickListener(new View.OnClickListener() {
+			//added interactivity to the profile button -sean
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, ProfileFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on Profile", Toast.LENGTH_SHORT).show();
+			}
+		});
 		
+
 		
 		
 		
@@ -115,6 +179,16 @@ public class MainFragment extends Fragment{
 		
 		
 		doGPS();
+
+		myProfile.setOnClickListener(new View.OnClickListener() {
+			//added interactivity to the myprofile button -sean
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, MyProfileFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on My Profile", Toast.LENGTH_SHORT).show();
+			}
+		});
+
 		
 		
 		if(oAuth == null) {
@@ -130,6 +204,9 @@ public class MainFragment extends Fragment{
 				}
 			});
 		
+		} else {
+			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
+			text.setVisibility(View.GONE);
 		}
 		
 		
@@ -137,7 +214,9 @@ public class MainFragment extends Fragment{
 		
 	}//end of onCreateView
 	
-	
+	public void loginDisappear() {
+		
+	}//end of loginDisappear
 	
 	
 	
@@ -145,15 +224,22 @@ public class MainFragment extends Fragment{
 	
 	public void onResume() {
 		super.onResume();
-		//Log.d(TAG, "onResume is running!");
+		//This is here just to 
+		if(settings.getString("foursquare_oauth_token", null) != null && text.getVisibility() == View.VISIBLE) {
+			text.setVisibility(View.GONE);
+			oAuth = settings.getString("foursquare_oauth_token", null);
+			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
+		}
 	}
 	
 	public void onPause() {
 		super.onPause();
 		/*For now will keep this here since I want 
 		 * the stop collecting anything here*/
-		locationManager.removeUpdates(locationListener);
-		//Log.d(TAG, "onPause runs!!");
+		
+		gps.removeUpdates();
+		//locationManager.removeUpdates(locationListener);
+		
 	}//end of onPause
 	
 	public void onDestroy() {
@@ -161,64 +247,7 @@ public class MainFragment extends Fragment{
 		//Log.d(TAG, "onDestory is running!");
 	}
 	
-	
-	
-	/*This following method will just be in charge of GPS thing as a test
-	 * */
-	public void doGPS() {
-		//this manages the location stuff
-		
-		
-		//this creates a listener so it can do stuff I tell it with the location
-		locationListener = new LocationListener() {
 
-			@Override
-			public void onLocationChanged(Location location) {
-				
-				if(oAuth != null) {
-					final Foursquare foursquare = new Foursquare( oAuth,location.getLatitude()+","+location.getLongitude());
-					
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							foursquare.queryFoursquareData();//this should be done on separate thread!
-							
-							text.post(new Runnable(){
-								@Override
-								public void run() {
-									text.setText(foursquare.returnLeString());
-								}
-							});
-							
-						}
-					}).start();
-					
-					
-					
-					
-				}
-				//text.setText("Lon="+location.getLongitude()+" Lat="+location.getLatitude());
-				
-				locationManager.removeUpdates(locationListener);
-				
-			}//end of onLocationChanged
-
-			@Override
-			public void onProviderDisabled(String provider) {}
-
-			@Override
-			public void onProviderEnabled(String provider) {}
-
-			@Override
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {}
-			
-		};
-		
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-		
-		
-	}//end of doGPS
 	
 	
 	
