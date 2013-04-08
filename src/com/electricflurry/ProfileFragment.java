@@ -23,13 +23,19 @@ public class ProfileFragment extends Fragment{
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.profile_fragment, container, false);
+		
+		profile_name = (TextView)view.findViewById(R.id.profile_name);
+		profile_phone = (TextView)view.findViewById(R.id.profile_phone);
+		facebook_url = (TextView)view.findViewById(R.id.facebook_url);
+		twitter_url = (TextView) view.findViewById(R.id.twitter_url);
+		google_url = (TextView)view.findViewById(R.id.google_url);
+		
 
-
-		profile_name.setText("");
-		profile_phone.setText("");
-		facebook_url.setText("");
-		twitter_url.setText("");
-		google_url.setText("");
+		profile_name.setText("Profile name");
+		profile_phone.setText("Phone");
+		facebook_url.setText("Facebook");
+		twitter_url.setText("Twitter");
+		google_url.setText("Google");
 
 		
 		return view;
