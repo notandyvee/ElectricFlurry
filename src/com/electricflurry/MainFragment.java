@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,9 @@ public class MainFragment extends Fragment{
 	public static final String LE_FRAGMENT = "fragment_holder";
 	
 	TextView text;
-	TextView venuesList;
 	TextView checkin, vote, social, mingle;
+	ListView listView;
+	VenueBaseAdapter adapter;
 	
 	GPSUtilities gps;
 	//LocationManager locationManager;
@@ -69,15 +71,14 @@ public class MainFragment extends Fragment{
 						@Override
 						public void run() {
 							foursquare.queryFoursquareData();//this should be done on separate thread!
+							adapter = new VenueBaseAdapter();
+							adapter.replaceLeList(foursquare.returnLeVenues());
 							
-							venuesList.post(new Runnable(){
+							listView.post(new Runnable(){
 								@Override
 								public void run() {
-									venuesList.setVisibility(View.VISIBLE);
-									venuesList.setText(foursquare.returnLeString());
+									listView.setAdapter(adapter);
 									
-									if(text.getVisibility() == View.VISIBLE)
-										text.setVisibility(View.GONE);
 								}
 							});
 							
@@ -126,7 +127,7 @@ public class MainFragment extends Fragment{
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		TextView photo = (TextView)view.findViewById(R.id.photo);
 		
-		venuesList = (TextView)view.findViewById(R.id.venues_list);
+		listView = (ListView)view.findViewById(R.id.venues_list);
 		
 		text = (TextView)view.findViewById(R.id.name);
 
