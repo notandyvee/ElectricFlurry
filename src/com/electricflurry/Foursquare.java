@@ -4,11 +4,14 @@
 package com.electricflurry;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,7 @@ public class Foursquare {
 		"https://api.foursquare.com/v2/venues/search?";
 	
 	String listOfVenues = "";
+	ArrayList<Venue> venuesList = null;
 	
 	public Foursquare(String oAuthToken, String ll) {
 		/*
@@ -56,22 +60,42 @@ public class Foursquare {
 		try {
 			URL url = new URL(fqUrl);
 			InputStream conn = url.openStream();
-			DataInputStream stream = new DataInputStream(new BufferedInputStream(conn));
-			
-			String firstThing = stream.readLine();
+			//DataInputStream stream = new DataInputStream(new BufferedInputStream(conn));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn));
+			String firstThing = reader.readLine();
+			//String firstThing = stream.readLine();
 			try {
 				JSONObject jsonObj = new JSONObject(firstThing);
 				jsonObj = jsonObj.getJSONObject("response");
 				JSONArray venues = jsonObj.getJSONArray("venues");
 				
+				venuesList = new ArrayList<Venue>();
+				
 				for(int i =0; i < venues.length(); i++) {
 					Log.d("foursquare", "running in the fourloop to parse stuff");
+					
 					JSONObject oneVenue = venues.getJSONObject(i);
 					listOfVenues = listOfVenues + oneVenue.getString("name");
-					
 					//just a way to add commas
 					listOfVenues = listOfVenues+ (i == venues.length() -1 ?"" :", ");
-				}
+					
+					Venue v = new Venue();
+					v.putName(oneVenue.getString("name"));
+					JSONObject location = oneVenue.getJSONObject("location");
+					
+					try{ v.putAddress(location.getString("address")); }catch(JSONException e) { v.putAddress(""); }
+					try { v.putCity(location.getString("city")); }catch(JSONException e){ v.putCity("");}
+					try { v.putState(location.getString("state")); }catch(JSONException e){ v.putState("");}
+					
+					//v.putLocation(location.getString("address"), location.getString("city"), location.getString("state"));
+					
+					/*
+					 * can get categories JSONArray in here and then get the
+					 * JSONObject in index 0 which should be the only index
+					 * but for now I will not get it for testing*/
+					venuesList.add(v);
+					
+				}//end of for loop
 				
 				
 			}
@@ -89,12 +113,29 @@ public class Foursquare {
 		
 		
 		
-	}
+	}//end of queryFourSquareData
+	
+	
+	public void searchForFun() {
+		/*
+		 * This method does the actual work of going through Venues to get the restaurants and bars
+		 * */
+		
+		
+		
+	}//end of searchForFun
+	
+	
+	
 	
 	
 	public String returnLeString() {
 		return listOfVenues;
 	}//end of returnLeString
+	
+	public ArrayList<Venue> returnLeVenues() {
+		return venuesList;
+	}//end of 
 	
 	
 	

@@ -142,7 +142,7 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f040032;
+        public static final int action_settings=0x7f040036;
         public static final int btnCapture=0x7f040026;
         public static final int btnCrop=0x7f040027;
         public static final int btnSend=0x7f040028;
@@ -166,7 +166,7 @@ containing a value of this type.
         public static final int hybrid=0x7f040004;
         public static final int le_webview=0x7f040008;
         public static final int login_menu_button=0x7f040009;
-        public static final int menu_settings=0x7f040031;
+        public static final int menu_settings=0x7f040035;
         public static final int mingle=0x7f040014;
         public static final int my_profile=0x7f040015;
         public static final int name=0x7f040017;
@@ -191,6 +191,10 @@ containing a value of this type.
         public static final int twitter_button=0x7f04002e;
         public static final int twitter_prompt=0x7f04001f;
         public static final int twitter_url=0x7f04002d;
+        public static final int venue_address=0x7f040032;
+        public static final int venue_city=0x7f040033;
+        public static final int venue_name=0x7f040031;
+        public static final int venue_state=0x7f040034;
         public static final int venues_list=0x7f040018;
         public static final int vote=0x7f040012;
     }
@@ -207,7 +211,8 @@ containing a value of this type.
         public static final int photo_taker=0x7f030009;
         public static final int profile_fragment=0x7f03000a;
         public static final int social_network_fragment=0x7f03000b;
-        public static final int vote_fragment=0x7f03000c;
+        public static final int venue_list_layout=0x7f03000c;
+        public static final int vote_fragment=0x7f03000d;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;
