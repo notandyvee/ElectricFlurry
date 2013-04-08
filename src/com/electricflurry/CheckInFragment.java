@@ -128,7 +128,7 @@ public class CheckInFragment extends Fragment{
 							}
 						});
 					}
-				}, 120000L);
+				}, 30000L);
 				
 				gps.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 20f);
 				
