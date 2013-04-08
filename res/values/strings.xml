@@ -7,5 +7,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_test">Test</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_photo_taker">PhotoTaker</string>
 
 </resources>

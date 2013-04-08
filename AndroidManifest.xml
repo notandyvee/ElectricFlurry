@@ -27,6 +27,10 @@
             android:name="com.electricflurry.Test"
             android:label="@string/title_activity_test" >
         </activity>
+        <activity
+            android:name="com.electricflurry.PhotoTaker"
+            android:label="@string/title_activity_photo_taker" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.electricflurry;
 
-import java.io.File;
 
 import android.database.Cursor;
 import android.os.Bundle;
