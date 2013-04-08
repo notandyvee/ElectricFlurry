@@ -151,14 +151,14 @@
 		    android:layout_marginRight="10dp"
 		    android:layout_marginBottom="5dp"/>
 	    
-	    <TextView 
+<!--	    <TextView 
 	        android:id="@+id/name"
 	        android:layout_width="150dp"
 	        android:layout_height="30dp"
 	        android:background="#5CACEE"
 	        android:layout_gravity="center_horizontal"
 	        android:gravity="center" />
-    
+     -->
 
     
     

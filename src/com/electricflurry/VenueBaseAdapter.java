@@ -40,10 +40,11 @@ public class VenueBaseAdapter extends BaseAdapter{
 		
 		Venue v = list.get(pos);
 		
-		name.setText(v.getLeName());
+		name.setText(v.getLeName()+": ");
 		address.setText(v.getLeAddress());
+		//the following assumes that foursquare always sends city and state
 		city.setText(v.getLeCity());
-		state.setText(v.getLeState());
+		state.setText(", "+v.getLeState());
 		
 		
 		return view;
@@ -51,7 +52,8 @@ public class VenueBaseAdapter extends BaseAdapter{
 	
 	
 	public void replaceLeList(ArrayList<Venue> list) {
-		this.list = list;
+		if(list != null)
+			this.list = list;
 	}//end of replaceLeList
 	
 	

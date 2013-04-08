@@ -26,7 +26,7 @@ public class MainFragment extends Fragment{
 	String TAG = "MainFragment";
 	public static final String LE_FRAGMENT = "fragment_holder";
 	
-	TextView text;
+	//TextView text;
 	TextView checkin, vote, social, mingle;
 	ListView listView;
 	VenueBaseAdapter adapter;
@@ -56,7 +56,7 @@ public class MainFragment extends Fragment{
 		
 		//locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 		settings = getActivity().getSharedPreferences(PREF_NAME, 0);
-		oAuth = settings.getString("foursquare_oauth_token", null);
+		//oAuth = settings.getString("foursquare_oauth_token", null);
 		
 		gps = new GPSUtilities((LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE),
 				new LocationListener() {
@@ -64,8 +64,7 @@ public class MainFragment extends Fragment{
 			@Override
 			public void onLocationChanged(Location location) {
 				
-				if(oAuth != null) {
-					final Foursquare foursquare = new Foursquare( oAuth,location.getLatitude()+","+location.getLongitude());
+					final Foursquare foursquare = new Foursquare( null,location.getLatitude()+","+location.getLongitude());
 					
 					new Thread(new Runnable() {
 						@Override
@@ -78,6 +77,8 @@ public class MainFragment extends Fragment{
 								@Override
 								public void run() {
 									listView.setAdapter(adapter);
+									//Currently even though it requeries things, when it goes to activity it doesn't update the ListView
+									//adapter.notifyDataSetChanged();
 									
 								}
 							});
@@ -85,8 +86,7 @@ public class MainFragment extends Fragment{
 						}
 					}).start();
 					
-				}
-				//text.setText("Lon="+location.getLongitude()+" Lat="+location.getLatitude());
+				
 				
 				gps.removeUpdates();
 				
@@ -129,7 +129,7 @@ public class MainFragment extends Fragment{
 		
 		listView = (ListView)view.findViewById(R.id.venues_list);
 		
-		text = (TextView)view.findViewById(R.id.name);
+		//text = (TextView)view.findViewById(R.id.name);
 
 		
 		checkin.setOnClickListener(new View.OnClickListener() {
@@ -193,23 +193,22 @@ public class MainFragment extends Fragment{
 
 		
 		
-		if(oAuth == null) {
+		/*if(oAuth == null) {
 			text.setText("Login to Foursquare!");
 			
 			text.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//Here I will see if the fragment stuff is launching correctly
 					((MainActivity)getActivity()).addFragment(
 							R.id.fragment_holder, FoursquareAuthFragment.newInstance(getActivity().getSharedPreferences(PREF_NAME, 0)));
 					
 				}
 			});
 		
-		} else {
+		} else {*/
 			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
-			text.setVisibility(View.GONE);
-		}
+			//text.setVisibility(View.GONE);
+		//}
 		
 		
 		return view;
@@ -227,11 +226,11 @@ public class MainFragment extends Fragment{
 	public void onResume() {
 		super.onResume();
 		//This is here just to 
-		if(settings.getString("foursquare_oauth_token", null) != null && text.getVisibility() == View.VISIBLE) {
-			text.setVisibility(View.GONE);
-			oAuth = settings.getString("foursquare_oauth_token", null);
+		//if(settings.getString("foursquare_oauth_token", null) != null && text.getVisibility() == View.VISIBLE) {
+			//text.setVisibility(View.GONE);
+			//oAuth = settings.getString("foursquare_oauth_token", null);
 			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
-		}
+		//}
 	}
 	
 	public void onPause() {

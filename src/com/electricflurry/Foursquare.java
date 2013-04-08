@@ -25,8 +25,9 @@ public class Foursquare {
 
 	String fqUrl = 
 		"https://api.foursquare.com/v2/venues/search?";
+	final String CLIENT_ID = "&client_id=0GX0LSV4402VK33NWCWPKWVFE5AGWB0UCQG5SGSICWQTYA01";
+	final String CLIENT_SECRET = "&client_secret=S2I30NR4V2IMM0ZORFBEFFHNFQ2KYV25PTDHDJPQAT4PTY35";
 	
-	String listOfVenues = "";
 	ArrayList<Venue> venuesList = null;
 	
 	public Foursquare(String oAuthToken, String ll) {
@@ -34,13 +35,13 @@ public class Foursquare {
 		 * Must append the longitude and latitude
 		 * */
 		if(ll != null)
-			fqUrl = fqUrl+"ll="+ll;
+			fqUrl = fqUrl+"ll="+ll+CLIENT_ID+CLIENT_SECRET;
 		
 		/*
 		 * Appending the oAuthToken since it is neccessary
 		 * */
-		if(oAuthToken != null)
-			fqUrl = fqUrl+"&oauth_token="+oAuthToken;
+		//if(oAuthToken != null)
+			//fqUrl = fqUrl+"&oauth_token="+oAuthToken;
 		
 		fqUrl = fqUrl+"&v=20130403";
 		
@@ -75,9 +76,6 @@ public class Foursquare {
 					Log.d("foursquare", "running in the fourloop to parse stuff");
 					
 					JSONObject oneVenue = venues.getJSONObject(i);
-					listOfVenues = listOfVenues + oneVenue.getString("name");
-					//just a way to add commas
-					listOfVenues = listOfVenues+ (i == venues.length() -1 ?"" :", ");
 					
 					Venue v = new Venue();
 					v.putName(oneVenue.getString("name"));
@@ -127,11 +125,6 @@ public class Foursquare {
 	
 	
 	
-	
-	
-	public String returnLeString() {
-		return listOfVenues;
-	}//end of returnLeString
 	
 	public ArrayList<Venue> returnLeVenues() {
 		return venuesList;
