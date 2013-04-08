@@ -3,6 +3,7 @@ package com.electricflurry;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
@@ -124,6 +125,7 @@ public class MainFragment extends Fragment{
 		TextView mingle = (TextView)view.findViewById(R.id.mingle);
 		TextView profile = (TextView)view.findViewById(R.id.profile);
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
+		TextView photo = (TextView)view.findViewById(R.id.photo);
 		
 		listView = (ListView)view.findViewById(R.id.venues_list);
 		
@@ -146,14 +148,14 @@ public class MainFragment extends Fragment{
 				Toast.makeText(getActivity(), "clicked on vote", Toast.LENGTH_SHORT).show();
 			}
 		});
-		social.setOnClickListener(new View.OnClickListener() {
-	
-			@Override
-			public void onClick(View v) {
-				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, SocialNetworkFragment.newInstance());
-				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
-			}
-		});
+//		social.setOnClickListener(new View.OnClickListener() {
+//	
+//			@Override
+//			public void onClick(View v) {
+//				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, SocialNetworkFragment.newInstance());
+//				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
+//			}
+//		});
 		mingle.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -172,14 +174,6 @@ public class MainFragment extends Fragment{
 			}
 		});
 		
-
-		
-		
-		
-		
-		
-		
-
 		myProfile.setOnClickListener(new View.OnClickListener() {
 			//added interactivity to the myprofile button -sean
 			@Override
@@ -188,6 +182,14 @@ public class MainFragment extends Fragment{
 				Toast.makeText(getActivity(), "clicked on My Profile", Toast.LENGTH_SHORT).show();
 			}
 		});
+		
+		photo.setOnClickListener(new View.OnClickListener() {
+		     @Override
+		     public void onClick(View v) {
+		     Intent intent = new Intent(getActivity(), PhotoTaker.class);
+		     startActivity(intent);
+		     }
+		 });
 
 		
 		
