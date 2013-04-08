@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MyProfileFragment extends Fragment implements ConsumeCursor{
+public class MyProfileFragment extends Fragment {
 	EditText edit_name, edit_phone, edit_facebook, edit_twitter, edit_google;
 	String name, phone,facebookURL, twitterURL, googleURL;
 	TextView disp_name, disp_phone;
@@ -30,6 +30,8 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor{
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
 			
 		View view = inflater.inflate(R.layout.myprofile_fragment, container, false);
 
@@ -50,6 +52,12 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor{
 				facebookURL = edit_facebook.getText().toString();
 				twitterURL = edit_twitter.getText().toString();
 				googleURL = edit_google.getText().toString();
+				
+				db.submitNewUser(name, phone);
+				db.submitSocialUrl("facebook", facebookURL);
+				db.submitSocialUrl("twitter", twitterURL);
+				db.submitSocialUrl("google", googleURL);
+				db.closeDbase();
 				disp_name.setText(name);
 				disp_phone.setText(phone);
 
@@ -57,16 +65,5 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor{
 		});
 		return view;
 	}//end of onCreateView
-
-
-	@Override
-	public void consumeCursor(Cursor cursor) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
-	
 	
 }
