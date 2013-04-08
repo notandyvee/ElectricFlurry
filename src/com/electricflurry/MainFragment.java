@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class MainFragment extends Fragment{
 	
@@ -101,6 +103,7 @@ public class MainFragment extends Fragment{
 		});
 		
 		
+		
 	}//end of onCreate
 	
 	
@@ -124,7 +127,7 @@ public class MainFragment extends Fragment{
 		venuesList = (TextView)view.findViewById(R.id.venues_list);
 		
 		text = (TextView)view.findViewById(R.id.name);
-		
+
 		
 		checkin.setOnClickListener(new View.OnClickListener() {
 			
@@ -168,6 +171,14 @@ public class MainFragment extends Fragment{
 			}
 		});
 		
+
+		
+		
+		
+		
+		
+		
+
 		myProfile.setOnClickListener(new View.OnClickListener() {
 			//added interactivity to the myprofile button -sean
 			@Override

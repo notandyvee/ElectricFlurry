@@ -18,7 +18,7 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor{
 	EditText edit_name, edit_phone, edit_facebook, edit_twitter, edit_google;
 	String name, phone,facebookURL, twitterURL, googleURL;
 	TextView disp_name, disp_phone;
-	TestDB db = new TestDB(getActivity());
+	
 	//created the myprofile fragment by just copying the mingle fragment -sean
 
 	public static MyProfileFragment newInstance() {
@@ -52,9 +52,7 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor{
 				googleURL = edit_google.getText().toString();
 				disp_name.setText(name);
 				disp_phone.setText(phone);
-				db.open();
-				long id = db.insertUser(name, phone, facebookURL, twitterURL, googleURL);
-				db.close();
+
 			}
 		});
 		return view;
