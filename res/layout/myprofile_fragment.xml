@@ -33,6 +33,42 @@
         android:ems="10"
         android:inputType="phone" />
 
+    <TextView
+        android:id="@+id/facebook_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Facebook URL" />
+
+    <EditText
+        android:id="@+id/edit_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/twitter_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Twitter URL" />
+
+    <EditText
+        android:id="@+id/edit_twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/google_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google+ URL" />
+
+    <EditText
+        android:id="@+id/edit_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
     <Button
         android:id="@+id/save"
         android:layout_width="wrap_content"
