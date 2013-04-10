@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F2F2F2" >
+    
+    <TextView 
+        android:id="@+id/checkin_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Checking in... Wait a moment"
+        android:background="#9556d9"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="5dp"
+        android:textColor="#fff" />
+    
+    <EditText 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Code"
+        android:visibility="gone"
+        android:id="@+id/enter_checkin_code" ></EditText>
+    
+
+    
+
+</LinearLayout>

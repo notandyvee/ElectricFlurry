@@ -26,3 +26,6 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+#stupid R.java thing that keeps changing
+gen/com/electricflurry/R.java
