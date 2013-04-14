@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 
 public class PhotoTaker extends Activity {
 	
@@ -52,12 +54,12 @@ public class PhotoTaker extends Activity {
 
 	            Uri outputFileUri = Uri.fromFile(newFile);
 
-	            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
+	            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
 	            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-	           sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ file)));
+	          // sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ file)));
 	            
 	            startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-	            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ file)));
+	         //   sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ file)));
 	        }
 	    });
 	    Button crop = (Button) findViewById(R.id.btnCrop);
@@ -83,11 +85,11 @@ public class PhotoTaker extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
 
-	    if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
- 
+	    if (requestCode == 3 ) {
+	    	//Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
 	        Log.d("CameraDemo", "Pic saved");
 
-
+	        super.onActivityResult(requestCode, resultCode, data);
 	    }
 	}
 
