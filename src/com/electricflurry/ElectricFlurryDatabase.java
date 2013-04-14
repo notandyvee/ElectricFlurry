@@ -15,6 +15,7 @@ public class ElectricFlurryDatabase {
 	
 	private String DB_NAME = "electricflurry.db";
 	private int DB_VERSION = 1;
+	Profile initial = new Profile();
 	
 	private ElectricFlurryOpenHelper openHelper; //Opens the databse for us
 	private SQLiteDatabase database;//access to the database ports for Android
@@ -23,6 +24,14 @@ public class ElectricFlurryDatabase {
 		openHelper = new ElectricFlurryOpenHelper(context);
 		database = openHelper.getWritableDatabase();
 		
+//	ContentValues initialValues = new ContentValues();
+//	initialValues.put("name", initial.getName());
+//	initialValues.put("phone", initial.getPhoneNumber());
+//	initialValues.put("facebook", initial.getFacebookURL());
+//	initialValues.put("twitter", initial.getTwitterURL());
+//	initialValues.put("google", initial.getGoogleURL());
+//	
+//	database.insert("user", null, initialValues);
 	}//end of constructor
 	
 	public void closeDbase() {
@@ -33,6 +42,58 @@ public class ElectricFlurryDatabase {
 	/*
 	 * Methods that interact with the database
 	 * */
+	public int checkUser() {
+		Cursor c = database.query("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null);
+		return c.getCount();
+//		if (c.getCount() == 1) {
+//			return 1;
+//		}else if (c.getCount() > 1) {
+//			return -2;
+//		} else {
+//		 	return -1;
+//		}
+		}
+	
+	public void submitUser(Profile profile) {
+		ContentValues values = new ContentValues();
+		Profile user = new Profile();
+		if (checkUser() == 1) {
+			Cursor c = database.query("user", new String[] {"name", "phone","facebook","twitter","google"}, null, null, null, null, null);
+			c.moveToPosition(0);
+			user.setName(c.toString());
+			c.moveToPosition(1);
+			user.setPhoneNumber(c.toString());
+			c.moveToPosition(2);
+			user.setFacebookURL(c.toString());
+			c.moveToPosition(3);
+			user.setTwitterURL(c.toString());
+			c.moveToPosition(4);
+			user.setGoogleURL(c.toString());	
+		}
+		if (!profile.getName().equalsIgnoreCase("Not available")) {
+			user.setName(profile.getName());
+		}
+		if (!profile.getPhoneNumber().equalsIgnoreCase("Not available")) {
+			user.setName(profile.getPhoneNumber());
+		}
+		if (!profile.getFacebookURL().equalsIgnoreCase("Not available")) {
+			user.setName(profile.getFacebookURL());
+		}
+		if (!profile.getTwitterURL().equalsIgnoreCase("Not available")) {
+			user.setName(profile.getTwitterURL());
+		}
+		if (!profile.getGoogleURL().equalsIgnoreCase("Not available")) {
+			user.setName(profile.getGoogleURL());
+		}
+		values.put("name", user.getName());
+		values.put("phone", user.getPhoneNumber());
+		values.put("facebook", user.getFacebookURL());
+		values.put("twitter", user.getTwitterURL());
+		values.put("google", user.getGoogleURL());
+		
+		database.replace("user", null, values);
+	}
+	
 	
 	public void submitNewUser(String name, String phoneNum) {
 		/*phone is optional
@@ -42,8 +103,8 @@ public class ElectricFlurryDatabase {
 		
 		if(phoneNum!=null)
 			values.put("phone", phoneNum);
-		
-		database.insert("users", "phone", values);
+	
+		database.replace("users", "phone", values);
 		
 	}//end of submitNewUser() method
 	
@@ -56,7 +117,8 @@ public class ElectricFlurryDatabase {
 		values.put("type", type);
 		values.put("url", url);
 		
-		database.insert("social_urls", null, values);
+		database.replace("social_urls", null, values);
+		
 		
 	}//end of submitSocialUrl() method
 	
@@ -87,7 +149,7 @@ public class ElectricFlurryDatabase {
 	
 	
 	/*
-	 * Inner class thqt actually creates the database
+	 * Inner class that actually creates the database
 	 * */
 	private class ElectricFlurryOpenHelper extends SQLiteOpenHelper {
 		
@@ -98,11 +160,11 @@ public class ElectricFlurryDatabase {
 		@Override
 		public void onCreate(SQLiteDatabase dBase) {
 			/*
-			 * This first creates the databse
+			 * This first creates the database
 			 * and is only run once until a new
 			 * version number is sent to it
 			 * */
-			String userCreate = " CREATE TABLE users (_id INTEGER PRIMARY KEY, user text, phone text) ";
+			String userCreate = " CREATE TABLE user (_id INTEGER PRIMARY KEY, user text, phone text, facebook text, twitter text, google text) ";
 			dBase.execSQL(userCreate);
 			
 			String socialUrlCreate = " CREATE TABLE social_urls (_id INTEGER PRIMARY KEY, type text, url text) ";
