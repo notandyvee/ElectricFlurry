@@ -1,10 +1,14 @@
 package com.electricflurry;
 
+import java.io.File;
+
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class VoteFragment extends Fragment{
 
@@ -22,6 +26,7 @@ public class VoteFragment extends Fragment{
 		/*
 		 * This is where your fragment's view is being created so do the work to make it do stuff*/
 		View view = inflater.inflate(R.layout.vote_fragment, container, false);
+		
 		
 		return view;
 	}//end of onCreateView

@@ -49,7 +49,7 @@ public class PhotoTaker extends Activity {
 	            try {
 	                newFile.createNewFile();
 	            } catch (IOException e) {
-	            	
+	            	e.printStackTrace();
 	            }       
 
 	            Uri outputFileUri = Uri.fromFile(newFile);
@@ -90,6 +90,8 @@ public class PhotoTaker extends Activity {
 	        Log.d("CameraDemo", "Pic saved");
 
 	        super.onActivityResult(requestCode, resultCode, data);
+	        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+	                Uri.parse("file://" + Environment.getExternalStorageDirectory())));
 	    }
 	}
 
