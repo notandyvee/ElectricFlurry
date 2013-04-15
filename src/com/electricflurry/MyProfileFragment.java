@@ -14,10 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MyProfileFragment extends Fragment {
+public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	EditText edit_name, edit_phone, edit_facebook, edit_twitter, edit_google;
 	String name, phone,facebookURL, twitterURL, googleURL;
 	TextView disp_name, disp_phone;
+	Profile profile = new Profile();
 	
 	//created the myprofile fragment by just copying the mingle fragment -sean
 
@@ -43,6 +44,8 @@ public class MyProfileFragment extends Fragment {
 		edit_twitter = (EditText) view.findViewById(R.id.edit_twitter);
 		edit_google = (EditText) view.findViewById(R.id.edit_google);
 		
+		db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
+		
 		Button save = (Button) view.findViewById(R.id.save);
 		
 		edit_name.setHint("My Name");
@@ -52,36 +55,50 @@ public class MyProfileFragment extends Fragment {
 		edit_google.setHint("My Google+ URL");
 		
 		save.setOnClickListener(new View.OnClickListener() {
-			//save button -sean
 			@Override
 			public void onClick(View v) {
-				Profile profile = new Profile();
+				
 				name = edit_name.getText().toString();
 				phone = edit_phone.getText().toString();
 				facebookURL = edit_facebook.getText().toString();
 				twitterURL = edit_twitter.getText().toString();
 				googleURL = edit_google.getText().toString();
-				if (name != null) {
+				
+				if (!name.equalsIgnoreCase("")) {
 					profile.setName(name);
 				}
-				if (phone != null) {
+				if (!phone.equalsIgnoreCase("")) {
 					profile.setPhoneNumber(phone);
 				}
-				if (facebookURL != null) {
+				if (!facebookURL.equalsIgnoreCase("")) {
 					profile.setFacebookURL(facebookURL);
 				}
-				if (twitterURL != null) {
+				if (!twitterURL.equalsIgnoreCase("")) {
 					profile.setTwitterURL(twitterURL);
 				}
-				if (googleURL != null) {
+				if (!googleURL.equalsIgnoreCase("")) {
 					profile.setGoogleURL(googleURL);
 				}
 				
-				Toast.makeText(getActivity(), db.checkUser(), Toast.LENGTH_SHORT).show();
-				//db.submitUser(profile);
+				db.submitUser(profile);
 			}
 		});
 		return view;
 	}//end of onCreateView
+
+
+	@Override
+	public void consumeCursor(Cursor cursor) {
+		// TODO Auto-generated method stub
+		cursor.moveToFirst();
+		
+		profile.setName(cursor.getString(0));
+		profile.setPhoneNumber(cursor.getString(1));
+		profile.setFacebookURL(cursor.getString(2));
+		profile.setTwitterURL(cursor.getString(3));
+		profile.setGoogleURL(cursor.getString(4));
+		
+		
+	}
 	
 }
