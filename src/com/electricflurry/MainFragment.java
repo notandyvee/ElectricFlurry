@@ -203,8 +203,8 @@ public class MainFragment extends Fragment{
 		twitter.setOnClickListener(new View.OnClickListener() {
 		     @Override
 		     public void onClick(View v) {
-		     //Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
-		     //startActivity(intent);
+		     Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+		     startActivity(intent);
 		     }
 		 });
 		
