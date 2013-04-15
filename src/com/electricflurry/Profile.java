@@ -5,7 +5,12 @@ public class Profile {
 	//PROFILE PICTURE
 	
 	public Profile() {
-		
+		this.name = "Unavailable";
+		this.phoneNumber = "Unavailable";
+		this.facebookURL = "Unavailable";
+		this.twitterURL ="Unavailable";
+		this.googleURL = "Unavailable";
+		this.foursquareURL = "Unavailable";
 	}
 	
 	public String getName() {

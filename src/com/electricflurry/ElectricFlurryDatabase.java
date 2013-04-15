@@ -15,6 +15,7 @@ public class ElectricFlurryDatabase {
 	
 	private String DB_NAME = "electricflurry.db";
 	private int DB_VERSION = 1;
+	Profile initial = new Profile();
 	
 	private ElectricFlurryOpenHelper openHelper; //Opens the databse for us
 	private SQLiteDatabase database;//access to the database ports for Android
@@ -23,6 +24,14 @@ public class ElectricFlurryDatabase {
 		openHelper = new ElectricFlurryOpenHelper(context);
 		database = openHelper.getWritableDatabase();
 		
+	ContentValues initialValues = new ContentValues();
+	initialValues.put("name", initial.getName());
+	initialValues.put("phone", initial.getPhoneNumber());
+	initialValues.put("facebook", initial.getFacebookURL());
+	initialValues.put("twitter", initial.getTwitterURL());
+	initialValues.put("google", initial.getGoogleURL());
+	
+	database.insert("user", null, initialValues);
 	}//end of constructor
 	
 	public void closeDbase() {
@@ -34,6 +43,20 @@ public class ElectricFlurryDatabase {
 	 * Methods that interact with the database
 	 * */
 	
+	public void submitUser(Profile user) {
+		ContentValues values = new ContentValues();
+		values.put("name", user.getName());
+		values.put("phone", user.getPhoneNumber());
+		values.put("facebook", user.getFacebookURL());
+		values.put("twitter", user.getTwitterURL());
+		values.put("google", user.getGoogleURL());
+		
+		database.update("user",values, null, null);
+		
+		
+	}
+	
+	
 	public void submitNewUser(String name, String phoneNum) {
 		/*phone is optional
 		 * can send null to just not include it*/
@@ -42,8 +65,8 @@ public class ElectricFlurryDatabase {
 		
 		if(phoneNum!=null)
 			values.put("phone", phoneNum);
-		
-		database.insert("users", "phone", values);
+	
+		database.replace("users", "phone", values);
 		
 	}//end of submitNewUser() method
 	
@@ -56,7 +79,8 @@ public class ElectricFlurryDatabase {
 		values.put("type", type);
 		values.put("url", url);
 		
-		database.insert("social_urls", null, values);
+		database.replace("social_urls", null, values);
+		
 		
 	}//end of submitSocialUrl() method
 	
@@ -87,7 +111,7 @@ public class ElectricFlurryDatabase {
 	
 	
 	/*
-	 * Inner class thqt actually creates the database
+	 * Inner class that actually creates the database
 	 * */
 	private class ElectricFlurryOpenHelper extends SQLiteOpenHelper {
 		
@@ -98,11 +122,11 @@ public class ElectricFlurryDatabase {
 		@Override
 		public void onCreate(SQLiteDatabase dBase) {
 			/*
-			 * This first creates the databse
+			 * This first creates the database
 			 * and is only run once until a new
 			 * version number is sent to it
 			 * */
-			String userCreate = " CREATE TABLE users (_id INTEGER PRIMARY KEY, user text, phone text) ";
+			String userCreate = " CREATE TABLE user (_id INTEGER PRIMARY KEY, name text, phone text, facebook text, twitter text, google text) ";
 			dBase.execSQL(userCreate);
 			
 			String socialUrlCreate = " CREATE TABLE social_urls (_id INTEGER PRIMARY KEY, type text, url text) ";
