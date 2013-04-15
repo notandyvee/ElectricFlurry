@@ -133,6 +133,7 @@ public class MainFragment extends Fragment{
 		TextView profile = (TextView)view.findViewById(R.id.profile);
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		TextView photo = (TextView)view.findViewById(R.id.photo);
+		TextView twitter = (TextView)view.findViewById(R.id.twitter);
 		
 		listView = (ListView)view.findViewById(R.id.venues_list);
 		
@@ -198,6 +199,14 @@ public class MainFragment extends Fragment{
 		     }
 		 });
 
+		
+		twitter.setOnClickListener(new View.OnClickListener() {
+		     @Override
+		     public void onClick(View v) {
+		     Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+		     startActivity(intent);
+		     }
+		 });
 		
 		
 		/*if(oAuth == null) {

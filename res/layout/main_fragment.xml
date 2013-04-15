@@ -125,6 +125,17 @@
 	         android:text="CAMERA"
 	         android:textColor="#fff" />
 	    
+	     <TextView
+	         android:id="@+id/twitter"
+	         android:layout_width="0dp"
+	         android:layout_height="60dp"
+	         android:layout_margin="5dp"
+	         android:layout_weight="1"
+	         android:background="#9556d9"
+	         android:gravity="center"
+	         android:text="Twitter"
+	         android:textColor="#fff" />
+	    
 	    <TextView
 	         android:id="@+id/settings"
 	         android:layout_width="0dp"
