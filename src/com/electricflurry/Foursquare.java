@@ -73,7 +73,7 @@ public class Foursquare {
 				venuesList = new ArrayList<Venue>();
 				
 				for(int i =0; i < venues.length(); i++) {
-					Log.d("foursquare", "running in the fourloop to parse stuff");
+					//Log.d("foursquare", "running in the fourloop to parse stuff");
 					
 					JSONObject oneVenue = venues.getJSONObject(i);
 					

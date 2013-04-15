@@ -30,6 +30,7 @@ public class MainFragment extends Fragment{
 	TextView checkin, vote, social, mingle;
 	ListView listView;
 	VenueBaseAdapter adapter;
+	boolean adapterNull = false;
 	
 	GPSUtilities gps;
 	//LocationManager locationManager;
@@ -70,15 +71,21 @@ public class MainFragment extends Fragment{
 						@Override
 						public void run() {
 							foursquare.queryFoursquareData();//this should be done on separate thread!
-							adapter = new VenueBaseAdapter();
+							if(adapter == null) {
+								adapter = new VenueBaseAdapter();
+								adapterNull = true;
+							}
+							
 							adapter.replaceLeList(foursquare.returnLeVenues());
 							
 							listView.post(new Runnable(){
 								@Override
 								public void run() {
-									listView.setAdapter(adapter);
-									//Currently even though it requeries things, when it goes to activity it doesn't update the ListView
-									//adapter.notifyDataSetChanged();
+									if(adapterNull) {
+										listView.setAdapter(adapter);
+									} else {
+										adapter.notifyDataSetChanged();
+									}
 									
 								}
 							});
@@ -113,7 +120,7 @@ public class MainFragment extends Fragment{
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.main_fragment, container, false);
-		
+		Log.d(TAG, "onCreateView is being called!");
 		/*
 		 * Where yo shit will go that will populate 
 		 * the Fragments Views dynamically
@@ -215,9 +222,14 @@ public class MainFragment extends Fragment{
 		
 	}//end of onCreateView
 	
-	public void loginDisappear() {
-		
-	}//end of loginDisappear
+	
+	
+	
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		Log.d(TAG, "onActivityCreated is running!");
+		Log.d(TAG, savedInstanceState != null?"savedINstanceState has something":"savedInstanceState is empty");
+	}//end of onActivityCreated
 	
 	
 	
@@ -231,6 +243,7 @@ public class MainFragment extends Fragment{
 			//oAuth = settings.getString("foursquare_oauth_token", null);
 			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
 		//}
+			Log.d(TAG, "onResume is being called!");
 	}
 	
 	public void onPause() {
@@ -240,12 +253,19 @@ public class MainFragment extends Fragment{
 		
 		gps.removeUpdates();
 		//locationManager.removeUpdates(locationListener);
+		Log.d(TAG, "onPause is being called!");
 		
 	}//end of onPause
+	
+	public void onStop() {
+		super.onStop();
+		Log.d(TAG, "OnStop is running!");
+	}//end of onStop
 	
 	public void onDestroy() {
 		super.onDestroy();
 		//Log.d(TAG, "onDestory is running!");
+		Log.d(TAG, "onDestroy is being called!");
 	}
 	
 
