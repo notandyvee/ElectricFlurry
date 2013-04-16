@@ -3,11 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <TextView 
+    <!-- This first section is for simple layouts -->
+    <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vote fragment, YAY!"/>
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+    
+	    <TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Simple votes"
+	        android:textSize="20sp"/>
+	    <ListView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/simple_votes_list"></ListView>
+	    
+    </LinearLayout>
+    
+    <!-- This second section is for the list of things to vote on
+    	In this case when a user clicks on one they will go to a separate Fragment -->
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+	    
+        <TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Complicated votes"
+	        android:textSize="20sp"/>
+        
+    </LinearLayout>
     
 
 </LinearLayout>
