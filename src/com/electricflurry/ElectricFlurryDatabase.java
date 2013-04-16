@@ -84,6 +84,7 @@ public class ElectricFlurryDatabase {
 		
 	}//end of submitSocialUrl() method
 	
+
 	
 	/*
 	 * Method that allows for simple queries from the database
@@ -98,7 +99,24 @@ public class ElectricFlurryDatabase {
 	}//end of leQuery() method
 	
 	
+	public void insertVotesSimulation() {
+		/*
+		 * This method just officially creates simulated vote for test
+		 * */
+		ContentValues values = new ContentValues();
+		values.put("name", "More Foam!");
+		values.put("max", 10);
+		values.put("current", 0);
+		values.put("voted_on", 0);
+		database.insert("votes", null, values);
+		
+	}//end of insertVotesSimulation
 	
+	public void eradicateVotes() {
+		database.delete("votes", null, null);
+	}//end of eradicate votes
+	
+
 	
 	
 	
@@ -131,6 +149,9 @@ public class ElectricFlurryDatabase {
 			
 			String socialUrlCreate = " CREATE TABLE social_urls (_id INTEGER PRIMARY KEY, type text, url text) ";
 			dBase.execSQL(socialUrlCreate);
+			
+			String votesCreate = " CREATE TABLE votes (_id INTEGER PRIMARY KEY, name TEXT, max INTEGER, current INTEGER, voted_on INTEGER ) ";
+			dBase.execSQL(votesCreate);
 			
 		}//end of constructor
 
