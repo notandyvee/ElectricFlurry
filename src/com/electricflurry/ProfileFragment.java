@@ -33,8 +33,8 @@ public class ProfileFragment extends Fragment implements ConsumeCursor{
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.profile_fragment, container, false);
-
-		final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
+final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
+		
 		db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
 
 		if (!profile.getName().equalsIgnoreCase("Unavailable")) {
@@ -62,21 +62,23 @@ public class ProfileFragment extends Fragment implements ConsumeCursor{
 			google_url.setText(profile.getName() + "'s Google+: " + profile.getGoogleURL());
 		}	
 		
+		
+		
 		return view;
 	}//end of onCreateView
 
 
 	@Override
 	public void consumeCursor(Cursor cursor) {
-		
-		cursor.moveToFirst();
-		
+
+		cursor.moveToPosition(0);
 		profile.setName(cursor.getString(0));
 		profile.setPhoneNumber(cursor.getString(1));
 		profile.setFacebookURL(cursor.getString(2));
 		profile.setTwitterURL(cursor.getString(3));
-		profile.setGoogleURL(cursor.getString(4));
-
+		//profile.setGoogleURL(cursor.getString(4));
+		profile.setGoogleURL(Integer.toString(cursor.getCount()));
+		
 	}
 	
 }

@@ -56,7 +56,7 @@ public class ElectricFlurryDatabase {
 		
 	}
 	
-	
+
 	public void submitNewUser(String name, String phoneNum) {
 		/*phone is optional
 		 * can send null to just not include it*/
@@ -128,6 +128,7 @@ public class ElectricFlurryDatabase {
 			 * */
 			String userCreate = " CREATE TABLE user (_id INTEGER PRIMARY KEY, name text, phone text, facebook text, twitter text, google text) ";
 			dBase.execSQL(userCreate);
+			
 			
 			String socialUrlCreate = " CREATE TABLE social_urls (_id INTEGER PRIMARY KEY, type text, url text) ";
 			dBase.execSQL(socialUrlCreate);
