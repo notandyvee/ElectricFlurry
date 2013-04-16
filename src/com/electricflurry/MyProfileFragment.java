@@ -5,6 +5,7 @@ import com.electricflurry.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,8 +46,11 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 		edit_twitter = (EditText) view.findViewById(R.id.edit_twitter);
 		edit_google = (EditText) view.findViewById(R.id.edit_google);
 		
-		//db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
-		
+		try {
+		db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
+		} catch (CursorIndexOutOfBoundsException e) {
+			db.submitFirstUser();
+		}
 		Button save = (Button) view.findViewById(R.id.save);
 		
 		edit_name.setHint("My Name");

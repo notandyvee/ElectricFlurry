@@ -24,14 +24,6 @@ public class ElectricFlurryDatabase {
 		openHelper = new ElectricFlurryOpenHelper(context);
 		database = openHelper.getWritableDatabase();
 		
-	ContentValues initialValues = new ContentValues();
-	initialValues.put("name", initial.getName());
-	initialValues.put("phone", initial.getPhoneNumber());
-	initialValues.put("facebook", initial.getFacebookURL());
-	initialValues.put("twitter", initial.getTwitterURL());
-	initialValues.put("google", initial.getGoogleURL());
-	
-	database.insert("user", null, initialValues);
 	}//end of constructor
 	
 	public void closeDbase() {
@@ -57,16 +49,18 @@ public class ElectricFlurryDatabase {
 	}
 	
 
-	public void submitNewUser(String name, String phoneNum) {
+	public void submitFirstUser() {
 		/*phone is optional
 		 * can send null to just not include it*/
 		ContentValues values = new ContentValues();
-		values.put("user", name);
+		Profile profile = new Profile();
+		values.put("name", profile.getName());
+		values.put("phone", profile.getPhoneNumber());
+		values.put("facebook", profile.getFacebookURL());
+		values.put("twitter", profile.getTwitterURL());
+		values.put("google", profile.getGoogleURL());
 		
-		if(phoneNum!=null)
-			values.put("phone", phoneNum);
-	
-		database.replace("users", "phone", values);
+		database.insert("user", null, values);
 		
 	}//end of submitNewUser() method
 	

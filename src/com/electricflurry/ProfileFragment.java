@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -34,9 +35,11 @@ public class ProfileFragment extends Fragment implements ConsumeCursor{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.profile_fragment, container, false);
 final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
-		
+		try {
 		db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
-
+		} catch (CursorIndexOutOfBoundsException e) {
+			db.submitFirstUser();
+		}
 		if (!profile.getName().equalsIgnoreCase("Unavailable")) {
 			TextView profile_name = (TextView)view.findViewById(R.id.profile_name);
 			profile_name.setText(profile.getName());
