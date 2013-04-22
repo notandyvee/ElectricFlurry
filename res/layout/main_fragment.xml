@@ -104,6 +104,16 @@
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
 		        android:gravity="center" />
+		    <TextView 
+		        android:id="@+id/facebook"
+		        android:layout_width="0dp"
+		        android:layout_height="60dp"
+		        android:text="Facebook"
+		        android:background="#9556d9"
+		        android:textColor="#fff"
+		        android:layout_weight="1"
+		        android:layout_margin="5dp"
+		        android:gravity="center" />
 	    </LinearLayout>
 	    
 	    <LinearLayout

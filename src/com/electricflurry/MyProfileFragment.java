@@ -2,8 +2,10 @@ package com.electricflurry;
 
 import com.electricflurry.R;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,8 +33,8 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
 		final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
+		
 			
 		View view = inflater.inflate(R.layout.myprofile_fragment, container, false);
 		
@@ -44,8 +46,11 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 		edit_twitter = (EditText) view.findViewById(R.id.edit_twitter);
 		edit_google = (EditText) view.findViewById(R.id.edit_google);
 		
+		try {
 		db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
-		
+		} catch (CursorIndexOutOfBoundsException e) {
+			db.submitFirstUser();
+		}
 		Button save = (Button) view.findViewById(R.id.save);
 		
 		edit_name.setHint("My Name");
@@ -90,8 +95,8 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	@Override
 	public void consumeCursor(Cursor cursor) {
 		// TODO Auto-generated method stub
+ 
 		cursor.moveToFirst();
-		
 		profile.setName(cursor.getString(0));
 		profile.setPhoneNumber(cursor.getString(1));
 		profile.setFacebookURL(cursor.getString(2));

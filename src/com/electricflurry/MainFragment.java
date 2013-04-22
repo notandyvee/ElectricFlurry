@@ -134,6 +134,7 @@ public class MainFragment extends Fragment{
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		TextView photo = (TextView)view.findViewById(R.id.photo);
 		TextView twitter = (TextView)view.findViewById(R.id.twitter);
+		TextView facebook = (TextView)view.findViewById(R.id.facebook);
 		
 		listView = (ListView)view.findViewById(R.id.venues_list);
 		
@@ -204,6 +205,14 @@ public class MainFragment extends Fragment{
 		     @Override
 		     public void onClick(View v) {
 		     Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+		     startActivity(intent);
+		     }
+		 });
+		
+		facebook.setOnClickListener(new View.OnClickListener() {
+		     @Override
+		     public void onClick(View v) {
+		     Intent intent = new Intent(getActivity(), Facebook.class);
 		     startActivity(intent);
 		     }
 		 });
