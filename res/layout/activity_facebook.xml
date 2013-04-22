@@ -17,21 +17,21 @@
         android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
 
     <TextView
-        android:id="@+id/info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/welcome"
-        android:layout_below="@+id/profilepic"
-        android:layout_marginTop="15dp"
-        android:text="Info" />
-
-    <TextView
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/profilepic"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="26dp"
+        android:layout_marginTop="26dp"
         android:text="Welcome" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profilepic"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:text="Info" />
 
 </RelativeLayout>

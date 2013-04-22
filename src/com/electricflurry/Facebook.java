@@ -45,7 +45,7 @@ TextView info;
             public void onCompleted(GraphUser user, Response response) {
               if (user != null) {
                 TextView welcome = (TextView) findViewById(R.id.welcome);
-                welcome.setText("Hello " + user.getName() + "!"); 
+                welcome.setText("Hello there " + user.getName() + "!"); 
                 
                 
                 ImageView profilepic;

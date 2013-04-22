@@ -87,6 +87,7 @@ public class AndroidTwitterSample extends Activity {
 
 	public void updateLoginStatus() {
 		loginStatus.setText("Logged into Twitter : " + TwitterUtils.isAuthenticated(prefs));
+		
 	}
 
 
