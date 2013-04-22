@@ -1,5 +1,6 @@
 package com.electricflurry;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class VoteFragment extends Fragment implements ConsumeCursor{
 	
@@ -18,6 +20,11 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 	SimpleVoteBaseAdapter adapter;
 	Timer timer;
 	ListView simpleVotes;
+	//used soley to count how many times the simulation has ran
+	int simulationCounter = 0;
+	
+	
+	
 	
 	public static VoteFragment newInstance() {
 		/*
@@ -28,6 +35,9 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		return f;
 	}//end of static constructor
 	
+	
+	
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		/*
@@ -37,10 +47,13 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		database = new ElectricFlurryDatabase(getActivity());
 		database.insertVotesSimulation();
 		
-		adapter = new SimpleVoteBaseAdapter(database);
+		adapter = new SimpleVoteBaseAdapter(getActivity(), database);
 		
 		
 	}//end of onCreate
+	
+	
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		/*
@@ -52,6 +65,50 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		
 		
 		//set a timer here to fire things off 10 seconds after View is created
+		
+		fireSimulation();
+		
+		
+		
+		
+		return view;
+	}//end of onCreateView
+
+	@Override
+	public void consumeCursor(Cursor cursor) {
+		ArrayList<Vote> votesList = new ArrayList<Vote>();
+		for(int i = 0; i < cursor.getCount(); i++) {
+			cursor.moveToPosition(i);
+			Vote vote = new Vote(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), (cursor.getInt(4)==0)?false:true );
+			votesList.add(vote);
+		}
+		adapter.replaceList(votesList);
+		
+	}//end of consumeCursor
+	
+	
+	public void onDestroy() {
+		/*just do a bit of cleaning up as I don't want the votes to persist for this simulation*/
+		super.onDestroy();
+		database.eradicateVotes();
+		timer.cancel();
+		database.closeDbase();
+	}//end of onDestroy
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * I will put my listener stuff here to clean up all my code
+	 * above but to also have the advantages of defining them in the same class
+	 * */
+	public void fireSimulation() {
+		
+		
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -65,8 +122,8 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 					adapter.notifyDataSetChanged();
 				}
 			});
-				
-				
+			
+			timer.scheduleAtFixedRate(repeatingtask, 10000, 10000);	
 				
 				
 				
@@ -77,26 +134,47 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		
 		
 		
-		return view;
-	}//end of onCreateView
+		
+	}//end of fireSimulation()
+	
+	
+	TimerTask repeatingtask = new TimerTask() {
 
-	@Override
-	public void consumeCursor(Cursor cursor) {
+		@Override
+		public void run() {
+			if(simulationCounter < 2) {
+				database.incrementCurrentVote(1, 5);
+				database.incrementCurrentVote(2, 3);
+				database.leQuery("votes", null, null, null, null, null, null, VoteFragment.this);
+				
+				simpleVotes.post(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(VoteFragment.this.getActivity(), "Repeating at cycle: "+simulationCounter, Toast.LENGTH_SHORT).show();
+						simulationCounter++;
+						adapter.notifyDataSetChanged();
+					}
+				});
+				
+				
+				
+			} 
+			else 
+				if(simulationCounter == 2){
+					timer.cancel();
+				}
+		}//end of outer run method
 		
-		for(int i = 0; i < cursor.getCount(); i++) {
-			cursor.moveToPosition(i);
-			Vote vote = new Vote(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), (cursor.getInt(4)==0)?false:true );
-			adapter.addVote(vote);
-		}
-		
-	}//end of consumeCursor
+	};
 	
 	
-	public void onDestroy() {
-		/*just do a bit of cleaning up as I don't want the votes to persist for this simulation*/
-		super.onDestroy();
-		database.eradicateVotes();
-	}//end of onDestroy
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

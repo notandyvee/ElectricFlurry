@@ -99,6 +99,12 @@ public class ElectricFlurryDatabase {
 	}//end of leQuery() method
 	
 	
+	/*
+	 * The next few methods are specific to votes simulation stuff
+	 * since having a serve will make this pointless except maybe
+	 * when caching the stuff*/
+	
+	
 	public void insertVotesSimulation() {
 		/*
 		 * This method just officially creates simulated vote for test
@@ -110,13 +116,33 @@ public class ElectricFlurryDatabase {
 		values.put("voted_on", 0);
 		database.insert("votes", null, values);
 		
+		values = new ContentValues();
+		values.put("name", "More Fire Breathing");
+		values.put("max", 15);
+		values.put("current", 0);
+		values.put("voted_on", 0);
+		database.insert("votes", null, values);
+		
 	}//end of insertVotesSimulation
 	
 	public void eradicateVotes() {
 		database.delete("votes", null, null);
 	}//end of eradicate votes
 	
-
+	public void incrementCurrentVote(int id, int byAmount){
+		
+		String query = "UPDATE votes SET current = current + "+byAmount+" WHERE _id = "+id;
+		database.execSQL(query);
+	}//end of incrementCurrentVote
+	
+	public void userIncrementCurrentVote(int id, int byAmount) {
+		ContentValues values = new ContentValues();
+		values.put("voted_on", 1);
+		database.update("votes", values, "_id=?", new String[]{""+id});
+		
+		String query = "UPDATE votes SET current = current + "+byAmount+" WHERE _id = "+id;
+		database.execSQL(query);
+	}
 	
 	
 	
@@ -150,6 +176,8 @@ public class ElectricFlurryDatabase {
 			String socialUrlCreate = " CREATE TABLE social_urls (_id INTEGER PRIMARY KEY, type text, url text) ";
 			dBase.execSQL(socialUrlCreate);
 			
+			/*
+			 * Voted on is a boolean simply to figure out whether that specific user voted on it or not*/
 			String votesCreate = " CREATE TABLE votes (_id INTEGER PRIMARY KEY, name TEXT, max INTEGER, current INTEGER, voted_on INTEGER ) ";
 			dBase.execSQL(votesCreate);
 			

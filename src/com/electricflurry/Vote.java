@@ -11,11 +11,12 @@ public class Vote {
 	private int currentVotes = 0;
 	private boolean votedOn = false;
 	
-	public Vote (int id, String name, int limit, boolean votedOn) {
+	public Vote (int id, String name, int limit, int current, boolean votedOn) {
 		this.id = id;
 		this.name = name;
 		this.limit = limit;
 		this.votedOn = votedOn;
+		this.currentVotes = current;
 	}
 	
 	public int getId() {
@@ -29,6 +30,13 @@ public class Vote {
 	public int getCurrentNumVotes() {
 		return currentVotes;
 	}//end of getCurentNumVotes()
+	
+	public boolean wasVotedOn() {
+		return votedOn;
+	}
+	/*public void setCurrentVotes(int num){
+		currentVotes = currentVotes + num;
+	}*/
 	
 	public void voted() {
 		/*This method just increased the currentVote as someone just voted*/

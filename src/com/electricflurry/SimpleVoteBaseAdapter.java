@@ -2,6 +2,7 @@ package com.electricflurry;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +19,14 @@ import android.widget.Toast;
 public class SimpleVoteBaseAdapter extends BaseAdapter{
 	ArrayList<Vote> votesList = new ArrayList<Vote>();
 	ElectricFlurryDatabase database;
+	Context context;
 	
-	public SimpleVoteBaseAdapter(ElectricFlurryDatabase database) {
+	public SimpleVoteBaseAdapter(Context context, ElectricFlurryDatabase database) {
 		this.database = database;
+		this.context = context;
 	}
 	
-	public void addVote(Vote vote) {
-		votesList.add(vote);
-	}//end of addVote
+	
 	
 
 
@@ -61,13 +62,32 @@ public class SimpleVoteBaseAdapter extends BaseAdapter{
 		//just set the tag of the id of the vote you click
 		view.setTag(v.getId()+"");
 		
-		view.setOnClickListener(new View.OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				Log.d("SimpleBaseAdapter", "TAG of current simple vote you clicked is: "+v.getTag());
-			}
-		});
-		
+		if(v.wasVotedOn() == false) {
+			
+			upVote.setOnClickListener(new View.OnClickListener() {			
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(context, "You just attempted to upvote TAG: "+((View)v.getParent()).getTag(), Toast.LENGTH_LONG).show();
+					View parent = ((View)v.getParent());
+					int id = Integer.parseInt((String)parent.getTag());
+					database.userIncrementCurrentVote(id, 1);
+					
+					for(Vote leVote : votesList) {
+						if(leVote.getId() == id) {
+							leVote.voted();
+							SimpleVoteBaseAdapter.this.notifyDataSetChanged();
+							
+						}
+							
+					}//end of foreach
+					
+					//setting onClickListener to null to not allow user to vote once they have voted
+					v.setOnClickListener(null);
+					
+				}//end of onClick method
+			});
+			
+		}//end of check if the vote was voted on
 		
 		
 		
@@ -84,6 +104,14 @@ public class SimpleVoteBaseAdapter extends BaseAdapter{
 	
 	
 	
+	public void replaceList(ArrayList<Vote> list) {
+		votesList = list;
+	}
+	
+	
+	
+	
+
 	
 	
 	
