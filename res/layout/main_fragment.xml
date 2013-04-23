@@ -104,16 +104,7 @@
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
 		        android:gravity="center" />
-		    <TextView 
-		        android:id="@+id/facebook"
-		        android:layout_width="0dp"
-		        android:layout_height="60dp"
-		        android:text="Facebook"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
-		        android:layout_weight="1"
-		        android:layout_margin="5dp"
-		        android:gravity="center" />
+		    
 	    </LinearLayout>
 	    
 	    <LinearLayout
@@ -133,17 +124,6 @@
 	         android:background="#9556d9"
 	         android:gravity="center"
 	         android:text="CAMERA"
-	         android:textColor="#fff" />
-	    
-	     <TextView
-	         android:id="@+id/twitter"
-	         android:layout_width="0dp"
-	         android:layout_height="60dp"
-	         android:layout_margin="5dp"
-	         android:layout_weight="1"
-	         android:background="#9556d9"
-	         android:gravity="center"
-	         android:text="Twitter"
 	         android:textColor="#fff" />
 	    
 	    <TextView

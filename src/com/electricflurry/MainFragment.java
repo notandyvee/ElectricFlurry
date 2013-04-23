@@ -133,8 +133,6 @@ public class MainFragment extends Fragment{
 		TextView profile = (TextView)view.findViewById(R.id.profile);
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		TextView photo = (TextView)view.findViewById(R.id.photo);
-		TextView twitter = (TextView)view.findViewById(R.id.twitter);
-		TextView facebook = (TextView)view.findViewById(R.id.facebook);
 		
 		listView = (ListView)view.findViewById(R.id.venues_list);
 		
@@ -157,14 +155,14 @@ public class MainFragment extends Fragment{
 				Toast.makeText(getActivity(), "clicked on vote", Toast.LENGTH_SHORT).show();
 			}
 		});
-//		social.setOnClickListener(new View.OnClickListener() {
-//	
-//			@Override
-//			public void onClick(View v) {
-//				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, SocialNetworkFragment.newInstance());
-//				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
-//			}
-//		});
+		social.setOnClickListener(new View.OnClickListener() {
+	
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, SocialNetworkFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
+			}
+		});
 		mingle.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -196,23 +194,6 @@ public class MainFragment extends Fragment{
 		     @Override
 		     public void onClick(View v) {
 		     Intent intent = new Intent(getActivity(), PhotoTaker.class);
-		     startActivity(intent);
-		     }
-		 });
-
-		
-		twitter.setOnClickListener(new View.OnClickListener() {
-		     @Override
-		     public void onClick(View v) {
-		     Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
-		     startActivity(intent);
-		     }
-		 });
-		
-		facebook.setOnClickListener(new View.OnClickListener() {
-		     @Override
-		     public void onClick(View v) {
-		     Intent intent = new Intent(getActivity(), Facebook.class);
 		     startActivity(intent);
 		     }
 		 });
