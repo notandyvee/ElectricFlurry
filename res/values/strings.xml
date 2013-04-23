@@ -1,8 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ElectricFlurry</string>
+    <string name="app_name">Electric Flurry</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_test">Test</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_photo_taker">PhotoTaker</string>
+    <string name="title_activity_tweeter">Tweeter</string>
+    <string name="title_activity_facebook">Facebook</string>
+    <string name="app_id">448986518512106</string>
 
 </resources>

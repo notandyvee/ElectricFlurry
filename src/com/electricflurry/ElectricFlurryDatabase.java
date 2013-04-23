@@ -15,6 +15,7 @@ public class ElectricFlurryDatabase {
 	
 	private String DB_NAME = "electricflurry.db";
 	private int DB_VERSION = 1;
+	Profile initial = new Profile();
 	
 	private ElectricFlurryOpenHelper openHelper; //Opens the databse for us
 	private SQLiteDatabase database;//access to the database ports for Android
@@ -34,16 +35,32 @@ public class ElectricFlurryDatabase {
 	 * Methods that interact with the database
 	 * */
 	
-	public void submitNewUser(String name, String phoneNum) {
+	public void submitUser(Profile user) {
+		ContentValues values = new ContentValues();
+		values.put("name", user.getName());
+		values.put("phone", user.getPhoneNumber());
+		values.put("facebook", user.getFacebookURL());
+		values.put("twitter", user.getTwitterURL());
+		values.put("google", user.getGoogleURL());
+		
+		database.update("user",values, null, null);
+		
+		
+	}
+	
+
+	public void submitFirstUser() {
 		/*phone is optional
 		 * can send null to just not include it*/
 		ContentValues values = new ContentValues();
-		values.put("user", name);
+		Profile profile = new Profile();
+		values.put("name", profile.getName());
+		values.put("phone", profile.getPhoneNumber());
+		values.put("facebook", profile.getFacebookURL());
+		values.put("twitter", profile.getTwitterURL());
+		values.put("google", profile.getGoogleURL());
 		
-		if(phoneNum!=null)
-			values.put("phone", phoneNum);
-		
-		database.insert("users", "phone", values);
+		database.insert("user", null, values);
 		
 	}//end of submitNewUser() method
 	
@@ -56,10 +73,12 @@ public class ElectricFlurryDatabase {
 		values.put("type", type);
 		values.put("url", url);
 		
-		database.insert("social_urls", null, values);
+		database.replace("social_urls", null, values);
+		
 		
 	}//end of submitSocialUrl() method
 	
+
 	
 	/*
 	 * Method that allows for simple queries from the database
@@ -74,7 +93,50 @@ public class ElectricFlurryDatabase {
 	}//end of leQuery() method
 	
 	
+	/*
+	 * The next few methods are specific to votes simulation stuff
+	 * since having a serve will make this pointless except maybe
+	 * when caching the stuff*/
 	
+	
+	public void insertVotesSimulation() {
+		/*
+		 * This method just officially creates simulated vote for test
+		 * */
+		ContentValues values = new ContentValues();
+		values.put("name", "More Foam!");
+		values.put("max", 10);
+		values.put("current", 0);
+		values.put("voted_on", 0);
+		database.insert("votes", null, values);
+		
+		values = new ContentValues();
+		values.put("name", "More Fire Breathing");
+		values.put("max", 15);
+		values.put("current", 0);
+		values.put("voted_on", 0);
+		database.insert("votes", null, values);
+		
+	}//end of insertVotesSimulation
+	
+	public void eradicateVotes() {
+		database.delete("votes", null, null);
+	}//end of eradicate votes
+	
+	public void incrementCurrentVote(int id, int byAmount){
+		
+		String query = "UPDATE votes SET current = current + "+byAmount+" WHERE _id = "+id;
+		database.execSQL(query);
+	}//end of incrementCurrentVote
+	
+	public void userIncrementCurrentVote(int id, int byAmount) {
+		ContentValues values = new ContentValues();
+		values.put("voted_on", 1);
+		database.update("votes", values, "_id=?", new String[]{""+id});
+		
+		String query = "UPDATE votes SET current = current + "+byAmount+" WHERE _id = "+id;
+		database.execSQL(query);
+	}
 	
 	
 	
@@ -87,7 +149,7 @@ public class ElectricFlurryDatabase {
 	
 	
 	/*
-	 * Inner class thqt actually creates the database
+	 * Inner class that actually creates the database
 	 * */
 	private class ElectricFlurryOpenHelper extends SQLiteOpenHelper {
 		
@@ -98,15 +160,21 @@ public class ElectricFlurryDatabase {
 		@Override
 		public void onCreate(SQLiteDatabase dBase) {
 			/*
-			 * This first creates the databse
+			 * This first creates the database
 			 * and is only run once until a new
 			 * version number is sent to it
 			 * */
-			String userCreate = " CREATE TABLE users (_id INTEGER PRIMARY KEY, user text, phone text) ";
+			String userCreate = " CREATE TABLE user (_id INTEGER PRIMARY KEY, name text, phone text, facebook text, twitter text, google text) ";
 			dBase.execSQL(userCreate);
+			
 			
 			String socialUrlCreate = " CREATE TABLE social_urls (_id INTEGER PRIMARY KEY, type text, url text) ";
 			dBase.execSQL(socialUrlCreate);
+			
+			/*
+			 * Voted on is a boolean simply to figure out whether that specific user voted on it or not*/
+			String votesCreate = " CREATE TABLE votes (_id INTEGER PRIMARY KEY, name TEXT, max INTEGER, current INTEGER, voted_on INTEGER ) ";
+			dBase.execSQL(votesCreate);
 			
 		}//end of constructor
 
