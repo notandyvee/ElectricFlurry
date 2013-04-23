@@ -247,7 +247,7 @@ OnAccessRevokedListener {
 	}
 
 
-	//Helpful method from git to prevent annoying connection issues.
+	//Helpful method from gistfile to prevent annoying connection issues.
 	private void startResolution() {
 		try {
 			mResolveOnFail = false;
