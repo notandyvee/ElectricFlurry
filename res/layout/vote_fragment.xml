@@ -35,6 +35,10 @@
 	        android:layout_height="wrap_content"
 	        android:text="Complicated votes"
 	        android:textSize="20sp"/>
+        <ListView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/complicated_votes_list"></ListView>
         
     </LinearLayout>
     

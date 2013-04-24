@@ -1,9 +1,8 @@
 package com.electricflurry;
 
-import java.util.ArrayList;
+
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,15 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class VoteFragment extends Fragment implements ConsumeCursor{
 	
 	ElectricFlurryDatabase database;
 	SimpleVoteBaseAdapter adapter;
+	ComplicatedVoteBaseAdapter compAdapter;
 	Timer timer;
 	ListView simpleVotes;
+	ListView complicatedVotes;
 	//used soley to count how many times the simulation has ran
 	int simulationCounter = 0;
 	
@@ -48,6 +48,14 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		database.insertVotesSimulation();
 		
 		adapter = new SimpleVoteBaseAdapter(getActivity(), database);
+		compAdapter = new ComplicatedVoteBaseAdapter(getActivity(), database);
+		
+		/**
+		 * Getting user ID from database but ideally wanna have the user already be signed up to our server
+		 * so I can just get the local copy of there ID to make things much smoother.
+		 * Maybe have that happen at user creation or checkin
+		 */
+		database.leQuery("user", new String[] {"_id"}, null, null, null, null, null, this);//this gets called just to get the user ID thats set on the server but ideally wanna have it set locally as well for speed
 		
 		
 	}//end of onCreate
@@ -63,6 +71,8 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		simpleVotes = (ListView)view.findViewById(R.id.simple_votes_list);
 		simpleVotes.setAdapter(adapter);
 		
+		complicatedVotes = (ListView)view.findViewById(R.id.complicated_votes_list);
+		complicatedVotes.setAdapter(compAdapter);
 		
 		//set a timer here to fire things off 10 seconds after View is created
 		
@@ -74,17 +84,7 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		return view;
 	}//end of onCreateView
 
-	@Override
-	public void consumeCursor(Cursor cursor) {
-		ArrayList<Vote> votesList = new ArrayList<Vote>();
-		for(int i = 0; i < cursor.getCount(); i++) {
-			cursor.moveToPosition(i);
-			Vote vote = new Vote(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), (cursor.getInt(4)==0)?false:true );
-			votesList.add(vote);
-		}
-		adapter.replaceList(votesList);
-		
-	}//end of consumeCursor
+	
 	
 	
 	public void onDestroy() {
@@ -114,12 +114,15 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 			@Override
 			public void run() {
 				
-			database.leQuery("votes", null, null, null, null, null, null, VoteFragment.this);	
+				
+			database.leQuery("votes", null, null, null, null, null, null, adapter);	
+			database.leQuery("complicated_votes", null, null, null, null, null, null, compAdapter);
 			
 			simpleVotes.post(new Runnable() {
 				@Override
 				public void run() {
 					adapter.notifyDataSetChanged();
+					compAdapter.notifyDataSetChanged();
 				}
 			});
 			
@@ -145,7 +148,7 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 			if(simulationCounter < 2) {
 				database.incrementCurrentVote(1, 5);
 				database.incrementCurrentVote(2, 3);
-				database.leQuery("votes", null, null, null, null, null, null, VoteFragment.this);
+				database.leQuery("votes", null, null, null, null, null, null, adapter);
 				
 				simpleVotes.post(new Runnable() {
 					@Override
@@ -166,6 +169,26 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		}//end of outer run method
 		
 	};
+
+
+
+
+	@Override
+	public void consumeCursor(Cursor cursor) {
+		/*
+		 * THis exists simply to get the User ID from local storage for now
+		 * but will change when the other parts of the app are better integrated*/
+		cursor.moveToFirst();//there should only ever be one
+		if(cursor.getCount() < 1) {
+			Toast.makeText(getActivity(), "You must create a user first", Toast.LENGTH_SHORT).show();
+			getActivity().getSupportFragmentManager().popBackStack();
+		} else {
+			int id = cursor.getInt(0);
+			adapter.setId(id);
+			compAdapter.setId(id);
+		}
+		
+	}
 	
 	
 	

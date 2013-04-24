@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 public class ElectricFlurryDatabase {
@@ -102,43 +103,63 @@ public class ElectricFlurryDatabase {
 	public void insertVotesSimulation() {
 		/*
 		 * This method just officially creates simulated vote for test
+		 * And will be deleted once a test server is set up
 		 * */
 		ContentValues values = new ContentValues();
 		values.put("name", "More Foam!");
 		values.put("max", 10);
 		values.put("current", 0);
-		values.put("voted_on", 0);
 		database.insert("votes", null, values);
 		
 		values = new ContentValues();
 		values.put("name", "More Fire Breathing");
 		values.put("max", 15);
 		values.put("current", 0);
-		values.put("voted_on", 0);
 		database.insert("votes", null, values);
+		
+		values = new ContentValues();
+		values.put("name", "Next Song To Play");
+		database.insert("complicated_votes", null, values);
+		
+		values = new ContentValues();
+		values.put("name", "Next Act on Stage");
+		database.insert("complicated_votes", null, values);
 		
 	}//end of insertVotesSimulation
 	
 	public void eradicateVotes() {
 		database.delete("votes", null, null);
+		database.delete("user_votes", null, null);
+		database.delete("complicated_votes", null, null);
+		database.delete("user_complicated_votes", null, null);
 	}//end of eradicate votes
 	
 	public void incrementCurrentVote(int id, int byAmount){
-		
+		/*THis one is really only used for the simulation!*/
 		String query = "UPDATE votes SET current = current + "+byAmount+" WHERE _id = "+id;
 		database.execSQL(query);
 	}//end of incrementCurrentVote
 	
-	public void userIncrementCurrentVote(int id, int byAmount) {
+	public void userIncrementCurrentVote(int id, int byAmount, int userId) {
 		ContentValues values = new ContentValues();
-		values.put("voted_on", 1);
-		database.update("votes", values, "_id=?", new String[]{""+id});
+		values.put("v_id", id);
+		values.put("u_id", userId);
+		database.insert("user_votes", null, values);
+		
 		
 		String query = "UPDATE votes SET current = current + "+byAmount+" WHERE _id = "+id;
 		database.execSQL(query);
 	}
 	
-	
+	public boolean getIfUserVoted(String table, int voteId, int userId) {
+		
+		Cursor result = database.query(table, null, "u_id==? AND v_id==?", new String[]{""+userId, ""+voteId}, null, null, null);
+		Log.d("ELECTRICFLURRYDATABASE", "The user voted query returns this num: "+result.getCount());
+		if(result.getCount() == 0)
+			return false;
+		
+		return true;
+	}//end of getIfUserVoted()
 	
 	
 	
@@ -173,8 +194,18 @@ public class ElectricFlurryDatabase {
 			
 			/*
 			 * Voted on is a boolean simply to figure out whether that specific user voted on it or not*/
-			String votesCreate = " CREATE TABLE votes (_id INTEGER PRIMARY KEY, name TEXT, max INTEGER, current INTEGER, voted_on INTEGER ) ";
+			String votesCreate = " CREATE TABLE votes (_id INTEGER PRIMARY KEY, name TEXT, max INTEGER, current INTEGER ) ";
 			dBase.execSQL(votesCreate);
+			
+			String userVotesCreate = "CREATE TABLE user_votes (_id INTEGER PRIMARY KEY, u_id INTEGER, v_id INTEGER ) ";
+			dBase.execSQL(userVotesCreate);
+			
+			
+			String compVotesCreate = "CREATE TABLE complicated_votes (_id INTEGER PRIMARY KEY, name TEXT ) ";
+			dBase.execSQL(compVotesCreate);
+			
+			String userCompVotesCreate = "CREATE TABLE user_complicated_votes (_id INTEGER PRIMARY KEY, u_id INTEGER, v_id INTEGER) ";
+			dBase.execSQL(userCompVotesCreate);
 			
 		}//end of constructor
 

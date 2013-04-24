@@ -31,12 +31,13 @@ public class Vote {
 		return currentVotes;
 	}//end of getCurentNumVotes()
 	
+	public int getLimit() {
+		return limit;
+	}
+	
 	public boolean wasVotedOn() {
 		return votedOn;
 	}
-	/*public void setCurrentVotes(int num){
-		currentVotes = currentVotes + num;
-	}*/
 	
 	public void voted() {
 		/*This method just increased the currentVote as someone just voted*/
@@ -45,7 +46,7 @@ public class Vote {
 	}//end of voted()
 	
 	public boolean limitReached() {
-		return currentVotes==limit ? true : false;
+		return currentVotes>=limit ? true : false;
 	}//end of limitReached()
 	
 	public boolean didUserVote() {
