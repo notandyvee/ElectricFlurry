@@ -204,18 +204,27 @@ public class MainFragment extends Fragment{
 		twitter.setOnClickListener(new View.OnClickListener() {
 		     @Override
 		     public void onClick(View v) {
-		     Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+		     Intent intent = new Intent(getActivity(), TestActivity.class);
 		     startActivity(intent);
 		     }
 		 });
 		
+	//	facebook.setOnClickListener(new View.OnClickListener() {
+	//	     @Override
+	//	     public void onClick(View v) {
+	//	     Intent intent = new Intent(getActivity(), Facebook.class);
+	//	     startActivity(intent);
+	//	     }
+	//	 });
+		
 		facebook.setOnClickListener(new View.OnClickListener() {
-		     @Override
-		     public void onClick(View v) {
-		     Intent intent = new Intent(getActivity(), Facebook.class);
-		     startActivity(intent);
-		     }
-		 });
+			//added interactivity to the myprofile button -sean
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, FacebookFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on Facebook", Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 		
 		/*if(oAuth == null) {
