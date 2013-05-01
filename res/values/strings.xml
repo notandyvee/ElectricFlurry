@@ -11,5 +11,6 @@
     <string name="title_activity_tweeter">Tweeter</string>
     <string name="title_activity_facebook">Facebook</string>
     <string name="app_id">448986518512106</string>
+    <string name="title_activity_google_plus">GooglePlusActivity</string>
 
 </resources>
