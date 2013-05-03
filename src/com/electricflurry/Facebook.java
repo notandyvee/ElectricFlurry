@@ -76,7 +76,7 @@ TextView info;
 					e.printStackTrace();
 				} 
                 
-              //  facebookUserName = user.getUsername();
+                facebookUserName = user.getUsername();
                 
                 
                // info.setText("User Name is - " + facebookUserName + "      Url is - " + facebookURL );
@@ -86,6 +86,12 @@ TextView info;
         }
       }
     });
+  }
+  
+  
+  public String getUsername(){
+	  
+	  return facebookUserName;
   }
 
   @Override

@@ -24,6 +24,8 @@ public class AndroidTwitterSample extends Activity {
 	private final Handler mTwitterHandler = new Handler();
 	private TextView loginStatus;
 	EditText tweetMsg;
+	Button tweet;
+	String name;
 	
 	final Runnable mUpdateTwitterNotification = new Runnable() {
         public void run() {
@@ -40,7 +42,7 @@ public class AndroidTwitterSample extends Activity {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
        loginStatus = (TextView)findViewById(R.id.login_status);
-        Button tweet = (Button) findViewById(R.id.btn_tweet);
+        tweet = (Button) findViewById(R.id.btn_tweet);
         Button clearCredentials = (Button) findViewById(R.id.btn_clear_credentials);
         tweetMsg = (EditText) findViewById(R.id.editText1);
         Button getUser = (Button) findViewById(R.id.btn_get_user);
@@ -49,7 +51,24 @@ public class AndroidTwitterSample extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-		Toast.makeText(getBaseContext(), TwitterUtils.getUserName(prefs),Toast.LENGTH_LONG).show();
+			
+				//***************************************
+				new Thread(new Runnable(){
+					@Override
+					public void run() {
+						name = TwitterUtils.getUserName(prefs);
+						tweet.post(new Runnable(){
+
+							@Override
+							public void run() {
+								Toast.makeText(getBaseContext(),name ,Toast.LENGTH_LONG).show();
+							}
+							
+						});
+						
+					}
+				}).run();
+		//*******************************************
 				
 			}
 		});

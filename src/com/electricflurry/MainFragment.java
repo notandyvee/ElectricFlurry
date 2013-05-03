@@ -197,6 +197,35 @@ public class MainFragment extends Fragment{
 		     startActivity(intent);
 		     }
 		 });
+<<<<<<< HEAD
+
+		
+		twitter.setOnClickListener(new View.OnClickListener() {
+		     @Override
+		     public void onClick(View v) {
+		     Intent intent = new Intent(getActivity(), TestActivity.class);
+		     startActivity(intent);
+		     }
+		 });
+		
+	//	facebook.setOnClickListener(new View.OnClickListener() {
+	//	     @Override
+	//	     public void onClick(View v) {
+	//	     Intent intent = new Intent(getActivity(), Facebook.class);
+	//	     startActivity(intent);
+	//	     }
+	//	 });
+		
+		facebook.setOnClickListener(new View.OnClickListener() {
+			//added interactivity to the myprofile button -sean
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, FacebookFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on Facebook", Toast.LENGTH_SHORT).show();
+			}
+		});
+=======
+>>>>>>> e3c6ca2a106b2127099cf3d1536c789427dbf303
 		
 		
 		/*if(oAuth == null) {
