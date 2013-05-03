@@ -1,7 +1,7 @@
 package com.electricflurry;
 
 public class Profile {
-	private String name, phoneNumber, facebookURL, twitterURL, googleURL, foursquareURL;
+	private String name, phoneNumber, facebookURL, twitterURL, googleURL;
 	//PROFILE PICTURE
 	
 	public Profile() {
@@ -10,7 +10,14 @@ public class Profile {
 		this.facebookURL = "Unavailable";
 		this.twitterURL ="Unavailable";
 		this.googleURL = "Unavailable";
-		this.foursquareURL = "Unavailable";
+	}
+	
+	public Profile(String name, String phone, String facebook, String twitter, String google) {
+		this.name = name;
+		this.phoneNumber = phone;
+		this.facebookURL = facebook;
+		this.twitterURL = twitter;
+		this.googleURL = google;
 	}
 	
 	public String getName() {
@@ -50,13 +57,6 @@ public class Profile {
 	
 	public void setGoogleURL(String googleURL) {
 		this.googleURL = googleURL;
-	}
-	
-	public String getFoursquareURL() {
-		return this.foursquareURL;
-	}
-	public void setFoursquareURL(String foursquareURL) {
-		this.foursquareURL = foursquareURL;
 	}
 	
  }

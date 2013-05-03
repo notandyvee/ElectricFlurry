@@ -45,7 +45,7 @@ public class ElectricFlurryDatabase {
 		values.put("google", user.getGoogleURL());
 		
 		database.update("user",values, null, null);
-		
+		database.insert("temp_profiles", null, values);
 		
 	}
 	
@@ -98,7 +98,39 @@ public class ElectricFlurryDatabase {
 	 * The next few methods are specific to votes simulation stuff
 	 * since having a serve will make this pointless except maybe
 	 * when caching the stuff*/
-	
+	public void insertTempProfiles() {
+		ContentValues tim = new ContentValues();
+		tim.put("name", "Tim Lawrence");
+		tim.put("phone", "123-465-4352");
+		tim.put("facebook", "facebook.com/tim.lawrence9");
+		tim.put("twitter", "twitter.com/timmy_law");
+		tim.put("google", "Unavailable");
+		database.insert("temp_profiles", null, tim);
+		
+		ContentValues hank = new ContentValues();
+		hank.put("name", "Hank Peterson");
+		hank.put("phone", "785-235-8867");
+		hank.put("facebook", "Unavailable");
+		hank.put("twitter", "Unavailable");
+		hank.put("google", "Unavailable");
+		database.insert("temp_profiles", null, hank);
+		
+		ContentValues juliet = new ContentValues();
+		tim.put("name", "Juliet Thompson");
+		tim.put("phone", "234-675-1375");
+		tim.put("facebook", "facebook.com/j.thompson");
+		tim.put("twitter", "twitter.com/juliet1234");
+		tim.put("google", "plus.google.com/u/julieT1234/posts");
+		database.insert("temp_profiles", null, tim);
+		
+		ContentValues sue = new ContentValues();
+		tim.put("name", "Sue Martin");
+		tim.put("phone", "674-342-7788");
+		tim.put("facebook", "facebook.com/sue.martin");
+		tim.put("twitter", "Unavailable");
+		tim.put("google", "Unavailable");
+		database.insert("temp_profiles", null, tim);
+	}
 	
 	public void insertVotesSimulation() {
 		/*
@@ -207,6 +239,9 @@ public class ElectricFlurryDatabase {
 			String userCompVotesCreate = "CREATE TABLE user_complicated_votes (_id INTEGER PRIMARY KEY, u_id INTEGER, v_id INTEGER) ";
 			dBase.execSQL(userCompVotesCreate);
 			
+			
+			String tempProfilesCreate = "CREATE TABLE temp_profiles (_id INTEGER PRIMARY KEY, name text, phone text, facebook text, twitter text, google text)";
+			dBase.execSQL(tempProfilesCreate);
 		}//end of constructor
 
 		@Override

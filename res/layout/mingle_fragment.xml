@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <TextView 
+
+    <ListView
+        android:id="@+id/mingle_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mingle fragment, YAY!"/>
-    
+        android:textSize="20sp"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>
