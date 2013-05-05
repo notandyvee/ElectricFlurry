@@ -79,8 +79,8 @@ final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
 		profile.setPhoneNumber(cursor.getString(1));
 		profile.setFacebookURL(cursor.getString(2));
 		profile.setTwitterURL(cursor.getString(3));
-		//profile.setGoogleURL(cursor.getString(4));
-		profile.setGoogleURL(Integer.toString(cursor.getCount()));
+		profile.setGoogleURL(cursor.getString(4));
+		
 		
 	}
 	

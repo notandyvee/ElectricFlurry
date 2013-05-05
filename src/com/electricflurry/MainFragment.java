@@ -197,6 +197,27 @@ public class MainFragment extends Fragment{
 		     startActivity(intent);
 		     }
 		 });
+
+
+//		
+//		twitter.setOnClickListener(new View.OnClickListener() {
+//		     @Override
+//		     public void onClick(View v) {
+//		     Intent intent = new Intent(getActivity(), TestActivity.class);
+//		     startActivity(intent);
+//		     }
+//		 });
+		
+	//	facebook.setOnClickListener(new View.OnClickListener() {
+	//	     @Override
+	//	     public void onClick(View v) {
+	//	     Intent intent = new Intent(getActivity(), Facebook.class);
+	//	     startActivity(intent);
+	//	     }
+	//	 });
+		
+
+
 		
 		
 		/*if(oAuth == null) {

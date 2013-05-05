@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome" />
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/authButton"
+        android:layout_width="121dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp" />
+
+    <com.facebook.widget.ProfilePictureView
+        android:id="@+id/selection_profile_pic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.45"
+        android:gravity="center_horizontal"
+        facebook:preset_size="large" />
+
+    <Button
+        android:id="@+id/profile"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Profile"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/publishButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Post Status"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+</LinearLayout>

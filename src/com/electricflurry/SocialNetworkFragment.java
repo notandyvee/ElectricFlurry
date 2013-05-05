@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class SocialNetworkFragment extends Fragment {
@@ -39,19 +40,36 @@ public class SocialNetworkFragment extends Fragment {
 		twitter = (Button) view.findViewById(R.id.twitter_button);
 
 		//what buttons do
+//		twitter.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+//				startActivity(intent);
+//			}
+//		});
+		
+		
 		twitter.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
-				startActivity(intent);
-			}
-		});
+		     @Override
+		     public void onClick(View v) {
+		     Intent intent = new Intent(getActivity(), TestActivity.class);
+		     startActivity(intent);
+		     }
+		 });
 
+//		facebook.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent(getActivity(), Facebook.class);
+//				startActivity(intent);
+//			}
+//		});
+		
 		facebook.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), Facebook.class);
-				startActivity(intent);
+				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, FacebookFragment.newInstance());
+				Toast.makeText(getActivity(), "clicked on Facebook", Toast.LENGTH_SHORT).show();
 			}
 		});
 
