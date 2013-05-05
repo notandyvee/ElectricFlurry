@@ -202,7 +202,7 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 		//loadPerson method is used for fetching profile information.
 		mPlusClient.loadPerson(this, "me");
 		//Displays account name (email) connected.
-		//Toast.makeText(this, mPlusClient.getAccountName() + " is connected.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, mPlusClient.getAccountName() + " is connected.", Toast.LENGTH_SHORT).show();
 	}
 
 	
@@ -304,12 +304,7 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 	@Override
 	public void onPersonLoaded(ConnectionResult status, Person person) {
 		if (status.getErrorCode() == ConnectionResult.SUCCESS) {
-			
-			//Connection toast welcome
-			Toast.makeText(this, "Welcome, " + person.getDisplayName() 
-					/*+ "\n" + mPlusClient.getAccountName()*/
-					, Toast.LENGTH_SHORT).show();
-			
+		
 			//Adding Google+ URL to SharedPreferences under google_plus_url
 			String plusUrl = person.getUrl();
 			if (plusUrl != null) {
