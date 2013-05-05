@@ -26,30 +26,32 @@
         android:layout_marginTop="16dp"
         android:text="Revoke Access" />
 
+    <EditText
+        android:id="@+id/text_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_centerHorizontal="true"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_out_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" >
+        android:layout_marginTop="20dp" >
     </com.google.android.gms.common.SignInButton>
 
     <Button
         android:id="@+id/share_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_box"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Share" />
-
-    <EditText
-        android:id="@+id/text_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:ems="10" />
+        android:text="Share" />
 
 </RelativeLayout>

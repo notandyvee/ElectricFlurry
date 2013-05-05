@@ -93,9 +93,9 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 		mResolveOnFail = false;
 
 		//One layout switching between visible/invisible, buttons view status'
+		//Buttons & EditText
 		Button shareButton = (Button) findViewById(R.id.share_button);
 		text = (EditText) findViewById(R.id.text_box);
-		//sign in, sign out and revoke buttons.
 		findViewById(R.id.sign_in_button).setOnClickListener(this);
 		findViewById(R.id.sign_out_button).setOnClickListener(this);
 		findViewById(R.id.revoke_access_button).setOnClickListener(this);
@@ -109,9 +109,9 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 		mConnectionProgressDialog = new ProgressDialog(this);
 		mConnectionProgressDialog.setMessage("Signing in...");
 
+		
 		//Basic sharing
-		shareButton.setOnClickListener(new OnClickListener() {
-			
+		shareButton.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
 
@@ -124,7 +124,6 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 			}
 		});
 	}
-
 	
 	//For sharing auto-fill.
 	private String setText(){
@@ -133,7 +132,6 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 	public String getText() {
 		return setText();
 	}	
-
 	
 	//On activity start PlusClient attempts to connect.
 	@Override
@@ -176,7 +174,7 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 		findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
 		findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
 		findViewById(R.id.revoke_access_button).setVisibility(View.VISIBLE);
-		findViewById(R.id.text_box).setVisibility(View.VISIBLE);					
+		findViewById(R.id.text_box).setVisibility(View.VISIBLE);
 		findViewById(R.id.share_button).setVisibility(View.VISIBLE);
 
 		//Retrieve the oAuth 2.0 access token.
@@ -203,7 +201,8 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 
 		//loadPerson method is used for fetching profile information.
 		mPlusClient.loadPerson(this, "me");
-		Toast.makeText(this, mPlusClient.getAccountName() + " is connected.", Toast.LENGTH_SHORT).show();		
+		//Displays account name (email) connected.
+		//Toast.makeText(this, mPlusClient.getAccountName() + " is connected.", Toast.LENGTH_SHORT).show();
 	}
 
 	
@@ -255,7 +254,7 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 				findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 				findViewById(R.id.sign_out_button).setVisibility(View.INVISIBLE);
 				findViewById(R.id.share_button).setVisibility(View.INVISIBLE);
-				findViewById(R.id.text_box).setVisibility(View.INVISIBLE); 				
+				findViewById(R.id.text_box).setVisibility(View.INVISIBLE);
 				findViewById(R.id.revoke_access_button).setVisibility(View.INVISIBLE);
 			}			
 			break;
@@ -283,7 +282,7 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 		findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 		findViewById(R.id.sign_out_button).setVisibility(View.INVISIBLE);
 		findViewById(R.id.revoke_access_button).setVisibility(View.INVISIBLE);
-		findViewById(R.id.text_box).setVisibility(View.INVISIBLE);						
+		findViewById(R.id.text_box).setVisibility(View.INVISIBLE);
 		findViewById(R.id.share_button).setVisibility(View.INVISIBLE);
 
 	}
@@ -305,10 +304,14 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 	@Override
 	public void onPersonLoaded(ConnectionResult status, Person person) {
 		if (status.getErrorCode() == ConnectionResult.SUCCESS) {
-			//String for User's URL
-			String plusUrl = person.getUrl();			
+			
+			//Connection toast welcome
+			Toast.makeText(this, "Welcome, " + person.getDisplayName() 
+					/*+ "\n" + mPlusClient.getAccountName()*/
+					, Toast.LENGTH_SHORT).show();
 			
 			//Adding Google+ URL to SharedPreferences under google_plus_url
+			String plusUrl = person.getUrl();
 			if (plusUrl != null) {
 				SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
 				SharedPreferences.Editor editor = settings.edit();
@@ -316,11 +319,8 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 				editor.commit();
 				Log.d(TAG, "User's Url has been added to SharedPreferences.");
 			} else {
-				Log.d(TAG, "Url not added to SharedPreferences");
+				Log.d(TAG, "Url not added to SharedPreferences.");
 			}
-
-			//Connected display
-			Toast.makeText(this, "Welcome, " + person.getDisplayName(), Toast.LENGTH_SHORT).show();
 
 			//For testing in LogCat
 			//Log.d(TAG, "Display Name: " + person.getDisplayName());
