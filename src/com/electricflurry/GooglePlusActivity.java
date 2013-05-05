@@ -36,11 +36,14 @@ Google+ requires google-play-services_lib to be imported
 as a project in order to work.
 
 Steps:
+-Using Android SDK Manager Extras > GooglePlayServices install
 -Import an android project from existing code
 -Directory:  ~/android-sdk/extras/google/google_play_services/Lib_project
 -Copy to workspace
 -Right click ElectricFlurry, properties, android tab, add library
 -Set the target to Android 4.2.2 (not google API's)
+
+**Note: After pulling from github you may have to re-add the library.
 
 [Remove]
 The old version of G+ that was pushed is no longer necessary
