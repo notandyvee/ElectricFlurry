@@ -74,19 +74,34 @@ public class AndroidTwitterSample extends Activity {
 		});
         
         tweet.setOnClickListener(new View.OnClickListener() {
+        	///////
+        	
+        	//////
         	/**
         	 * Send a tweet. If the user hasn't authenticated to Tweeter yet, he'll be redirected via a browser
         	 * to the twitter login page. Once the user authenticated, he'll authorize the Android application to send
         	 * tweets on the users behalf.
         	 */
             public void onClick(View v) {
-            	if (TwitterUtils.isAuthenticated(prefs)) {
-            		sendTweet();
-            	} else {
-    				Intent i = new Intent(getApplicationContext(), PrepareRequestTokenActivity.class);
-    				i.putExtra("tweet_msg",getTweetMsg());
-    				startActivity(i);
-            	}
+            	Thread thread = new Thread(new Runnable(){
+            	    @Override
+            	    public void run() {
+            	        try {
+            	        	if (TwitterUtils.isAuthenticated(prefs)) {
+                        		sendTweet();
+                        	} else {
+                				Intent i = new Intent(getApplicationContext(), PrepareRequestTokenActivity.class);
+                				i.putExtra("tweet_msg",getTweetMsg());
+                				startActivity(i);
+                        	}
+            	        } catch (Exception e) {
+            	            e.printStackTrace();
+            	        }
+            	    }
+            	});
+
+            	thread.start();
+            	
             }
         });
 
@@ -105,7 +120,21 @@ public class AndroidTwitterSample extends Activity {
 	}
 
 	public void updateLoginStatus() {
-		loginStatus.setText("Logged into Twitter : " + TwitterUtils.isAuthenticated(prefs));
+		
+		Thread thread = new Thread(new Runnable(){
+		    @Override
+		    public void run() {
+		        try {
+		        	loginStatus.setText("Logged into Twitter : " + TwitterUtils.isAuthenticated(prefs));
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		});
+
+		thread.start();
+		
+		
 		
 	}
 
@@ -141,5 +170,7 @@ public class AndroidTwitterSample extends Activity {
 		edit.remove(OAuth.OAUTH_TOKEN_SECRET);
 		edit.commit();
 	}
+	
+	
 	
 }

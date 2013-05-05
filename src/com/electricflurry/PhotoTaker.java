@@ -40,7 +40,7 @@ public class PhotoTaker extends Activity {
 				+ "/ElectricFlurryPictures/";
 		File dir = new File(targetDir);
 		if (dir.isDirectory()) {
-			Toast.makeText(this, "directory exists", Toast.LENGTH_SHORT).show();
+			count = dir.list().length;
 		} else {
 			
 			dir.mkdirs();
