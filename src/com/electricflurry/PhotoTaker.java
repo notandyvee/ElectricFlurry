@@ -42,9 +42,11 @@ public class PhotoTaker extends Activity {
 		if (dir.isDirectory()) {
 			Toast.makeText(this, "directory exists", Toast.LENGTH_SHORT).show();
 		} else {
+			
 			dir.mkdirs();
+			count = 0;
 		}
-		count = dir.list().length;
+		
 		
         myGallery = (LinearLayout)findViewById(R.id.mygallery);
         
