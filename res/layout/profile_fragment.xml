@@ -15,30 +15,35 @@
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#9556d9"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/profile_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#9556d9"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/facebook_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#9556d9"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/twitter_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#9556d9"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/google_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#9556d9"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>

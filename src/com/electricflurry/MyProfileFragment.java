@@ -51,7 +51,7 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 		} catch (CursorIndexOutOfBoundsException e) {
 			db.submitFirstUser();
 		}
-		Button save = (Button) view.findViewById(R.id.save);
+		TextView save = (TextView) view.findViewById(R.id.save);
 		
 		edit_name.setHint("My Name");
 		edit_phone.setHint("My Phone Number");

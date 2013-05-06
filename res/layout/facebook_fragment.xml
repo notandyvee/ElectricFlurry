@@ -27,15 +27,6 @@
         facebook:preset_size="large" />
 
     <Button
-        android:id="@+id/profile"
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Profile"
-        android:textStyle="bold"
-        android:visibility="visible" />
-
-    <Button
         android:id="@+id/publishButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

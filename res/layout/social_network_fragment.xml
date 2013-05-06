@@ -1,27 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/lib/com.google.android.gms.plus">
+    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/twitter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Twitter" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/facebook_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Facebook" />
+        <TextView
+            android:id="@+id/twitter_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="#9556d9"
+            android:gravity="center"
+            android:text="TWITTER"
+            android:textColor="#fff" />
 
+        <TextView
+            android:id="@+id/facebook_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="#9556d9"
+            android:gravity="center"
+            android:text="FACEBOOK"
+            android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/gPlus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Google+" />
+        <TextView
+            android:id="@+id/gPlus_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="#9556d9"
+            android:gravity="center"
+            android:text="GOOGLE+"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/photo"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="#9556d9"
+            android:gravity="center"
+            android:text="CAMERA"
+            android:textColor="#fff" />
+    </LinearLayout>
 
 </LinearLayout>

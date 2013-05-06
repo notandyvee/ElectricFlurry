@@ -4,17 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+            <TextView
         android:id="@+id/btnCapture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Take Photo" />
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="#9556d9"
+        android:gravity="center"
+        android:text="TAKE PHOTO"
+        android:textColor="#fff" />
 
-    <Button
+    <TextView
         android:id="@+id/btnSend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Send Photo" />
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="#9556d9"
+        android:gravity="center"
+        android:text="SEND"
+        android:textColor="#fff" />
+    </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"

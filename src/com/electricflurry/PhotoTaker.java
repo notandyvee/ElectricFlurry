@@ -18,6 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PhotoTaker extends Activity {
@@ -56,7 +57,7 @@ public class PhotoTaker extends Activity {
          myGallery.addView(insertPhoto(file.getAbsolutePath()));
         } 
         
-    		Button capture = (Button) findViewById(R.id.btnCapture);
+    		TextView capture = (TextView) findViewById(R.id.btnCapture);
     		capture.setOnClickListener(new View.OnClickListener() {
     			public void onClick(View v) {
 
@@ -85,7 +86,7 @@ public class PhotoTaker extends Activity {
     			}
     		});
 
-    		Button send = (Button) findViewById(R.id.btnSend);
+    		TextView send = (TextView) findViewById(R.id.btnSend);
     		send.setOnClickListener(new View.OnClickListener() {
     			public void onClick(View v) {
 

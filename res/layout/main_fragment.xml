@@ -5,18 +5,24 @@
     android:orientation="vertical"
     android:background="#F2F2F2" >
 	 
-
-    <LinearLayout 
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="2">
+        android:layout_weight="1.44"
+        android:orientation="vertical" >
+
          <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="#fff"
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginRight="10dp">
+
+             <ImageView
+                 android:id="@+id/imageView1"
+                 android:layout_width="299dp"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/eflogo" />
 	        
              </LinearLayout>
         
@@ -69,17 +75,18 @@
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
 		        android:gravity="center" />
-		    
-		    <TextView 
-		        android:id="@+id/mingle"
+
+		    <TextView
+		        android:id="@+id/tickets"
 		        android:layout_width="0dp"
 		        android:layout_height="60dp"
-		        android:text="MINGLE"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
-		        android:layout_weight="1"
 		        android:layout_margin="5dp"
-		        android:gravity="center" />
+		        android:layout_weight="1"
+		        android:background="#9556d9"
+		        android:gravity="center"
+		        android:text="TICKETS"
+		        android:textColor="#fff" />
+
 		 </LinearLayout>
 		 
 	
@@ -122,29 +129,7 @@
 	        android:background="#fff"
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginRight="10dp" >
-	    
-	    
-	    <TextView
-	         android:id="@+id/photo"
-	         android:layout_width="0dp"
-	         android:layout_height="60dp"
-	         android:layout_margin="5dp"
-	         android:layout_weight="1"
-	         android:background="#9556d9"
-	         android:gravity="center"
-	         android:text="CAMERA"
-	         android:textColor="#fff" />
-	    
-	    <TextView
-	         android:id="@+id/settings"
-	         android:layout_width="0dp"
-	         android:layout_height="60dp"
-	         android:layout_margin="5dp"
-	         android:layout_weight="1"
-	         android:background="#9556d9"
-	         android:gravity="center"
-	         android:text="SETTINGS"
-	         android:textColor="#fff" />
+
 	    
 	    </LinearLayout>
 	    
@@ -174,17 +159,14 @@
     
     </LinearLayout>
     
-    
-    
-    
-    
-    <ListView 
+    <ListView
         android:id="@+id/venues_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"></ListView>
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.80" >
+</ListView>
     
     
     

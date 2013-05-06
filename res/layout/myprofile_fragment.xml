@@ -38,10 +38,13 @@
         android:layout_height="wrap_content"
         android:ems="10" />
 
-    <Button
+    <TextView
         android:id="@+id/save"
-        android:layout_width="282dp"
-        android:layout_height="wrap_content"
-        android:text="Save Changes" />
+        android:layout_width="143dp"
+        android:layout_height="30dp"
+        android:background="#9556d9"
+        android:gravity="center"
+        android:text="SAVE CHANGES"
+        android:textColor="#fff" />
 
 </LinearLayout>
