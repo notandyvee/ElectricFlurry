@@ -36,12 +36,20 @@
         <activity android:name="com.electricflurry.PhotoTaker" >
         </activity>
         <activity android:name="com.electricflurry.Tweeter" >
+            
         </activity>
         <activity android:name="com.electricflurry.AndroidTwitterSample" >
+       
         </activity>
         <activity
             android:name="com.electricflurry.PrepareRequestTokenActivity"
             android:launchMode="singleTask" >
+                 <intent-filter>          
+    <action android:name="android.intent.action.VIEW"/>     
+    <category android:name="android.intent.category.DEFAULT"/>
+    <category android:name="android.intent.category.BROWSABLE"/>
+    <data android:scheme="x-oauthflow-twitter" android:host="callback" />
+   </intent-filter>
         </activity>
 
         <meta-data
