@@ -84,7 +84,7 @@ public class ProfileFragment extends Fragment implements ConsumeCursor {
 					+ profile.getGoogleURL());
 		}
 		//gets the profile picture from facebook
-		profilePictureView = (ProfilePictureView) view.findViewById(R.id.selection_profile_pic);
+		profilePictureView = (ProfilePictureView) view.findViewById(R.id.profile_fbpic);
 		id = preferences.getString("id", "");
 		Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
 		profilePictureView.setProfileId(id);

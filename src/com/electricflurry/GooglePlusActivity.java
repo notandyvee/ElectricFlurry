@@ -229,7 +229,11 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 	
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.sign_in_button) {
+
+
+
+		int id = view.getId();
+		if (id == R.id.sign_in_button) {
 			Log.v(TAG, "Tapped sign in");
 			if (!mPlusClient.isConnected()) {
 				mConnectionProgressDialog.show();
@@ -240,7 +244,11 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 					mPlusClient.connect();
 				}
 			}
+
 		} else if (view.getId() == R.id.sign_out_button) {
+
+		} else if (id == R.id.sign_out_button) {
+
 			Log.v(TAG, "Tapped sign out");
 			if (mPlusClient.isConnected()) {
 				mPlusClient.clearDefaultAccount();
@@ -254,7 +262,11 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 				findViewById(R.id.text_box).setVisibility(View.INVISIBLE);
 				findViewById(R.id.revoke_access_button).setVisibility(View.INVISIBLE);
 			}
+
 		} else if (view.getId() == R.id.revoke_access_button) {
+
+		} else if (id == R.id.revoke_access_button) {
+
 			Log.v(TAG, "Tapped disconnect");
 			if (mPlusClient.isConnected()) {
 				mPlusClient.clearDefaultAccount();
