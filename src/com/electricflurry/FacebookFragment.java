@@ -115,7 +115,8 @@ public class FacebookFragment extends Fragment {
 	                
 	                
 	                SharedPreferences.Editor editor = preferences.edit();
-	                editor.putString("username", user.getId());
+	                editor.putString("id", user.getId());
+	                editor.putString("username", user.getName());
 	                editor.commit();
 	                
 	                facebookUserName = user.getUsername();
