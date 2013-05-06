@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment implements ConsumeCursor {
 		profile.setFacebookURL(cursor.getString(2));
 		profile.setTwitterURL(cursor.getString(3));
 		profile.setGoogleURL(cursor.getString(4));
-
+//
 	}
 
 }

@@ -230,8 +230,6 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 	@Override
 	public void onClick(View view) {
 
-
-
 		int id = view.getId();
 		if (id == R.id.sign_in_button) {
 			Log.v(TAG, "Tapped sign in");
