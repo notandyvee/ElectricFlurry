@@ -229,10 +229,7 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 	
 	@Override
 	public void onClick(View view) {
-		switch (view.getId()) {
-
-		//Sign in button
-		case R.id.sign_in_button:
+		if (view.getId() == R.id.sign_in_button) {
 			Log.v(TAG, "Tapped sign in");
 			if (!mPlusClient.isConnected()) {
 				mConnectionProgressDialog.show();
@@ -242,11 +239,8 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 				} else {
 					mPlusClient.connect();
 				}
-			}	
-			break;
-
-		//Sign out button, disconnects user, clears default account.
-		case R.id.sign_out_button:
+			}
+		} else if (view.getId() == R.id.sign_out_button) {
 			Log.v(TAG, "Tapped sign out");
 			if (mPlusClient.isConnected()) {
 				mPlusClient.clearDefaultAccount();
@@ -259,19 +253,13 @@ OnAccessRevokedListener, OnPersonLoadedListener {
 				findViewById(R.id.share_button).setVisibility(View.INVISIBLE);
 				findViewById(R.id.text_box).setVisibility(View.INVISIBLE);
 				findViewById(R.id.revoke_access_button).setVisibility(View.INVISIBLE);
-			}			
-			break;
-			
-		//Revoke access button will clear all user data/default account, sign out, & revokes access
-		//Access to user denied, user can grant permission on next sign-in.
-		case R.id.revoke_access_button:
+			}
+		} else if (view.getId() == R.id.revoke_access_button) {
 			Log.v(TAG, "Tapped disconnect");
 			if (mPlusClient.isConnected()) {
 				mPlusClient.clearDefaultAccount();
 				mPlusClient.revokeAccessAndDisconnect(this);
 			}
-			break;
-		default:
 		}
 	}
 
