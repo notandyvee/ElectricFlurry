@@ -9,8 +9,8 @@ package com.google.android.gms;
 public final class R {
 	public static final class id {
 		public static final int terrain = 0x7f040005;
-		public static final int none = 0x7f040003;
 		public static final int satellite = 0x7f040004;
+		public static final int none = 0x7f040003;
 		public static final int hybrid = 0x7f040006;
 		public static final int normal = 0x7f040001;
 	}
@@ -36,14 +36,14 @@ public final class R {
 	public static final class styleable {
 		public static final int MapAttrs_uiCompass = 6;
 		public static final int MapAttrs_uiScrollGestures = 8;
-		public static final int MapAttrs_mapType = 0;
 		public static final int MapAttrs_cameraZoom = 5;
+		public static final int MapAttrs_mapType = 0;
 		public static final int MapAttrs_cameraBearing = 1;
 		public static final int MapAttrs_uiZoomControls = 10;
 		public static final int MapAttrs_zOrderOnTop = 13;
 		public static final int[] MapAttrs = { 0x7f010012, 0x7f010013, 0x7f010014, 0x7f010015, 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a, 0x7f01001b, 0x7f01001c, 0x7f01001d, 0x7f01001e, 0x7f01001f };
-		public static final int MapAttrs_cameraTargetLat = 2;
 		public static final int MapAttrs_cameraTargetLng = 3;
+		public static final int MapAttrs_cameraTargetLat = 2;
 		public static final int MapAttrs_uiTiltGestures = 9;
 		public static final int MapAttrs_cameraTilt = 4;
 		public static final int MapAttrs_uiRotateGestures = 7;
