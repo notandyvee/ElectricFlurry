@@ -2,6 +2,7 @@ package com.electricflurry;
 
 public class Profile {
 	private String name, phoneNumber, facebookURL, twitterURL, googleURL, foursquareURL;
+	int serverId;
 	//PROFILE PICTURE
 	
 	public Profile() {
@@ -11,6 +12,14 @@ public class Profile {
 		this.twitterURL ="Unavailable";
 		this.googleURL = "Unavailable";
 		this.foursquareURL = "Unavailable";
+	}
+	
+	public void setServerId(int serverId) {
+		this.serverId = serverId;
+	}
+	
+	public int getServerId() {
+		return this.serverId;
 	}
 	
 	public String getName() {

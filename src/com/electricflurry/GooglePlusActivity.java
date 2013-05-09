@@ -11,7 +11,9 @@ import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallback
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.PlusClient.OnAccessRevokedListener;
+import com.google.android.gms.plus.PlusClient.OnPersonLoadedListener;
 import com.google.android.gms.plus.PlusShare;
+import com.google.android.gms.plus.model.people.Person;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,32 +23,62 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /*	
-Google+ requires google-play-services_lib
-It is located in ~/android-sdk/extras/google/google_play_services/Lib_project
-import it as an android project from existing code, it must be on the same HDD & partition
-as your project, just select copy to workspace as g+/dev suggests. Then link EF to it the
-same way FB is linked (properties > android tab > etc. etc.)
-Also the visible/invisible and basic sharing stuff is temporary, it'll be slicker.	
-*/
+Google+ requires google-play-services_lib to be imported
+as a project in order to work.
+
+Steps:
+-Import an android project from existing code
+-Directory:  ~/android-sdk/extras/google/google_play_services/Lib_project
+-Copy to workspace
+-Right click ElectricFlurry, properties, android tab, add library
+-Set the target to Android 4.2.2 (not google API's)
+
+[Remove]
+The old version of G+ that was pushed is no longer necessary
+Classes to be removed:
+-GooglePlayServicesErrorDialogFragment
+-GooglePlusErrorDialogFragment
+-GPlusVisFragment
+-PlusClientFragment
+Layouts to be removed:
+-google_plus_menu
+-google_plus_share
+-google_plus_sign_in
+Leave them commented out or delete / rm them from github.
+
+
+[Do not remove]
+The only classes needed for Google+ in the ElectricFlurry project are:
+Class:
+-GooglePlusActivity
+Layout:
+-activity_google_plus
+AndroidManifest permission that was added:
+-GET_ACCOUNTS
+ */
 
 public class GooglePlusActivity extends Activity implements
 ConnectionCallbacks, OnConnectionFailedListener, OnClickListener,
-OnAccessRevokedListener {	
-	
+OnAccessRevokedListener, OnPersonLoadedListener {	
+
 	private static final String TAG = "GooglePlusActivity";
 	private static final int REQUEST_CODE = 79863;
 	private PlusClient mPlusClient;
 	private boolean mResolveOnFail;
 	private ConnectionResult mConnectionResult;
 	private ProgressDialog mConnectionProgressDialog;
+	//private String plusUrl;
 
+	String MY_PREFS = "MySocialSettings";
 	EditText text;
 
 	@Override
@@ -61,9 +93,9 @@ OnAccessRevokedListener {
 		mResolveOnFail = false;
 
 		//One layout switching between visible/invisible, buttons view status'
+		//Buttons & EditText
 		Button shareButton = (Button) findViewById(R.id.share_button);
 		text = (EditText) findViewById(R.id.text_box);
-		// Connect our sign in, sign out and disconnect buttons.
 		findViewById(R.id.sign_in_button).setOnClickListener(this);
 		findViewById(R.id.sign_out_button).setOnClickListener(this);
 		findViewById(R.id.revoke_access_button).setOnClickListener(this);
@@ -74,39 +106,33 @@ OnAccessRevokedListener {
 		text.setVisibility(View.INVISIBLE);						
 		shareButton.setVisibility(View.INVISIBLE);
 
-
 		mConnectionProgressDialog = new ProgressDialog(this);
 		mConnectionProgressDialog.setMessage("Signing in...");
 
 		
-		//This is a very basic way to share on G+, will be changing this eventually.
-		shareButton.setOnClickListener(new OnClickListener() {
+		//Basic sharing
+		shareButton.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-				// Launch the Google+ share dialog with attribution to your app.
+
 				Intent shareIntent = new PlusShare.Builder()
 				.setType("text/plain")
 				.setText(getText())
-				.setContentUrl(Uri.parse("https://developers.google.com/+/"))
+				//.setContentUrl(Uri.parse("https://plus.google.com/u/0/b/112596573196143676178/112596573196143676178/posts"))
 				.getIntent();
-
-
 				startActivityForResult(shareIntent, 0);
 			}
 		});
 	}
-
-
-	//Getter & Setter for converting user's msg for posting auto-fill. (Will change later with a better integration function)
+	
+	//For sharing auto-fill.
 	private String setText(){
 		return this.text.getText().toString();
 	}
-
 	public String getText() {
 		return setText();
 	}	
-
-
+	
 	//On activity start PlusClient attempts to connect.
 	@Override
 	protected void onStart() {
@@ -115,6 +141,7 @@ OnAccessRevokedListener {
 		mPlusClient.connect();
 	}
 
+	
 	//When exiting the activity PlusClient disconnects. Connection only exists when app & activity are open.
 	@Override
 	protected void onStop() {
@@ -123,6 +150,7 @@ OnAccessRevokedListener {
 		mPlusClient.disconnect();
 	}
 
+	
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
 		Log.v(TAG, "ConnectionFailed");
@@ -134,23 +162,25 @@ OnAccessRevokedListener {
 		}
 	}
 
+	
 	@Override
 	public void onConnected() {
-		Log.v(TAG, "Connected. Yay!");
+		Log.v(TAG, "Connected");
 
 		mResolveOnFail = false;
 		mConnectionProgressDialog.dismiss();
 
-		//Switch between which buttons should be visible (using 1 layout atm, will try and do a tab-scroll layout later)
+		//Switch between which buttons should be visible
 		findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
 		findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
 		findViewById(R.id.revoke_access_button).setVisibility(View.VISIBLE);
-		findViewById(R.id.text_box).setVisibility(View.VISIBLE);					
+		findViewById(R.id.text_box).setVisibility(View.VISIBLE);
 		findViewById(R.id.share_button).setVisibility(View.VISIBLE);
 
 		//Retrieve the oAuth 2.0 access token.
 		final Context context = this.getApplicationContext();
 		AsyncTask task = new AsyncTask() {
+
 			@Override
 			protected Object doInBackground(Object... params) {
 				String scope = "oauth2:" + Scopes.PLUS_LOGIN;
@@ -168,13 +198,20 @@ OnAccessRevokedListener {
 			}
 		};
 		task.execute((Void) null);
+
+		//loadPerson method is used for fetching profile information.
+		mPlusClient.loadPerson(this, "me");
+		//Displays account name (email) connected.
+		Toast.makeText(this, mPlusClient.getAccountName() + " is connected.", Toast.LENGTH_SHORT).show();
 	}
 
+	
 	@Override
 	public void onDisconnected() {
-		Log.v(TAG, "Disconnected. Bye!");
+		Log.v(TAG, "Disconnected");
 	}
 
+	
 	protected void onActivityResult(int requestCode, int responseCode,
 			Intent intent) {
 		Log.v(TAG, "ActivityResult: " + requestCode);
@@ -185,6 +222,8 @@ OnAccessRevokedListener {
 			mConnectionProgressDialog.dismiss();
 		}
 	}
+	
+	
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
@@ -200,10 +239,10 @@ OnAccessRevokedListener {
 				} else {
 					mPlusClient.connect();
 				}
-			}
+			}	
 			break;
 
-			//Sign out button, disconnects user but does NOT clear default account / data.
+		//Sign out button, disconnects user, clears default account.
 		case R.id.sign_out_button:
 			Log.v(TAG, "Tapped sign out");
 			if (mPlusClient.isConnected()) {
@@ -213,16 +252,15 @@ OnAccessRevokedListener {
 
 				//Switching button visibility's.
 				findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-				findViewById(R.id.sign_out_button)
-				.setVisibility(View.INVISIBLE);
-				findViewById(R.id.share_button).setVisibility(
-						View.INVISIBLE);
-				findViewById(R.id.text_box).setVisibility(View.INVISIBLE); 				
+				findViewById(R.id.sign_out_button).setVisibility(View.INVISIBLE);
 				findViewById(R.id.share_button).setVisibility(View.INVISIBLE);
+				findViewById(R.id.text_box).setVisibility(View.INVISIBLE);
+				findViewById(R.id.revoke_access_button).setVisibility(View.INVISIBLE);
 			}			
-
 			break;
-			//Revoke access button, will clear all user data and default account attached to app.
+			
+		//Revoke access button will clear all user data/default account, sign out, & revokes access
+		//Access to user denied, user can grant permission on next sign-in.
 		case R.id.revoke_access_button:
 			Log.v(TAG, "Tapped disconnect");
 			if (mPlusClient.isConnected()) {
@@ -234,16 +272,19 @@ OnAccessRevokedListener {
 		}
 	}
 
+	
 	@Override
 	public void onAccessRevoked(ConnectionResult status) {
+
 		mPlusClient.connect();
 
-		//Button visibilities 
+		//Button visibilities
 		findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 		findViewById(R.id.sign_out_button).setVisibility(View.INVISIBLE);
 		findViewById(R.id.revoke_access_button).setVisibility(View.INVISIBLE);
-		findViewById(R.id.text_box).setVisibility(View.INVISIBLE);						
+		findViewById(R.id.text_box).setVisibility(View.INVISIBLE);
 		findViewById(R.id.share_button).setVisibility(View.INVISIBLE);
+
 	}
 
 
@@ -256,4 +297,31 @@ OnAccessRevokedListener {
 			mPlusClient.connect();
 		}
 	}
-}
+
+	//For Sean to use for profile fragment:
+	//Google+ URL stored to SharedPreferences
+	//Accessing user's profile information
+	@Override
+	public void onPersonLoaded(ConnectionResult status, Person person) {
+		if (status.getErrorCode() == ConnectionResult.SUCCESS) {
+		
+			//Adding Google+ URL to SharedPreferences under google_plus_url
+			String plusUrl = person.getUrl();
+			if (plusUrl != null) {
+				SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putString("google_plus_url", plusUrl);
+				editor.commit();
+				Log.d(TAG, "User's Url has been added to SharedPreferences.");
+			} else {
+				Log.d(TAG, "Url not added to SharedPreferences.");
+			}
+
+			//For testing in LogCat
+			//Log.d(TAG, "Display Name: " + person.getDisplayName());
+			//Log.d(TAG, "URL: " + person.getUrl());
+			//Log.d(TAG, "e-mail: " + mPlusClient.getAccountName());
+		}
+	}
+	
+}//End GooglePlusActivity

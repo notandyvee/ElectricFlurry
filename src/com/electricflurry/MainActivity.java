@@ -58,6 +58,24 @@ public class MainActivity extends FragmentActivity {
     }
     
     
+    
+	public void popUpDialog(int voteId, int userId){
+
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		
+		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+		if(prev != null) { ft.remove(prev); }
+		ft.addToBackStack(null);
+		
+		MyDialogFragment frag = MyDialogFragment.newInstance(voteId, userId);
+		
+		frag.show(ft, "dialog");
+		
+	}//end of popUpDialog
+	
+    
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,7 +1,5 @@
 package com.electricflurry;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,7 +127,6 @@ public class MainFragment extends Fragment{
 		TextView vote = (TextView)view.findViewById(R.id.vote);
 		TextView social = (TextView)view.findViewById(R.id.social_networking);
 		TextView mingle = (TextView)view.findViewById(R.id.mingle);
-		TextView profile = (TextView)view.findViewById(R.id.profile);
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		TextView photo = (TextView)view.findViewById(R.id.photo);
 		
@@ -171,15 +167,7 @@ public class MainFragment extends Fragment{
 				Toast.makeText(getActivity(), "clicked on mingle", Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		profile.setOnClickListener(new View.OnClickListener() {
-			//added interactivity to the profile button -sean
-			@Override
-			public void onClick(View v) {
-				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, ProfileFragment.newInstance());
-				Toast.makeText(getActivity(), "clicked on Profile", Toast.LENGTH_SHORT).show();
-			}
-		});
+
 		
 		myProfile.setOnClickListener(new View.OnClickListener() {
 			//added interactivity to the myprofile button -sean

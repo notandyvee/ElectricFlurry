@@ -50,16 +50,14 @@ public class ElectricFlurryDatabase {
 	}
 	
 
-	public void submitFirstUser() {
+	public void submitFirstUser(String name, String phone, int result) {
 		/*phone is optional
 		 * can send null to just not include it*/
 		ContentValues values = new ContentValues();
-		Profile profile = new Profile();
-		values.put("name", profile.getName());
-		values.put("phone", profile.getPhoneNumber());
-		values.put("facebook", profile.getFacebookURL());
-		values.put("twitter", profile.getTwitterURL());
-		values.put("google", profile.getGoogleURL());
+		
+		values.put("name", name);
+		values.put("phone", phone);
+		values.put("server_id", result);
 		
 		database.insert("user", null, values);
 		
@@ -185,7 +183,7 @@ public class ElectricFlurryDatabase {
 			 * and is only run once until a new
 			 * version number is sent to it
 			 * */
-			String userCreate = " CREATE TABLE user (_id INTEGER PRIMARY KEY, name text, phone text, facebook text, twitter text, google text) ";
+			String userCreate = " CREATE TABLE user (_id INTEGER PRIMARY KEY, name text, phone text, server_id INTEGER) ";
 			dBase.execSQL(userCreate);
 			
 			

@@ -3,6 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+    <TextView 
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:background="#9556d9"
+        android:text="Refresh"/>
+    
     <!-- This first section is for simple layouts -->
     <LinearLayout 
         android:layout_width="match_parent"

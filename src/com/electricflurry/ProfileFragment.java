@@ -38,7 +38,7 @@ final ElectricFlurryDatabase db = new ElectricFlurryDatabase(getActivity());
 		try {
 		db.leQuery("user", new String[] {"name", "phone", "facebook", "twitter", "google"}, null, null, null, null, null, this);
 		} catch (CursorIndexOutOfBoundsException e) {
-			db.submitFirstUser();
+			//db.submitFirstUser();
 		}
 		if (!profile.getName().equalsIgnoreCase("Unavailable")) {
 			TextView profile_name = (TextView)view.findViewById(R.id.profile_name);

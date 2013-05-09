@@ -1,9 +1,11 @@
 package com.electricflurry;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Document;
+//import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+//import org.xml.sax.SAXException;
 
 /*
  * BaseAdapter that just has a list of simple votes
@@ -21,7 +33,8 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 	ArrayList<Vote> votesList = new ArrayList<Vote>();
 	ElectricFlurryDatabase database;
 	Context context;
-	int id;
+	int id; //this is the ID of a user!
+	String refreshUrl;
 	
 	public SimpleVoteBaseAdapter(Context context, ElectricFlurryDatabase database) {
 		this.database = database;
@@ -31,8 +44,9 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 	
 	
 
-	public void setId(int id) {
+	public void setId(int id, String semiUrl) {
 		this.id = id;
+		refreshUrl = semiUrl+id;
 	}//end of setId()
 	
 	@Override
@@ -71,7 +85,7 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		
 		if(v.wasVotedOn() == false && v.limitReached() == false) {
 			
-			/*THE ONCLICK LISTENER SHOULD BE WRAPPED IN A SEPARATE THREAD BUT SINCE NO NETWORK CALLS ARE MADE NOT DOING THAT*/
+			
 			upVote.setOnClickListener(new View.OnClickListener() {			
 				@Override
 				public void onClick(View v) {
@@ -94,11 +108,15 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 					voteClicked.voted();
 					SimpleVoteBaseAdapter.this.notifyDataSetChanged();
 					
-					/*User can see immediate results with the above but I will also query the server again and refresh*/
-					database.userIncrementCurrentVote(id, 1, SimpleVoteBaseAdapter.this.id);
-					database.leQuery("votes", null, null, null, null, null, null, SimpleVoteBaseAdapter.this);	
-					SimpleVoteBaseAdapter.this.notifyDataSetChanged();
+					String url = 
+						"http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/upvote/"+id+"/"+SimpleVoteBaseAdapter.this.id;
 					
+					new UpVote().execute(url);
+					/*User can see immediate results with the above but I will also query the server again and refresh*/
+					
+					new DownloadSimpleVotes().execute(
+							refreshUrl, 
+							SimpleVoteBaseAdapter.this);
 					
 					//setting onClickListener to null to not allow user to vote once they have voted
 					v.setOnClickListener(null);
@@ -146,6 +164,64 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		
 		this.votesList = votesList;
 	}
+	
+	/*
+	 * This is my method that will take the document AsyncTask 
+	 * returns and actually uses it to create the list of votes*/
+	public void consumeXml(Document doc) {
+		ArrayList<Vote> votesList = new ArrayList<Vote>();
+		
+		NodeList idList = doc.getElementsByTagName("id");
+		NodeList nameList = doc.getElementsByTagName("name");
+		NodeList maxList = doc.getElementsByTagName("max");
+		NodeList currentList = doc.getElementsByTagName("current");
+		NodeList votedOnList = doc.getElementsByTagName("votedOn");
+		
+		for(int i = 0; i < idList.getLength(); i++) {
+			int id = Integer.parseInt(idList.item(i).getTextContent());
+			int limit = Integer.parseInt(maxList.item(i).getTextContent());
+			int current = Integer.parseInt(currentList.item(i).getTextContent());
+			int votedOn = Integer.parseInt(votedOnList.item(i).getTextContent());
+			Vote vote = new Vote(id, nameList.item(i).getTextContent(), limit, current, votedOn==0?false:true);
+			votesList.add(vote);
+		}
+		this.votesList = votesList;
+		
+	}//end of consumeXml
+	
+	
+	private class UpVote extends AsyncTask<String, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			String url = params[0];
+			
+			HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost(url);
+		    
+		    try{
+		    	HttpResponse response = httpclient.execute(httppost);
+		    }
+		    catch(ClientProtocolException e){
+		    	return false;
+		    }
+		    catch (IOException e) {
+		    	return false;
+		    }
+			
+			
+			return true;
+		}
+		
+		protected void onPostExecute(Boolean result) {
+			Log.d("UpVote", "onPostExecute is running!!!!");
+			if(result)
+				Toast.makeText(context, "Successfully uploaded your upvote", Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(context, "Failed to upload your upvote", Toast.LENGTH_SHORT).show();
+	     }
+		
+	}//end of DownloadSimpleVotes
 	
 	
 	

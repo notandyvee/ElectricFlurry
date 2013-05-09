@@ -1,8 +1,6 @@
 package com.electricflurry;
 
 
-import java.util.Timer;
-import java.util.TimerTask;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class VoteFragment extends Fragment implements ConsumeCursor{
@@ -17,7 +16,6 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 	ElectricFlurryDatabase database;
 	SimpleVoteBaseAdapter adapter;
 	ComplicatedVoteBaseAdapter compAdapter;
-	Timer timer;
 	ListView simpleVotes;
 	ListView complicatedVotes;
 	//used soley to count how many times the simulation has ran
@@ -55,7 +53,7 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		 * so I can just get the local copy of there ID to make things much smoother.
 		 * Maybe have that happen at user creation or checkin
 		 */
-		database.leQuery("user", new String[] {"_id"}, null, null, null, null, null, this);//this gets called just to get the user ID thats set on the server but ideally wanna have it set locally as well for speed
+		database.leQuery("user", new String[] {"server_id"}, null, null, null, null, null, this);//this gets called just to get the user ID thats set on the server but ideally wanna have it set locally as well for speed
 		
 		
 	}//end of onCreate
@@ -68,6 +66,14 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		 * This is where your fragment's view is being created so do the work to make it do stuff*/
 		View view = inflater.inflate(R.layout.vote_fragment, container, false);
 		
+		TextView refresh = (TextView)view.findViewById(R.id.refresh);
+		refresh.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				VoteFragment.this.refreshVotes();	
+			}
+		});
+		
 		simpleVotes = (ListView)view.findViewById(R.id.simple_votes_list);
 		simpleVotes.setAdapter(adapter);
 		
@@ -76,10 +82,11 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		
 		//set a timer here to fire things off 10 seconds after View is created
 		
-		fireSimulation();
+		//Download simple votes
+		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
 		
-		
-		
+		//Download complicated votes parent list first
+		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
 		
 		return view;
 	}//end of onCreateView
@@ -90,85 +97,13 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 	public void onDestroy() {
 		/*just do a bit of cleaning up as I don't want the votes to persist for this simulation*/
 		super.onDestroy();
-		database.eradicateVotes();
-		timer.cancel();
-		database.closeDbase();
+		//database.eradicateVotes();
+		//timer.cancel();
+		//database.closeDbase();
 	}//end of onDestroy
 	
 	
-	
-	
-	
-	
-	
-	
-	/*
-	 * I will put my listener stuff here to clean up all my code
-	 * above but to also have the advantages of defining them in the same class
-	 * */
-	public void fireSimulation() {
-		
-		
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				
-				
-			database.leQuery("votes", null, null, null, null, null, null, adapter);	
-			database.leQuery("complicated_votes", null, null, null, null, null, null, compAdapter);
-			
-			simpleVotes.post(new Runnable() {
-				@Override
-				public void run() {
-					adapter.notifyDataSetChanged();
-					compAdapter.notifyDataSetChanged();
-				}
-			});
-			
-			timer.scheduleAtFixedRate(repeatingtask, 10000, 10000);	
-				
-				
-				
-			}//end of run method
-			
-		}, 10000);
-		
-		
-		
-		
-		
-	}//end of fireSimulation()
-	
-	
-	TimerTask repeatingtask = new TimerTask() {
 
-		@Override
-		public void run() {
-			if(simulationCounter < 2) {
-				database.incrementCurrentVote(1, 5);
-				database.incrementCurrentVote(2, 3);
-				database.leQuery("votes", null, null, null, null, null, null, adapter);
-				
-				simpleVotes.post(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(VoteFragment.this.getActivity(), "Repeating at cycle: "+simulationCounter, Toast.LENGTH_SHORT).show();
-						simulationCounter++;
-						adapter.notifyDataSetChanged();
-					}
-				});
-				
-				
-				
-			} 
-			else 
-				if(simulationCounter == 2){
-					timer.cancel();
-				}
-		}//end of outer run method
-		
-	};
 
 
 
@@ -184,11 +119,22 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 			getActivity().getSupportFragmentManager().popBackStack();
 		} else {
 			int id = cursor.getInt(0);
-			adapter.setId(id);
+			adapter.setId(id, "http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/");
 			compAdapter.setId(id);
 		}
 		
 	}
+	
+	public void refreshVotes() {
+		//Download simple votes
+		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
+		
+		//Download complicated votes parent list first
+		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
+	}//end of refreshVotes
+
+	
+
 	
 	
 	

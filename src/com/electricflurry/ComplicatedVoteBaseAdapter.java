@@ -2,6 +2,9 @@ package com.electricflurry;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -18,7 +21,7 @@ import android.widget.Toast;
 public class ComplicatedVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 	Context context;
 	ElectricFlurryDatabase database;
-	ArrayList<VotesWrapper> compVotesList = new ArrayList<VotesWrapper>();
+	ArrayList<ParentVote> votesList = new ArrayList<ParentVote>();
 	int id;
 	
 	public ComplicatedVoteBaseAdapter(Context context, ElectricFlurryDatabase database){
@@ -33,12 +36,12 @@ public class ComplicatedVoteBaseAdapter extends BaseAdapter implements ConsumeCu
 	
 	@Override
 	public int getCount() {
-		return compVotesList.size();
+		return votesList.size();
 	}//end of getCount()
 
 	@Override
 	public Object getItem(int position) {
-		return compVotesList.get(position);
+		return votesList.get(position);
 	}// end of getItem()
 
 	@Override
@@ -53,8 +56,9 @@ public class ComplicatedVoteBaseAdapter extends BaseAdapter implements ConsumeCu
 			view = inflater.inflate(R.layout.complicated_vote, parent, false);
 		}
 		
-		VotesWrapper v = compVotesList.get(position);
+		ParentVote v = votesList.get(position);
 		
+		view.setTag(v.id+"");
 		//TextView numOfVotes = (TextView) view.findViewById(R.id.complicated_number_of_votes);
 		TextView name = (TextView)view.findViewById(R.id.complicated_vote_name);
 		name.setOnClickListener(null);
@@ -64,7 +68,11 @@ public class ComplicatedVoteBaseAdapter extends BaseAdapter implements ConsumeCu
 		name.setOnClickListener(new View.OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "You just clicked complicated vote with id: "+v.getTag(), Toast.LENGTH_SHORT).show();
+				
+				Toast.makeText(context, "You just clicked complicated vote with server id: "+v.getTag(), Toast.LENGTH_SHORT).show();
+				int voteId = Integer.parseInt((String)v.getTag());
+				((MainActivity)context).popUpDialog(voteId, id);
+				
 			}
 		});
 		
@@ -78,28 +86,58 @@ public class ComplicatedVoteBaseAdapter extends BaseAdapter implements ConsumeCu
 
 	@Override
 	public void consumeCursor(Cursor cursor) {
-		ArrayList<VotesWrapper> votesList = new ArrayList<VotesWrapper>();
+		/*ArrayList<VotesWrapper> votesList = new ArrayList<VotesWrapper>();
 		for(int i = 0; i < cursor.getCount(); i++) {
 			cursor.moveToPosition(i);
-			int simpleVId = cursor.getInt(0);//this is the ID of the simple vote
+			int simpleVId = cursor.getInt(0);
 			
 			VotesWrapper vote = new VotesWrapper( simpleVId, cursor.getString(1) );
 			votesList.add(vote);
 		}
 		
-		this.compVotesList = votesList;
+		this.compVotesList = votesList;*/
 		
 	}//end of consumeCursor()
 	
 	
-	public class VotesWrapper {
+	public class ParentVote {
 		int id;
 		String name;
-		public VotesWrapper(int id, String name) {
+		public ParentVote(int id, String name) {
 			this.id = id;
 			this.name = name;
 		}
 	}//end VotesWrapper
+	
+	
+	
+	/*
+	 * This is my method that will take the document AsyncTask 
+	 * returns and actually uses it to create the list of votes*/
+	public void consumeXml(Document doc) {
+		ArrayList<ParentVote> votesList = new ArrayList<ParentVote>();
+		
+		NodeList idList = doc.getElementsByTagName("id");
+		NodeList nameList = doc.getElementsByTagName("name");
+
+		
+		for(int i = 0; i < idList.getLength(); i++) {
+			int id = Integer.parseInt(idList.item(i).getTextContent());
+			ParentVote vote = new ParentVote(id, nameList.item(i).getTextContent());
+			votesList.add(vote);
+		}
+		this.votesList = votesList;
+		
+	}//end of consumeXml
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

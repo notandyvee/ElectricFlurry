@@ -11,14 +11,6 @@ interface ConsumeCursor {
 	 * a single profiles class so it can set itself uniformly.
 	 * It could have been easily done by you guys, but this standardizes that 
 	 * specific part
-	 * 
-	 * Edit - 
-	 * 
-	 * Edit 2
-	 * 
-	 * Edit 3
-	 * 
-	 * Edit 4
 	 * */
 	
 	public void consumeCursor(Cursor cursor);

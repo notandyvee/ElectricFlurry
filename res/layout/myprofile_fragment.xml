@@ -4,44 +4,69 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/edit_name"
-        android:layout_width="wrap_content"
+    <LinearLayout 
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:orientation="vertical"
+        android:id="@+id/no_haz_user"
+        android:visibility="gone">
+        <!-- Start of register -->
+	    <EditText
+	        android:id="@+id/edit_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:ems="10" >
+	
+	        <requestFocus />
+	    </EditText>
+	
+	    <EditText
+	        android:id="@+id/edit_phone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="phone" />
+	
 
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/edit_phone"
-        android:layout_width="wrap_content"
+	
+	    <Button
+	        android:id="@+id/save"
+	        android:layout_width="282dp"
+	        android:layout_height="wrap_content"
+	        android:text="Save Changes" />
+	    <!-- End of register -->
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="phone" />
-
-    <EditText
-        android:id="@+id/edit_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" />
-
-    <EditText
-        android:id="@+id/edit_twitter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" />
-
-    <EditText
-        android:id="@+id/edit_google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" />
-
-    <Button
-        android:id="@+id/save"
-        android:layout_width="282dp"
-        android:layout_height="wrap_content"
-        android:text="Save Changes" />
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/haz_user">
+	    
+	    <!-- This section will be invisible until a user exists -->
+        <TextView 
+            android:id="@+id/saved_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView 
+            android:id="@+id/saved_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/server_id"/>
+        
+        
+        
+        
+    </LinearLayout>
+    
+    
+    
+    
+    
 
 </LinearLayout>

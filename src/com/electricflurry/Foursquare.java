@@ -3,9 +3,7 @@
  * le foursquare API stuff*/
 package com.electricflurry;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.SharedPreferences;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 
@@ -40,8 +37,7 @@ public class Foursquare {
 		/*
 		 * Appending the oAuthToken since it is neccessary
 		 * */
-		//if(oAuthToken != null)
-			//fqUrl = fqUrl+"&oauth_token="+oAuthToken;
+
 		
 		fqUrl = fqUrl+"&v=20130403";
 		
