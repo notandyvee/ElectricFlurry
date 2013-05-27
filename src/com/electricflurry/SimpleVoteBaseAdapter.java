@@ -35,10 +35,16 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 	Context context;
 	int id; //this is the ID of a user!
 	String refreshUrl;
+	/*
+	 * This boolean is gonna be used so I can tell the difference between when I call this
+	 * for a single simple vote or when I am showing a list that you can only vote on one
+	 * */
+	boolean votingOnOne = true;
 	
-	public SimpleVoteBaseAdapter(Context context, ElectricFlurryDatabase database) {
+	public SimpleVoteBaseAdapter(Context context, ElectricFlurryDatabase database, boolean votingOnOne) {
 		this.database = database;
 		this.context = context;
+		this.votingOnOne = votingOnOne;
 	}
 	
 	
@@ -48,6 +54,7 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		this.id = id;
 		refreshUrl = semiUrl+id;
 	}//end of setId()
+	
 	
 	@Override
 	public int getCount() {
@@ -85,52 +92,9 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		
 		if(v.wasVotedOn() == false && v.limitReached() == false) {
 			
-			
-			upVote.setOnClickListener(new View.OnClickListener() {			
-				@Override
-				public void onClick(View v) {
-					
-					
-					Toast.makeText(context, "You just attempted to upvote TAG: "+((View)v.getParent()).getTag(), Toast.LENGTH_LONG).show();
-					View parent = ((View)v.getParent());
-					
-					int id = Integer.parseInt((String)parent.getTag());//this id is the ID of the vote not the user ID
-					
-					Vote voteClicked = null;
-					/*
-					 * First get the vote that was clicked*/
-					for(Vote leVote : votesList) {
-						if(leVote.getId() == id) {
-							voteClicked = leVote;
-						}
-					}//end of foreach
-					
-					voteClicked.voted();
-					SimpleVoteBaseAdapter.this.notifyDataSetChanged();
-					
-					String url = 
-						"http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/upvote/"+id+"/"+SimpleVoteBaseAdapter.this.id;
-					
-					new UpVote().execute(url);
-					/*User can see immediate results with the above but I will also query the server again and refresh*/
-					
-					new DownloadSimpleVotes().execute(
-							refreshUrl, 
-							SimpleVoteBaseAdapter.this);
-					
-					//setting onClickListener to null to not allow user to vote once they have voted
-					v.setOnClickListener(null);
-					
-				}//end of onClick method
-			});
-			
-			
-			
+			upVote.setOnClickListener(singleVoteListener);
 			
 		}//end of check if the vote was voted on
-		
-		
-		
 		
 		
 		
@@ -143,9 +107,6 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 	public void replaceList(ArrayList<Vote> list) {
 		votesList = list;
 	}
-
-
-
 
 
 	/*
@@ -215,14 +176,65 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		
 		protected void onPostExecute(Boolean result) {
 			Log.d("UpVote", "onPostExecute is running!!!!");
-			if(result)
+			if(result) {
 				Toast.makeText(context, "Successfully uploaded your upvote", Toast.LENGTH_SHORT).show();
+				for(Vote leVote : votesList){
+					leVote.changeVotedOn(true);
+				}
+				SimpleVoteBaseAdapter.this.notifyDataSetChanged();
+			}
 			else
-				Toast.makeText(context, "Failed to upload your upvote", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "Failed to upload your upvote. Try Again Please.", Toast.LENGTH_SHORT).show();
 	     }
 		
 	}//end of DownloadSimpleVotes
 	
+	
+	
+	/*
+	 * The following are my two listeners that get used depending on what
+	 * the value of votingOnOne is
+	 * */
+	
+	View.OnClickListener singleVoteListener = new View.OnClickListener() {			
+		@Override
+		public void onClick(View v) {
+				
+				Toast.makeText(context, "You just attempted to upvote TAG: "+((View)v.getParent()).getTag(), Toast.LENGTH_LONG).show();
+				View parent = ((View)v.getParent());
+				
+				int id = Integer.parseInt((String)parent.getTag());//this id is the ID of the vote not the user ID
+				
+				Vote voteClicked = null;
+				/*
+				 * First get the vote that was clicked*/
+				for(Vote leVote : votesList) {
+					if(leVote.getId() == id) {
+						voteClicked = leVote;
+					}
+				}//end of foreach
+				
+				voteClicked.voted();
+				SimpleVoteBaseAdapter.this.notifyDataSetChanged();
+				
+				String url = 
+					"http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/upvote/"+id+"/"+SimpleVoteBaseAdapter.this.id;
+				
+				new UpVote().execute(url);
+				/*User can see immediate results with the above but I will also query the server again and refresh*/
+				
+				new DownloadSimpleVotes().execute(
+						refreshUrl, 
+						SimpleVoteBaseAdapter.this);
+				
+				//setting onClickListener to null to not allow user to vote once they have voted
+				v.setOnClickListener(null);
+				
+			
+		}//end of onClick method
+	};
+	
+
 	
 	
 	

@@ -1,14 +1,18 @@
 package com.electricflurry;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
-
-import com.electricflurry.R;
+import org.apache.http.HttpStatus;
 
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
@@ -32,6 +36,7 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	Profile profile = new Profile();
 	ElectricFlurryDatabase db;
 	String result;
+	Button save;
 	
 	//created the myprofile fragment by just copying the mingle fragment -sean
 
@@ -70,7 +75,7 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 			//edit_google = (EditText) view.findViewById(R.id.edit_google);
 			
 			
-			Button save = (Button) view.findViewById(R.id.save);
+			save = (Button) view.findViewById(R.id.save);
 			
 			edit_name.setHint("My Name");
 			edit_phone.setHint("My Phone Number");
@@ -78,79 +83,7 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 			//edit_twitter.setHint("My Twitter URL");
 			//edit_google.setHint("My Google+ URL");
 			
-			save.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					
-					name = edit_name.getText().toString();
-					phone = edit_phone.getText().toString();
-					//facebookURL = edit_facebook.getText().toString();
-					//twitterURL = edit_twitter.getText().toString();
-					//googleURL = edit_google.getText().toString();
-					
-					if (!name.equalsIgnoreCase("")) {
-						profile.setName(name);
-					}
-					if (!phone.equalsIgnoreCase("")) {
-						profile.setPhoneNumber(phone);
-					}
-					
-					new Thread(new Runnable() {
-	
-						@Override
-						public void run() {
-							
-							/*I will add the user on the server first then add it in the database if successful
-							 * */
-							
-						    try {
-						    	HttpClient httpclient = new DefaultHttpClient();
-							    HttpPost httppost = new HttpPost(
-							    		"http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/newuser/"+name+"/"+phone
-							    		);
-						    	/*List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-						        nameValuePairs.add(new BasicNameValuePair("username", name));
-						        nameValuePairs.add(new BasicNameValuePair("phonenumber", phone));
-						        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));*/
-						        
-						        HttpResponse response = httpclient.execute(httppost);
-						        
-						        result = EntityUtils.toString(response.getEntity());
-						        result = result.trim();
-						        if(!result.equals("Oh no! Failed :(")) {
-							        edit_name.post(new Runnable() {
-										@Override
-										public void run() {
-											Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
-											noUserLayout.setVisibility(View.GONE);
-											hazUserLayout.setVisibility(View.VISIBLE);
-											nameView.setText(name);
-											phoneNumberView.setText(phone);
-											serverIdView.setText(result);
-										}
-							        });
-							        /*I haz success so you can now submit user but I will 
-							         * want to use the returned ID and add it to the database*/
-							        db.submitFirstUser(name, phone, Integer.parseInt(result));
-							        
-						        } else {
-						        	MyProfileFragment.this.errorToast();
-						        }
-						        
-						        
-						    }
-						    catch(ClientProtocolException e){
-						    	MyProfileFragment.this.errorToast();
-						    }
-						    catch (IOException e) {
-						    	MyProfileFragment.this.errorToast();
-						    }
-						}//end of run
-						
-					}).start();
-					
-				}//end of button onClick()
-			});
+			save.setOnClickListener(uploadUserListener);
 		
 		} else {
 			/*
@@ -187,6 +120,100 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
         });
 	}
 	
+	public boolean isAnyBadResponse(int code){
+		switch(code) {
+			case HttpStatus.SC_GATEWAY_TIMEOUT :
+				return true;
+		}
+		
+		return false;
+	}
+	
+	View.OnClickListener uploadUserListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			save.setOnClickListener(null);
+			name = edit_name.getText().toString();
+			phone = edit_phone.getText().toString();
+			//facebookURL = edit_facebook.getText().toString();
+			//twitterURL = edit_twitter.getText().toString();
+			//googleURL = edit_google.getText().toString();
+			
+			if (!name.equalsIgnoreCase("")) {
+				profile.setName(name);
+			}
+			if (!phone.equalsIgnoreCase("")) {
+				profile.setPhoneNumber(phone);
+			}
+			
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					
+					/*I will add the user on the server first then add it in the database if successful
+					 * */
+					
+				    try {
+				    	HttpParams httpParameters = new BasicHttpParams();
+				    	int timeoutConnection = 3000;
+				    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+				    	/*The above is basically setting up a timeout to keep it from hanging*/
+				    	
+				    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+					    HttpPost httppost = new HttpPost(
+					    		"http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/newuser/"+name+"/"+phone
+					    		);
+
+				        
+				        HttpResponse response = httpclient.execute(httppost);
+				        int responseStatus = response.getStatusLine().getStatusCode();
+				        
+				        result = EntityUtils.toString(response.getEntity());
+				        result = result.trim();
+				        if(!result.equals("Oh no! Failed :(") && isAnyBadResponse(responseStatus) != true) {
+					        edit_name.post(new Runnable() {
+								@Override
+								public void run() {
+									Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+									noUserLayout.setVisibility(View.GONE);
+									hazUserLayout.setVisibility(View.VISIBLE);
+									nameView.setText(name);
+									phoneNumberView.setText(phone);
+									serverIdView.setText(result);
+								}
+					        });
+					        /*I haz success so you can now submit user but I will 
+					         * want to use the returned ID and add it to the database*/
+					        db.submitFirstUser(name, phone, Integer.parseInt(result));
+					        
+				        } else {
+				        	MyProfileFragment.this.errorToast();
+				        	save.setOnClickListener(uploadUserListener);
+				        }
+				        
+				        
+				    }
+				    catch(SocketTimeoutException e){
+				    	Log.e("MyProfileFragment", "A SocketTimeoutException occurred!");
+				    	Toast.makeText(getActivity(), "SocketTimeoutException occurred!", Toast.LENGTH_LONG).show();
+				    	save.setOnClickListener(uploadUserListener);
+				    }
+				    catch(ClientProtocolException e){
+				    	MyProfileFragment.this.errorToast();
+				    	save.setOnClickListener(uploadUserListener);
+				    }
+				    catch (IOException e) {
+				    	MyProfileFragment.this.errorToast();
+				    	save.setOnClickListener(uploadUserListener);
+				    }
+				    
+				}//end of run
+				
+			}).start();
+			
+		}//end of button onClick()
+	};
 	
 	
 	
@@ -196,4 +223,5 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	
 	
 	
-}
+	
+}//end of class

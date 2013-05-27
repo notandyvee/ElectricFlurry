@@ -12,5 +12,7 @@
     <string name="title_activity_facebook">Facebook</string>
     <string name="app_id">448986518512106</string>
     <string name="title_activity_google_plus">GooglePlusActivity</string>
+    <string name="get_started">To get started, log in using Facebook</string>
+    <string name="settings">Settings</string>
 
 </resources>

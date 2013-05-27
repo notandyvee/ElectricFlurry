@@ -53,5 +53,9 @@ public class Vote {
 		return votedOn;
 	}//end of didUserVote
 	
+	public void changeVotedOn(boolean votedOn){
+		this.votedOn = votedOn;
+	}//end of setVotedOn
+	
 
 }//end of class

@@ -45,7 +45,7 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		database = new ElectricFlurryDatabase(getActivity());
 		database.insertVotesSimulation();
 		
-		adapter = new SimpleVoteBaseAdapter(getActivity(), database);
+		adapter = new SimpleVoteBaseAdapter(getActivity(), database, true);
 		compAdapter = new ComplicatedVoteBaseAdapter(getActivity(), database);
 		
 		/**
@@ -80,13 +80,11 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		complicatedVotes = (ListView)view.findViewById(R.id.complicated_votes_list);
 		complicatedVotes.setAdapter(compAdapter);
 		
-		//set a timer here to fire things off 10 seconds after View is created
-		
 		//Download simple votes
-		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
+		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
 		
 		//Download complicated votes parent list first
-		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
+		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
 		
 		return view;
 	}//end of onCreateView
@@ -97,9 +95,7 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 	public void onDestroy() {
 		/*just do a bit of cleaning up as I don't want the votes to persist for this simulation*/
 		super.onDestroy();
-		//database.eradicateVotes();
-		//timer.cancel();
-		//database.closeDbase();
+		
 	}//end of onDestroy
 	
 	
@@ -119,7 +115,7 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 			getActivity().getSupportFragmentManager().popBackStack();
 		} else {
 			int id = cursor.getInt(0);
-			adapter.setId(id, "http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/");
+			adapter.setId(id, "http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/");
 			compAdapter.setId(id);
 		}
 		
@@ -127,10 +123,10 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 	
 	public void refreshVotes() {
 		//Download simple votes
-		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
+		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
 		
 		//Download complicated votes parent list first
-		new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
+		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
 	}//end of refreshVotes
 
 	

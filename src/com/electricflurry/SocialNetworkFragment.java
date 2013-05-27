@@ -1,5 +1,7 @@
 package com.electricflurry;
 
+import com.facebook.android.Facebook;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +15,9 @@ public class SocialNetworkFragment extends Fragment {
 
 
 	Button buttons;
-	Button facebook, plus, twitter;
+	Button facebook, twitter;
+	String APP_ID = "547265858648856";
+	
 
 
 	public static SocialNetworkFragment newInstance() {
@@ -35,7 +39,6 @@ public class SocialNetworkFragment extends Fragment {
 
 		//buttons
 		facebook = (Button) view.findViewById(R.id.facebook_button);
-		plus = (Button) view.findViewById(R.id.gPlus_button);
 		twitter = (Button) view.findViewById(R.id.twitter_button);
 
 		//what buttons do
@@ -50,19 +53,12 @@ public class SocialNetworkFragment extends Fragment {
 		facebook.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), Facebook.class);
+				Intent intent = new Intent(getActivity(), FacebookFrag.class);
 				startActivity(intent);
 			}
 		});
 
-		plus.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), GooglePlusActivity.class);
-				startActivity(intent);
-			}
-		});
 		return view;
 
 	}//end of onCreateView

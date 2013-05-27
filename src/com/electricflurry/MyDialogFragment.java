@@ -25,8 +25,8 @@ public class MyDialogFragment extends DialogFragment{
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new SimpleVoteBaseAdapter(getActivity(), null);
-        adapter.setId(userId, "http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/childvotes/");
+        adapter = new SimpleVoteBaseAdapter(getActivity(), null, false);
+        adapter.setId(userId, "http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/childvotes/");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class MyDialogFragment extends DialogFragment{
         leList = (ListView)v.findViewById(R.id.child_list_votes);
         leList.setAdapter(adapter);
         
-        new DownloadSimpleVotes().execute("http://ec2-54-244-101-0.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/childvotes/"+voteId+"/"+userId, adapter);
+        new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/childvotes/"+voteId+"/"+userId, adapter);
         
 
         return v;
