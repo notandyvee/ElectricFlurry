@@ -1,23 +1,14 @@
 package com.electricflurry;
 
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ProfileFragment extends Fragment implements ConsumeCursor{
 	// created the profile fragment just copying the mingle fragment -sean

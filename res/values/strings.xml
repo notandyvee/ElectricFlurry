@@ -10,9 +10,10 @@
     <string name="title_activity_photo_taker">PhotoTaker</string>
     <string name="title_activity_tweeter">Tweeter</string>
     <string name="title_activity_facebook">Facebook</string>
-    <string name="app_id">448986518512106</string>
+    <string name="app_id">547265858648856</string>
     <string name="title_activity_google_plus">GooglePlusActivity</string>
     <string name="get_started">To get started, log in using Facebook</string>
     <string name="settings">Settings</string>
+    <string name="share">Share</string>
 
 </resources>
