@@ -70,18 +70,12 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 			noUserLayout.setVisibility(View.VISIBLE);
 			edit_name = (EditText) view.findViewById(R.id.edit_name);
 			edit_phone = (EditText) view.findViewById(R.id.edit_phone);
-			//edit_facebook = (EditText) view.findViewById(R.id.edit_facebook);
-			//edit_twitter = (EditText) view.findViewById(R.id.edit_twitter);
-			//edit_google = (EditText) view.findViewById(R.id.edit_google);
 			
 			
 			save = (Button) view.findViewById(R.id.save);
 			
 			edit_name.setHint("My Name");
 			edit_phone.setHint("My Phone Number");
-			//edit_facebook.setHint("My Facebook URL");
-			//edit_twitter.setHint("My Twitter URL");
-			//edit_google.setHint("My Google+ URL");
 			
 			save.setOnClickListener(uploadUserListener);
 		
@@ -135,9 +129,6 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 			save.setOnClickListener(null);
 			name = edit_name.getText().toString();
 			phone = edit_phone.getText().toString();
-			//facebookURL = edit_facebook.getText().toString();
-			//twitterURL = edit_twitter.getText().toString();
-			//googleURL = edit_google.getText().toString();
 			
 			if (!name.equalsIgnoreCase("")) {
 				profile.setName(name);

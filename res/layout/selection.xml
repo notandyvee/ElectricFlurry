@@ -10,14 +10,15 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="20dp"
 	        android:gravity="center_horizontal"
-	        android:orientation="horizontal" >
+	        android:orientation="horizontal"
+	        android:layout_marginBottom="30dp" >
 	    <com.facebook.widget.ProfilePictureView
 	            android:id="@+id/selection_profile_pic"
 	            android:layout_height="wrap_content"
 	            android:layout_width="wrap_content"
 	            android:layout_gravity="center"
 	            android:gravity="center_horizontal"
-	            facebook:preset_size="small" />
+	            facebook:preset_size="normal" />
 	    <TextView
 	            android:id="@+id/selection_user_name"
 	            android:layout_width="wrap_content"
@@ -28,14 +29,19 @@
 	            android:textSize="18sp" />
 	</LinearLayout>
 	
+	<EditText 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/user_post"
+	    android:hint="I am at an Electric Flurry show!"/>
+	
 	<Button
     android:id="@+id/shareButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textStyle="bold"
     android:gravity="center"
-    android:layout_marginTop="30dp"
-    android:visibility="invisible"
+    android:layout_marginTop="10dp"
     android:text="@string/share"
     />
 	

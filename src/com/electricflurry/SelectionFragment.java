@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,11 @@ public class SelectionFragment extends Fragment{
 	 * This Fragment is something needed for facebook to work well
 	 * but can probably be edited to look how we need it to
 	 * */
-	private static final int REAUTH_ACTIVITY_CODE = 100;
+	//private static final int REAUTH_ACTIVITY_CODE = 100;
 	private ProfilePictureView profilePictureView;
 	private TextView userNameView;
 	private UiLifecycleHelper uiHelper;
+	private EditText userInput;
 	
 	/*This private variable is the share button*/
 	private Button shareButton;
@@ -61,6 +63,14 @@ public class SelectionFragment extends Fragment{
 	    uiHelper.onCreate(savedInstanceState);
 	}//end of onCreate()
 	
+	/*Listener to allow user to share*/
+	View.OnClickListener shareButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            publishStory();        
+        }
+    };
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    super.onCreateView(inflater, container, savedInstanceState);
@@ -75,13 +85,8 @@ public class SelectionFragment extends Fragment{
 	    
 	    //find the share button
 	    shareButton = (Button) view.findViewById(R.id.shareButton);
-	    shareButton.setOnClickListener(new View.OnClickListener() {
-	        @Override
-	        public void onClick(View v) {
-	            publishStory();        
-	        }
-	    });
-	    
+	    shareButton.setOnClickListener(shareButtonListener);
+	    userInput = (EditText)view.findViewById(R.id.user_post);
 	    // Check for an open session
 	    Session session = Session.getActiveSession();
 	    if (session != null && session.isOpened()) {
@@ -89,8 +94,12 @@ public class SelectionFragment extends Fragment{
 	        makeMeRequest(session);
 	    }
 	    if (savedInstanceState != null) {
+	    	if(savedInstanceState.getString("saved_user_post")!= null){
+	    		userInput.setText(savedInstanceState.getString("saved_user_post"));
+	    	}
 	        pendingPublishReauthorization = 
 	            savedInstanceState.getBoolean(PENDING_PUBLISH_KEY, false);
+	        
 	    }
 	    
 	    return view;
@@ -135,7 +144,9 @@ public class SelectionFragment extends Fragment{
 	    }
 	    /*The following checks if user is logged in and hides or shows the share button*/
 	    if (state.isOpened()) {
+	    	Log.d(TAG, "State is being check and its"+(state.isOpened()?" open": " closed"));
 	        shareButton.setVisibility(View.VISIBLE);
+	        userInput.setVisibility(View.VISIBLE);
 	        if (pendingPublishReauthorization && 
 	                state.equals(SessionState.OPENED_TOKEN_UPDATED)) {
 	            pendingPublishReauthorization = false;
@@ -143,15 +154,14 @@ public class SelectionFragment extends Fragment{
 	        }
 	    } else if (state.isClosed()) {
 	        shareButton.setVisibility(View.INVISIBLE);
+	        userInput.setVisibility(View.INVISIBLE);
 	    }
 	}//end of onSessionStateChanged
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
-	    if (requestCode == REAUTH_ACTIVITY_CODE) {
-	        uiHelper.onActivityResult(requestCode, resultCode, data);
-	    }
+	    uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	@Override
@@ -163,6 +173,9 @@ public class SelectionFragment extends Fragment{
 	@Override
 	public void onSaveInstanceState(Bundle bundle) {
 	    super.onSaveInstanceState(bundle);
+	    String temp = userInput.getText().toString().trim();
+	    if(temp != null && !temp.equals(""))
+	    	bundle.putString("saved_user_post", temp);
 	    bundle.putBoolean(PENDING_PUBLISH_KEY, pendingPublishReauthorization);
 	    uiHelper.onSaveInstanceState(bundle);
 	}
@@ -189,60 +202,80 @@ public class SelectionFragment extends Fragment{
 	 * */
 	
 	private void publishStory() {
-	    Session session = Session.getActiveSession();
-	    
-	    if (session != null){
-
-	        // Check for publish permissions    
-	        List<String> permissions = session.getPermissions();
-	        if (!isSubsetOf(PERMISSIONS, permissions)) {
-	            pendingPublishReauthorization = true;
-	            Session.NewPermissionsRequest newPermissionsRequest = new Session
-	                    .NewPermissionsRequest(this, PERMISSIONS);
-	        session.requestNewPublishPermissions(newPermissionsRequest);
-	            return;
-	        }
-
-	        Bundle postParams = new Bundle();
-	        postParams.putString("name", "Facebook SDK for Android");
-	        postParams.putString("caption", "Build great social apps and get more installs.");
-	        postParams.putString("description", "The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.");
-	        postParams.putString("link", "https://developers.facebook.com/android");
-	        postParams.putString("picture", "https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
-
-	        Request.Callback callback= new Request.Callback() {
-	            public void onCompleted(Response response) {
-	                JSONObject graphResponse = response
-	                                           .getGraphObject()
-	                                           .getInnerJSONObject();
-	                String postId = null;
-	                try {
-	                    postId = graphResponse.getString("id");
-	                } catch (JSONException e) {
-	                    Log.i(TAG,
-	                        "JSON error "+ e.getMessage());
-	                }
-	                FacebookRequestError error = response.getError();
-	                if (error != null) {
-	                    Toast.makeText(getActivity()
-	                         .getApplicationContext(),
-	                         error.getErrorMessage(),
-	                         Toast.LENGTH_SHORT).show();
-	                    } else {
-	                        Toast.makeText(getActivity()
-	                             .getApplicationContext(), 
-	                             postId,
-	                             Toast.LENGTH_LONG).show();
-	                }
-	            }
-	        };
-
-	        Request request = new Request(session, "me/feed", postParams, 
-	                              HttpMethod.POST, callback);
-
-	        RequestAsyncTask task = new RequestAsyncTask(request);
-	        task.execute();
-	    }
+		String userPost = userInput.getText().toString().trim();
+		if(userPost != null && !userPost.equals("")){
+		    Session session = Session.getActiveSession();
+		    
+		    if (session != null){
+	
+		        // Check for publish permissions    
+		        List<String> permissions = session.getPermissions();
+		        if (!isSubsetOf(PERMISSIONS, permissions)) {
+		            pendingPublishReauthorization = true;
+		            Session.NewPermissionsRequest newPermissionsRequest = new Session
+		                    .NewPermissionsRequest(this, PERMISSIONS);
+		        session.requestNewPublishPermissions(newPermissionsRequest);
+		        return;
+		        }
+		        
+		        Bundle postParams = new Bundle();
+		        postParams.putString("name", "Electric Furry");
+		        postParams.putString("caption", "World's Largest Foam Party!");
+		        postParams.putString("message", userPost);
+		        postParams.putString("link", "http://electricflurry.com");
+	
+		        Request.Callback callback= new Request.Callback() {
+		            public void onCompleted(Response response) {
+		            	boolean responseReturnedError = false;
+		            	JSONObject graphResponse = null;
+		            	try {
+			                graphResponse = response
+			                                        .getGraphObject()
+			                                        .getInnerJSONObject();
+		            	}
+		            	catch(NullPointerException e){
+		            		responseReturnedError = true;
+		            		Toast.makeText(getActivity(), 
+		            		"There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+		            	}
+		            	
+		                if(!responseReturnedError){
+			                String postId = null;
+			                try {
+			                    postId = graphResponse.getString("id");
+			                } catch (JSONException e) {
+			                    Log.i(TAG,
+			                        "JSON error "+ e.getMessage());
+			                }
+			                FacebookRequestError error = response.getError();
+			                if (error != null) {
+			                    Toast.makeText(getActivity()
+			                         .getApplicationContext(),
+			                         error.getErrorMessage(),
+			                         Toast.LENGTH_SHORT).show();
+			                    } else {
+			                        Toast.makeText(getActivity()
+			                             .getApplicationContext(), 
+			                             postId,
+			                             Toast.LENGTH_LONG).show();
+			                        userInput.setText("");
+			                }
+		            	}
+		                
+		            }
+		        };
+	
+		        Request request = new Request(session, "me/feed", postParams, 
+		                              HttpMethod.POST, callback);
+	
+		        RequestAsyncTask task = new RequestAsyncTask(request);
+		        task.execute();
+		       
+		    }
+		}//check to see if user inputted any text
+		else{
+			Toast.makeText(getActivity(), "No text to share yet.", Toast.LENGTH_SHORT).show();
+		}
 
 	}//end of publishStory
 	

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class SocialNetworkFragment extends Fragment {
@@ -43,7 +44,7 @@ public class SocialNetworkFragment extends Fragment {
 		twitter.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+				Intent intent = new Intent(getActivity(), TwitterActivity.class);
 				startActivity(intent);
 			}
 		});

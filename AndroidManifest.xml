@@ -35,15 +35,7 @@
         
         <activity android:name="com.electricflurry.PhotoTaker" > </activity>
         
-        <activity android:name="com.electricflurry.Tweeter" > </activity>
-        
-        <activity android:name="com.electricflurry.AndroidTwitterSample" > </activity>
-
-
-        <activity 
-            android:name="com.electricflurry.PrepareRequestTokenActivity" 
-            android:launchMode="singleTask">
-        </activity>
+        <activity android:name="com.electricflurry.TwitterActivity" > </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
