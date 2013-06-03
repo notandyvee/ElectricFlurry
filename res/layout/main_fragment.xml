@@ -42,36 +42,7 @@
 		        android:gravity="center" />
 		 </LinearLayout>
 		 
-	    <LinearLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="#fff"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp">
-		    
-		    
-		    <TextView 
-		        android:id="@+id/social_networking"
-		        android:layout_width="0dp"
-		        android:layout_height="60dp"
-		        android:text="SOCIAL"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
-		        android:layout_weight="1"
-		        android:layout_margin="5dp"
-		        android:gravity="center" />
-		    
-		    <TextView 
-		        android:id="@+id/mingle"
-		        android:layout_width="0dp"
-		        android:layout_height="60dp"
-		        android:text="MINGLE"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
-		        android:layout_weight="1"
-		        android:layout_margin="5dp"
-		        android:gravity="center" />
-		 </LinearLayout>
+
 		 
 	
 	    <LinearLayout
@@ -106,6 +77,37 @@
 	         android:textColor="#fff" />
 		    
 	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="#fff"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp">
+		    
+		    
+		    <TextView 
+		        android:id="@+id/facebook_button"
+		        android:layout_width="0dp"
+		        android:layout_height="60dp"
+		        android:text="FACEBOOK"
+		        android:background="#9556d9"
+		        android:textColor="#fff"
+		        android:layout_weight="1"
+		        android:layout_margin="5dp"
+		        android:gravity="center" />
+		    
+		    <TextView 
+		        android:id="@+id/twitter_button"
+		        android:layout_width="0dp"
+		        android:layout_height="60dp"
+		        android:text="TWITTER"
+		        android:background="#9556d9"
+		        android:textColor="#fff"
+		        android:layout_weight="1"
+		        android:layout_margin="5dp"
+		        android:gravity="center" />
+		 </LinearLayout>
 	    
 	    
 	    

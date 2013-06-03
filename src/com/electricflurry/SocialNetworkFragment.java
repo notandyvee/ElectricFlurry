@@ -15,7 +15,6 @@ public class SocialNetworkFragment extends Fragment {
 
 	Button buttons;
 	Button facebook, twitter;
-	String APP_ID = "547265858648856";
 	
 
 
@@ -36,26 +35,7 @@ public class SocialNetworkFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.social_network_fragment, container, false);
 
-		//buttons
-		facebook = (Button) view.findViewById(R.id.facebook_button);
-		twitter = (Button) view.findViewById(R.id.twitter_button);
-
-		//what buttons do
-		twitter.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), TwitterActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		facebook.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), FacebookFrag.class);
-				startActivity(intent);
-			}
-		});
+		
 
 
 		return view;

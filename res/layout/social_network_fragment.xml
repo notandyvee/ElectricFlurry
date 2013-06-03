@@ -5,17 +5,8 @@
     android:gravity="center"
     android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/lib/com.google.android.gms.plus">
 
-    <Button
-        android:id="@+id/twitter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Twitter" />
 
-    <Button
-        android:id="@+id/facebook_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Facebook" />
+
 
 
 

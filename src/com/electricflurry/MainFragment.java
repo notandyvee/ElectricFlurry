@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class MainFragment extends Fragment{
 	SharedPreferences settings;
 	
 	String oAuth;
+	private TextView facebook;
+	private TextView twitter;
 	
 	public static MainFragment newInstance() {
 		MainFragment f = new MainFragment();
@@ -125,8 +128,6 @@ public class MainFragment extends Fragment{
 		
 		TextView checkin = (TextView)view.findViewById(R.id.check_in);
 		TextView vote = (TextView)view.findViewById(R.id.vote);
-		TextView social = (TextView)view.findViewById(R.id.social_networking);
-		TextView mingle = (TextView)view.findViewById(R.id.mingle);
 		TextView myProfile = (TextView)view.findViewById(R.id.my_profile);
 		TextView photo = (TextView)view.findViewById(R.id.photo);
 		
@@ -151,22 +152,6 @@ public class MainFragment extends Fragment{
 				Toast.makeText(getActivity(), "clicked on vote", Toast.LENGTH_SHORT).show();
 			}
 		});
-		social.setOnClickListener(new View.OnClickListener() {
-	
-			@Override
-			public void onClick(View v) {
-				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, SocialNetworkFragment.newInstance());
-				Toast.makeText(getActivity(), "clicked on social", Toast.LENGTH_SHORT).show();
-			}
-		});
-		mingle.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				((MainActivity)getActivity()).addFragment(R.id.fragment_holder, MingleFragment.newInstance());
-				Toast.makeText(getActivity(), "clicked on mingle", Toast.LENGTH_SHORT).show();
-			}
-		});
 
 		
 		myProfile.setOnClickListener(new View.OnClickListener() {
@@ -186,23 +171,34 @@ public class MainFragment extends Fragment{
 		     }
 		 });
 		
+		//buttons
+		facebook = (TextView) view.findViewById(R.id.facebook_button);
+		twitter = (TextView) view.findViewById(R.id.twitter_button);
+
+		//what buttons do
+		twitter.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), AndroidTwitterSample.class);
+				startActivity(intent);
+			}
+		});
+
+		facebook.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), FacebookFrag.class);
+				startActivity(intent);
+			}
+		});
 		
-		/*if(oAuth == null) {
-			text.setText("Login to Foursquare!");
-			
-			text.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					((MainActivity)getActivity()).addFragment(
-							R.id.fragment_holder, FoursquareAuthFragment.newInstance(getActivity().getSharedPreferences(PREF_NAME, 0)));
-					
-				}
-			});
 		
-		} else {*/
-			gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
+		
+		
+		
+		gps.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0);
 			//text.setVisibility(View.GONE);
-		//}
+
 		
 		
 		return view;
