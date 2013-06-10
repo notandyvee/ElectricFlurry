@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+     >
 
     <LinearLayout 
         android:layout_width="match_parent"
@@ -37,32 +38,59 @@
 	    <!-- End of register -->
     </LinearLayout>
     
-    <LinearLayout 
+    <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        android:id="@+id/haz_user">
+        android:id="@+id/haz_user"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
 	    
 	    <!-- This section will be invisible until a user exists -->
-        <TextView 
-            android:id="@+id/saved_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <TextView 
-            android:id="@+id/saved_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/server_id"/>
+	    
+	    <TextView 
+	        android:id="@+id/picture_box"
+	        android:layout_width="150dp"
+	        android:layout_height="150dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:background="#000"
+	        android:layout_marginRight="10dp" />
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_toRightOf="@+id/picture_box"
+	        android:layout_alignTop="@+id/picture_box"
+	        android:background="@drawable/profile_show_style"
+	        android:gravity="center" >
+	        <TextView 
+	            android:id="@+id/saved_name"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="20sp"
+	            style="@style/companyColorForButtons"
+	            />
+	        <TextView 
+	            android:id="@+id/saved_phone"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="15sp"
+	            style="@style/whiteText" />
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:id="@+id/server_id"
+	            android:textSize="15sp"
+	            style="@style/whiteText" />
+        </LinearLayout>
         
         
         
-        
-    </LinearLayout>
+    </RelativeLayout>
     
     
     

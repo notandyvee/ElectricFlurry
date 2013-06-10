@@ -71,7 +71,8 @@ public class ComplicatedVoteBaseAdapter extends BaseAdapter implements ConsumeCu
 				
 				Toast.makeText(context, "You just clicked complicated vote with server id: "+v.getTag(), Toast.LENGTH_SHORT).show();
 				int voteId = Integer.parseInt((String)v.getTag());
-				((MainActivity)context).popUpDialog(voteId, id);
+				String parentName = (String)((TextView)v).getText();
+				((MainActivity)context).popUpDialog(voteId, id, parentName);
 				
 			}
 		});

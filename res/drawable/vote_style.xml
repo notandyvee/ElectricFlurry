@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Just a style for the main page buttons -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid android:color="#ccc" />
+    
+	<corners android:radius="5dp" />
+</shape>

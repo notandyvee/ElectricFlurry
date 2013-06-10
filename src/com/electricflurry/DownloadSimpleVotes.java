@@ -35,7 +35,8 @@ public class DownloadSimpleVotes extends AsyncTask<Object, Void, BaseAdapter> {
 			return null;
 		}
 		catch (IOException e) {
-			Log.e("VoteFragment", "An IOException occurred!!!!!!!!!");
+			//Log.e("VoteFragment", "An IOException occurred!!!!!!!!!");
+			Log.e("VoteFragment", "An IOException occurred!!!!!!!!!", e);
 			return null;
 		}
 		catch (SAXException e) {
@@ -49,7 +50,7 @@ public class DownloadSimpleVotes extends AsyncTask<Object, Void, BaseAdapter> {
 	
 	protected void onPostExecute(BaseAdapter adapter) {
 		if(adapter == null) {
-			Log.e("DownloadSimpleVotes", "The adapter came back null meaning there was an error!!");
+			Log.e("DownloadSimpleVotes", "There was an error downloading votes.");
 		} else
 			adapter.notifyDataSetChanged();
      }

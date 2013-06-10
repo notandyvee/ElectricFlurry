@@ -52,7 +52,7 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 
 	public void setId(int id, String semiUrl) {
 		this.id = id;
-		refreshUrl = semiUrl+id;
+		refreshUrl = semiUrl;
 	}//end of setId()
 	
 	
@@ -79,8 +79,8 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		}
 		TextView name = (TextView)view.findViewById(R.id.vote_name);
 		TextView numOfVotes = (TextView)view.findViewById(R.id.number_of_votes);
-		TextView upVote = (TextView)view.findViewById(R.id.upvote);
-		upVote.setOnClickListener(null);//just to make sure its null to begin with
+		//TextView upVote = (TextView)view.findViewById(R.id.upvote);
+		numOfVotes.setOnClickListener(null);//just to make sure its null to begin with
 		
 		Vote v = votesList.get(pos);
 		name.setText(v.getName());
@@ -92,7 +92,7 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 		
 		if(v.wasVotedOn() == false && v.limitReached() == false) {
 			
-			upVote.setOnClickListener(singleVoteListener);
+			numOfVotes.setOnClickListener(singleVoteListener);
 			
 		}//end of check if the vote was voted on
 		
@@ -217,8 +217,7 @@ public class SimpleVoteBaseAdapter extends BaseAdapter implements ConsumeCursor{
 				voteClicked.voted();
 				SimpleVoteBaseAdapter.this.notifyDataSetChanged();
 				
-				String url = 
-					"http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/upvote/"+id+"/"+SimpleVoteBaseAdapter.this.id;
+				String url = ServerConstants.PUBLIC_DNS + "resources/upvote/"+id+"/"+SimpleVoteBaseAdapter.this.id;
 				
 				new UpVote().execute(url);
 				/*User can see immediate results with the above but I will also query the server again and refresh*/

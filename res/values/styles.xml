@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -16,5 +16,33 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <!-- My own custom styles for app regardless of API -->
+    
+    <style name="appwideBaseColors">
+        
+        <item name="android:background">#ccc</item>
+        
+    </style>
+    
+    <style name="companyColor">
+        
+        <item name="android:background">#58b3d8</item>
+        
+    </style>
+    
+    <style name="companyColorForButtons" parent="companyColor">
+        
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+        
+    </style>
+    
+    <style name="whiteText" >
+        <item name="android:textColor" >#ffffff</item>
+    </style>
+    
+    
+    
 
 </resources>

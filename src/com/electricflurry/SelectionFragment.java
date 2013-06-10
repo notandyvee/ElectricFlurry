@@ -41,6 +41,7 @@ public class SelectionFragment extends Fragment{
 	private UiLifecycleHelper uiHelper;
 	private EditText userInput;
 	
+	
 	/*This private variable is the share button*/
 	private Button shareButton;
 	
@@ -131,6 +132,7 @@ public class SelectionFragment extends Fragment{
 	        }
 	    });
 	    request.executeAsync();
+	    
 	} 
 	
 	/*

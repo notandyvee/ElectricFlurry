@@ -13,18 +13,13 @@ public class GPSUtilities {
 	LocationListener locationListener;
 	Location efLocation;// this location is simply a fake location to test checkin with
 	Location lastKnownLocation;
-	final float MAX_DISTANCE = 100f;
+	final float MAX_DISTANCE = 1000f;
 	
 	
 	public GPSUtilities(LocationManager manager, LocationListener listener) {
 		locationManager = manager;
 		locationListener = listener;
-		
-		/*
-		 * This is just a dummy location of where */
-		efLocation = new Location(LocationManager.GPS_PROVIDER);
-		efLocation.setLatitude(43.452697);
-		efLocation.setLongitude(-76.54243300);
+
 		
 		//get last known location but only for GPS as this one is the one that takes really long to load
 		lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -81,15 +76,11 @@ public class GPSUtilities {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	/*
-	 * The listener for when I get the location
-	 * */
+	public void setShowLocation(double lat, double lng){
+		efLocation = new Location(LocationManager.GPS_PROVIDER);
+		efLocation.setLatitude(lat);
+		efLocation.setLongitude(lng);
+	}//end of setShowLocation
 	
 	
 	

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F2F2F2" >
+    style="@style/appwideBaseColors" >
 	 
 
     <LinearLayout 
@@ -15,7 +15,6 @@
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="#fff"
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginRight="10dp">
 		    
@@ -24,22 +23,21 @@
 		        android:layout_width="0dp"
 		        android:layout_height="60dp"
 		        android:text="CHECK IN"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
-		        android:gravity="center" />
-		    
+		        android:gravity="center"
+		        style="@style/companyColorForButtons"
+    			android:background="@drawable/main_buttons" />		    
 		    <TextView 
 		        android:id="@+id/vote"
 		        android:layout_width="0dp"
 		        android:layout_height="60dp"
 		        android:text="VOTE"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
-		        android:gravity="center" />
+		        android:gravity="center"
+		        style="@style/companyColorForButtons"
+		        android:background="@drawable/main_buttons" />
 		 </LinearLayout>
 		 
 
@@ -48,7 +46,6 @@
 	    <LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="#fff"
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginRight="10dp" >
 	
@@ -59,11 +56,11 @@
 		        android:layout_width="0dp"
 		        android:layout_height="60dp"
 		        android:text="MY PROFILE"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
-		        android:gravity="center" />
+		        android:gravity="center"
+		        style="@style/companyColorForButtons"
+		        android:background="@drawable/main_buttons" />
 		    
 		    <TextView
 	         android:id="@+id/photo"
@@ -71,17 +68,16 @@
 	         android:layout_height="60dp"
 	         android:layout_margin="5dp"
 	         android:layout_weight="1"
-	         android:background="#9556d9"
 	         android:gravity="center"
 	         android:text="CAMERA"
-	         android:textColor="#fff" />
+	         style="@style/companyColorForButtons"
+	         android:background="@drawable/main_buttons" />
 		    
 	    </LinearLayout>
 	    
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="#fff"
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginRight="10dp">
 		    
@@ -91,45 +87,23 @@
 		        android:layout_width="0dp"
 		        android:layout_height="60dp"
 		        android:text="FACEBOOK"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
-		        android:gravity="center" />
+		        android:gravity="center"
+		        style="@style/companyColorForButtons"
+		        android:background="@drawable/main_buttons" />
 		    
 		    <TextView 
 		        android:id="@+id/twitter_button"
 		        android:layout_width="0dp"
 		        android:layout_height="60dp"
 		        android:text="TWITTER"
-		        android:background="#9556d9"
-		        android:textColor="#fff"
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"
-		        android:gravity="center" />
+		        android:gravity="center"
+		        style="@style/companyColorForButtons"
+		        android:background="@drawable/main_buttons" />
 		 </LinearLayout>
-	    
-	    
-	    
-	    
-	    
-	    <!-- This View tag is just a divider -->
-	    <View
-		    android:layout_width="fill_parent"
-		    android:layout_height="1dp"
-		    android:background="#ccc"
-		    android:layout_marginLeft="10dp"
-		    android:layout_marginRight="10dp"
-		    android:layout_marginBottom="5dp"/>
-	    
-<!--	    <TextView 
-	        android:id="@+id/name"
-	        android:layout_width="150dp"
-	        android:layout_height="30dp"
-	        android:background="#5CACEE"
-	        android:layout_gravity="center_horizontal"
-	        android:gravity="center" />
-     -->
 
     
     
@@ -138,14 +112,28 @@
     
     
     
-    
-    <ListView 
-        android:id="@+id/venues_list"
+    <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"></ListView>
+        android:orientation="vertical" >
+	    	    <!-- This View tag is just a divider -->
+	    <View
+		    android:layout_width="fill_parent"
+		    android:layout_height="10dp"
+		    android:background="@drawable/dotted_divider"
+		    android:layout_marginBottom="2dp"/>
+	    <TextView
+	        android:id="@+id/loading_venues"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:visibility="gone" />
+    <ListView 
+        android:id="@+id/venues_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" ></ListView>
+    </LinearLayout>
     
     
     

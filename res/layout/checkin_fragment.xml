@@ -3,18 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F2F2F2" >
+    style="@style/appwideBaseColors"
+    android:gravity="center_vertical" >   
+    
+    
+         <!-- This View tag is just a divider -->
+	<View
+	    android:layout_width="match_parent"
+		android:layout_height="10dp"
+		android:background="@drawable/dotted_divider"
+		android:layout_marginBottom="20dp" />
+    
     
     <TextView 
         android:id="@+id/checkin_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="Checking in... Wait a moment"
-        android:background="#9556d9"
-        android:layout_gravity="center"
+        android:textSize="20sp"
         android:gravity="center"
-        android:layout_margin="5dp"
-        android:textColor="#fff" />
+        style="@style/companyColorForButtons" />
     
     <EditText 
         android:layout_width="match_parent"
@@ -22,6 +30,13 @@
         android:hint="Enter Code"
         android:visibility="gone"
         android:id="@+id/enter_checkin_code" ></EditText>
+    
+        <!-- This View tag is just a divider -->
+	<View
+	    android:layout_width="match_parent"
+		android:layout_height="10dp"
+		android:background="@drawable/dotted_divider"
+		android:layout_marginTop="20dp" />
     
 
     

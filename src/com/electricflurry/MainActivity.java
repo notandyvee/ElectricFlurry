@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity {
     
     
     
-	public void popUpDialog(int voteId, int userId){
+	public void popUpDialog(int voteId, int userId, String parentName){
 
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity {
 		if(prev != null) { ft.remove(prev); }
 		ft.addToBackStack(null);
 		
-		MyDialogFragment frag = MyDialogFragment.newInstance(voteId, userId);
+		MyDialogFragment frag = MyDialogFragment.newInstance(voteId, userId, parentName);
 		
 		frag.show(ft, "dialog");
 		

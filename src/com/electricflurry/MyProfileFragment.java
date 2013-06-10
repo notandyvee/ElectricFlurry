@@ -14,6 +14,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpStatus;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
@@ -25,18 +26,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	EditText edit_name, edit_phone;
-	LinearLayout hazUserLayout, noUserLayout;
+	LinearLayout noUserLayout;
+	RelativeLayout hazUserLayout;
 	String name, phone,facebookURL, twitterURL, googleURL;
 	TextView nameView, phoneNumberView, serverIdView;
 	Profile profile = new Profile();
 	ElectricFlurryDatabase db;
 	String result;
 	Button save;
+	boolean attemptingUpload = false;//used to kepe the user from continuously uploading a user until it was successful
 	
 	//created the myprofile fragment by just copying the mingle fragment -sean
 
@@ -51,17 +55,17 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {	
 		View view = inflater.inflate(R.layout.myprofile_fragment, container, false);
 		
-		db = new ElectricFlurryDatabase(getActivity());
-		hazUserLayout = (LinearLayout)view.findViewById(R.id.haz_user);
+		hazUserLayout = (RelativeLayout)view.findViewById(R.id.haz_user);
 		noUserLayout = (LinearLayout)view.findViewById(R.id.no_haz_user);
 		nameView = (TextView)view.findViewById(R.id.saved_name);
 		phoneNumberView = (TextView)view.findViewById(R.id.saved_phone);
 		serverIdView = (TextView)view.findViewById(R.id.server_id);
 		
-		try {
-			db.leQuery("user", new String[] {"name", "phone", "server_id"}, null, null, null, null, null, this);
-		} catch (CursorIndexOutOfBoundsException e) {
-			
+		SharedPreferences settings = getActivity().getSharedPreferences("profile", 0);
+		if(settings.getString("name", null) != null) {
+			profile.setName(settings.getString("name", null));
+			profile.setPhoneNumber(settings.getString("phone_number", null));
+			profile.setServerId(settings.getInt("server_id", 0));
 		}
 		
 		
@@ -126,82 +130,95 @@ public class MyProfileFragment extends Fragment implements ConsumeCursor {
 	View.OnClickListener uploadUserListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			save.setOnClickListener(null);
-			name = edit_name.getText().toString();
-			phone = edit_phone.getText().toString();
-			
-			if (!name.equalsIgnoreCase("")) {
-				profile.setName(name);
-			}
-			if (!phone.equalsIgnoreCase("")) {
-				profile.setPhoneNumber(phone);
-			}
-			
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					
-					/*I will add the user on the server first then add it in the database if successful
-					 * */
-					
-				    try {
-				    	HttpParams httpParameters = new BasicHttpParams();
-				    	int timeoutConnection = 3000;
-				    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-				    	/*The above is basically setting up a timeout to keep it from hanging*/
-				    	
-				    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-					    HttpPost httppost = new HttpPost(
-					    		"http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/newuser/"+name+"/"+phone
-					    		);
-
-				        
-				        HttpResponse response = httpclient.execute(httppost);
-				        int responseStatus = response.getStatusLine().getStatusCode();
-				        
-				        result = EntityUtils.toString(response.getEntity());
-				        result = result.trim();
-				        if(!result.equals("Oh no! Failed :(") && isAnyBadResponse(responseStatus) != true) {
-					        edit_name.post(new Runnable() {
-								@Override
-								public void run() {
-									Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
-									noUserLayout.setVisibility(View.GONE);
-									hazUserLayout.setVisibility(View.VISIBLE);
-									nameView.setText(name);
-									phoneNumberView.setText(phone);
-									serverIdView.setText(result);
-								}
-					        });
-					        /*I haz success so you can now submit user but I will 
-					         * want to use the returned ID and add it to the database*/
-					        db.submitFirstUser(name, phone, Integer.parseInt(result));
-					        
-				        } else {
-				        	MyProfileFragment.this.errorToast();
-				        	save.setOnClickListener(uploadUserListener);
-				        }
-				        
-				        
-				    }
-				    catch(SocketTimeoutException e){
-				    	Log.e("MyProfileFragment", "A SocketTimeoutException occurred!");
-				    	Toast.makeText(getActivity(), "SocketTimeoutException occurred!", Toast.LENGTH_LONG).show();
-				    	save.setOnClickListener(uploadUserListener);
-				    }
-				    catch(ClientProtocolException e){
-				    	MyProfileFragment.this.errorToast();
-				    	save.setOnClickListener(uploadUserListener);
-				    }
-				    catch (IOException e) {
-				    	MyProfileFragment.this.errorToast();
-				    	save.setOnClickListener(uploadUserListener);
-				    }
-				    
-				}//end of run
+			if(!attemptingUpload) {
+				attemptingUpload = true;
+				save.setOnClickListener(null);
+				name = edit_name.getText().toString();
+				phone = edit_phone.getText().toString();
 				
-			}).start();
+				if (!name.equalsIgnoreCase("")) {
+					profile.setName(name);
+				}
+				if (!phone.equalsIgnoreCase("")) {
+					profile.setPhoneNumber(phone);
+				}
+				
+				new Thread(new Runnable() {
+	
+					@Override
+					public void run() {
+						
+						/*I will add the user on the server first then add it in the database if successful
+						 * */
+						
+					    try {
+					    	HttpParams httpParameters = new BasicHttpParams();
+					    	int timeoutConnection = 3000;
+					    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+					    	/*The above is basically setting up a timeout to keep it from hanging*/
+					    	
+					    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+						    HttpPost httppost = new HttpPost(
+						    		"http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/newuser/"+name+"/"+phone
+						    		);
+	
+					        
+					        HttpResponse response = httpclient.execute(httppost);
+					        int responseStatus = response.getStatusLine().getStatusCode();
+					        
+					        result = EntityUtils.toString(response.getEntity());
+					        result = result.trim();
+					        if(!result.equals("Oh no! Failed :(") && isAnyBadResponse(responseStatus) != true) {
+						        edit_name.post(new Runnable() {
+									@Override
+									public void run() {
+										Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+										noUserLayout.setVisibility(View.GONE);
+										hazUserLayout.setVisibility(View.VISIBLE);
+										nameView.setText(name);
+										phoneNumberView.setText(phone);
+										serverIdView.setText(result);
+									}
+						        });
+						        /*I haz success so you can now submit user but I will 
+						         * want to use the returned ID and add it to the database*/
+						        SharedPreferences settings = getActivity().getSharedPreferences("profile", 0);
+						        SharedPreferences.Editor edit = settings.edit();
+						        edit.putString("name", name);
+						        edit.putString("phone_number", phone);
+						        edit.putInt("server_id", Integer.parseInt(result));
+						        edit.commit();
+						        
+					        } else {
+					        	MyProfileFragment.this.errorToast();
+					        	save.setOnClickListener(uploadUserListener);
+					        	attemptingUpload = false;
+					        }
+					        
+					        
+					    }
+					    catch(SocketTimeoutException e){
+					    	Log.e("MyProfileFragment", "A SocketTimeoutException occurred!");
+					    	Toast.makeText(getActivity(), "SocketTimeoutException occurred!", Toast.LENGTH_LONG).show();
+					    	save.setOnClickListener(uploadUserListener);
+					    	attemptingUpload = false;
+					    }
+					    catch(ClientProtocolException e){
+					    	MyProfileFragment.this.errorToast();
+					    	save.setOnClickListener(uploadUserListener);
+					    	attemptingUpload = false;
+					    }
+					    catch (IOException e) {
+					    	MyProfileFragment.this.errorToast();
+					    	save.setOnClickListener(uploadUserListener);
+					    	attemptingUpload = false;
+					    }
+					    
+					}//end of run
+					
+				}).start();
+				
+			}//end of attemptingUpload check
 			
 		}//end of button onClick()
 	};

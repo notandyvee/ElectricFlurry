@@ -1,6 +1,7 @@
 package com.electricflurry;
 
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class VoteFragment extends Fragment implements ConsumeCursor{
+public class VoteFragment extends Fragment {
 	
 	ElectricFlurryDatabase database;
 	SimpleVoteBaseAdapter adapter;
@@ -48,12 +49,17 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		adapter = new SimpleVoteBaseAdapter(getActivity(), database, true);
 		compAdapter = new ComplicatedVoteBaseAdapter(getActivity(), database);
 		
-		/**
-		 * Getting user ID from database but ideally wanna have the user already be signed up to our server
-		 * so I can just get the local copy of there ID to make things much smoother.
-		 * Maybe have that happen at user creation or checkin
-		 */
-		database.leQuery("user", new String[] {"server_id"}, null, null, null, null, null, this);//this gets called just to get the user ID thats set on the server but ideally wanna have it set locally as well for speed
+		SharedPreferences settings = getActivity().getSharedPreferences("profile", 0);
+		if(settings.getInt("server_id", 0) == 0){
+			Toast.makeText(getActivity(), "You must create a user first", Toast.LENGTH_SHORT).show();
+			getActivity().getSupportFragmentManager().popBackStack();
+		} else {
+			int id = settings.getInt("server_id", 0);
+			adapter.setId(id, ServerConstants.PUBLIC_DNS+"resources/votes/"+id);
+			compAdapter.setId(id);
+		}
+		
+
 		
 		
 	}//end of onCreate
@@ -81,10 +87,10 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 		complicatedVotes.setAdapter(compAdapter);
 		
 		//Download simple votes
-		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
+		new DownloadSimpleVotes().execute(ServerConstants.PUBLIC_DNS + "resources/votes/"+adapter.id, adapter);
 		
 		//Download complicated votes parent list first
-		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
+		new DownloadSimpleVotes().execute(ServerConstants.PUBLIC_DNS + "resources/parentvotes", compAdapter);
 		
 		return view;
 	}//end of onCreateView
@@ -101,32 +107,13 @@ public class VoteFragment extends Fragment implements ConsumeCursor{
 	
 
 
-
-
-
-	@Override
-	public void consumeCursor(Cursor cursor) {
-		/*
-		 * THis exists simply to get the User ID from local storage for now
-		 * but will change when the other parts of the app are better integrated*/
-		cursor.moveToFirst();//there should only ever be one
-		if(cursor.getCount() < 1) {
-			Toast.makeText(getActivity(), "You must create a user first", Toast.LENGTH_SHORT).show();
-			getActivity().getSupportFragmentManager().popBackStack();
-		} else {
-			int id = cursor.getInt(0);
-			adapter.setId(id, "http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/");
-			compAdapter.setId(id);
-		}
-		
-	}
 	
 	public void refreshVotes() {
 		//Download simple votes
-		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/votes/"+adapter.id, adapter);
+		new DownloadSimpleVotes().execute(ServerConstants.PUBLIC_DNS + "resources/votes/"+adapter.id, adapter);
 		
 		//Download complicated votes parent list first
-		new DownloadSimpleVotes().execute("http://ec2-54-214-95-164.us-west-2.compute.amazonaws.com:8080/electricflurry/resources/parentvotes", compAdapter);
+		new DownloadSimpleVotes().execute(ServerConstants.PUBLIC_DNS + "resources/parentvotes", compAdapter);
 	}//end of refreshVotes
 
 	

@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@drawable/profile_show_style"
+    android:gravity="center_horizontal" >
     <!--
     <TextView 
         android:layout_width="25dp"
@@ -19,7 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/complicated_vote_name"
-        android:textSize="20sp" />
+        android:textSize="25sp"
+        style="@style/whiteText"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
     
 
 </LinearLayout>

@@ -2,12 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:orientation="vertical"
+    style="@style/appwideBaseColors" >    
     <ListView 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/child_list_votes"></ListView>
+        android:id="@+id/child_list_votes"
+	    android:paddingLeft="5dp"
+	    android:paddingRight="5dp"
+	    android:divider="@null"
+	    android:dividerHeight="5dp"
+	    android:layout_marginTop="15dp"
+	    android:layout_marginBottom="15dp" ></ListView>
     
 
 </LinearLayout>
